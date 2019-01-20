@@ -9,30 +9,32 @@ namespace App.Gameplay {
     public enum VoxelType { AIR = -1, ROCK = 1 }
 
     [SelectionBase]
-    [RequireComponent(typeof(MeshFilter))]
-    [RequireComponent(typeof(MeshCollider))]
+    [RequireComponent(typeof(MeshFilter), typeof(MeshCollider))]
     public class VoxelGrid : MonoBehaviour {
 
-        [SerializeField] bool showDebugCells;
-
+        // Cutoff for the surface in marching cubes.
         [SerializeField] float Surface;
 
         [SerializeField] Vector3Int dimensions;
 
         [SerializeField] Material material;
 
-        [SerializeField] int maxVertsPerMesh; // Must be divisible by 3 (for even triangles)
+        // Must be divisible by 3 (for even triangles)
+        [SerializeField] int maxVertsPerMesh;
 
+        // Voxel data layer
         Voxel[,,] data;
         public int X { get { return dimensions.x; } }
         public int Y { get { return dimensions.y; } }
         public int Z { get { return dimensions.z; } }
 
+        // Geometry lists
         List<Vector3> vertexList;
         List<int> indexList;
 
         int faceCount;
 
+        // Mesh collider components
         MeshCollider meshCollider;
         Mesh collisionMesh;
 
@@ -334,22 +336,6 @@ namespace App.Gameplay {
                     x + MarchingCubes.VertexOffset[i, 0], 
                     y + MarchingCubes.VertexOffset[i, 1], 
                     z + MarchingCubes.VertexOffset[i, 2]);
-            }
-
-            // Draw the cells if flagged to
-            if(showDebugCells) {
-                for(int i = 0; i < 12; i++) {
-                    Debug.DrawLine(
-                        new Vector3(
-                            x + MarchingCubes.VertexOffset[MarchingCubes.EdgeConnection[i, 0], 0], 
-                            y + MarchingCubes.VertexOffset[MarchingCubes.EdgeConnection[i, 0], 1], 
-                            z + MarchingCubes.VertexOffset[MarchingCubes.EdgeConnection[i, 0], 2]),
-                        new Vector3(
-                            x + MarchingCubes.VertexOffset[MarchingCubes.EdgeConnection[i, 1], 0],
-                            y + MarchingCubes.VertexOffset[MarchingCubes.EdgeConnection[i, 1], 1],
-                            z + MarchingCubes.VertexOffset[MarchingCubes.EdgeConnection[i, 1], 2]
-                        ), Color.green, 3);
-                }
             }
 
             int flagIndex = 0;
