@@ -37,9 +37,9 @@ namespace App {
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit)) {
-                Debug.DrawLine(ray.origin, new Vector3(Mathf.RoundToInt(hit.point.x), Mathf.RoundToInt(hit.point.y), Mathf.RoundToInt(hit.point.z)), Color.green, 2);
+                Vector3 pos = hit.point - hit.normal * 0.5f;
 
-                voxelGrid.SetVoxelTypeAtPosition(hit.point, VoxelType.AIR);
+                voxelGrid.SetVoxelTypeAtPosition(new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), Mathf.FloorToInt(pos.z)), VoxelType.AIR);
             }
         }
     }

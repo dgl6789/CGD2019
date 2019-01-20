@@ -13,7 +13,7 @@ namespace App.Gameplay {
 
         [SerializeField] Material debugMaterial;
 
-        byte[,,] data;
+        Voxel[,,] data;
         public int X { get { return dimensions.x; } }
         public int Y { get { return dimensions.y; } }
         public int Z { get { return dimensions.z; } }
@@ -37,7 +37,7 @@ namespace App.Gameplay {
         }
 
         public void Generate() {
-            data = new byte[X, Y, Z];
+            data = new Voxel[X, Y, Z];
 
             newVertices = new List<Vector3>();
             newTriangles = new List<int>();
@@ -47,7 +47,7 @@ namespace App.Gameplay {
                 for (int y = 0; y < Y; y++) {
                     for (int z = 0; z < Z; z++) {
                         // This is where initial shape generation code will go
-                        data[x, y, z] = 1;
+                        data[x, y, z] = new Voxel(VoxelType.ROCK);
                     }
                 }
             }
@@ -56,21 +56,23 @@ namespace App.Gameplay {
         }
 
         public bool IndexIsValid(int x, int y, int z) {
-            return (x >= X || x < 0 || y >= Y || y < 0 || z >= Z || z < 0);
+            return !(x >= X || x < 0 || y >= Y || y < 0 || z >= Z || z < 0);
         }
 
-        public void SetVoxelTypeAtPosition(Vector3 position, VoxelType type) {
-            SetVoxelTypeAtIndex(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.y), Mathf.RoundToInt(position.z), type);
+        public void SetVoxelTypeAtPosition(Vector3Int position, VoxelType type) {
+            SetVoxelTypeAtIndex(position.x, position.y, position.z, type);
         }
 
         public void SetVoxelTypeAtIndex(int x, int y, int z, VoxelType type) {
-            data[x, y, z] = GetType(type);
+            if (IndexIsValid(x, y, z)) {
+                data[x, y, z] = new Voxel(type);
 
-            UpdateMesh();
+                UpdateMesh();
+            }
         }
 
         public byte GetData(int x, int y, int z) {
-            return IndexIsValid(x, y, z) ? (byte)0 : data[x, y, z];
+            return IndexIsValid(x, y, z) ? GetType(data[x, y, z].Type) : (byte)0;
         }
 
         public VoxelType GetType(byte type) { return (VoxelType)type; }
@@ -90,55 +92,55 @@ namespace App.Gameplay {
         }
 
         void VoxelTop(int x, int y, int z, byte type) {
-            newVertices.Add(new Vector3(x, y, z + 1));
-            newVertices.Add(new Vector3(x + 1, y, z + 1));
-            newVertices.Add(new Vector3(x + 1, y, z));
-            newVertices.Add(new Vector3(x, y, z));
+            newVertices.Add(new Vector3(x, y + 1, z + 1));
+            newVertices.Add(new Vector3(x + 1, y + 1, z + 1));
+            newVertices.Add(new Vector3(x + 1, y + 1, z));
+            newVertices.Add(new Vector3(x, y + 1, z));
 
             AddTrianglesQuad();
         }
 
         void VoxelBottom(int x, int y, int z, byte type) {
-            newVertices.Add(new Vector3(x, y - 1, z));
-            newVertices.Add(new Vector3(x + 1, y - 1, z));
-            newVertices.Add(new Vector3(x + 1, y - 1, z + 1));
-            newVertices.Add(new Vector3(x, y - 1, z + 1));
+            newVertices.Add(new Vector3(x, y, z));
+            newVertices.Add(new Vector3(x + 1, y, z));
+            newVertices.Add(new Vector3(x + 1, y, z + 1));
+            newVertices.Add(new Vector3(x, y, z + 1));
 
             AddTrianglesQuad();
         }
 
         void VoxelNorth(int x, int y, int z, byte type) {
-            newVertices.Add(new Vector3(x + 1, y - 1, z + 1));
             newVertices.Add(new Vector3(x + 1, y, z + 1));
+            newVertices.Add(new Vector3(x + 1, y + 1, z + 1));
+            newVertices.Add(new Vector3(x, y + 1, z + 1));
             newVertices.Add(new Vector3(x, y, z + 1));
-            newVertices.Add(new Vector3(x, y - 1, z + 1));
 
             AddTrianglesQuad();
         }
 
         void VoxelSouth(int x, int y, int z, byte type) {
-            newVertices.Add(new Vector3(x, y - 1, z));
             newVertices.Add(new Vector3(x, y, z));
+            newVertices.Add(new Vector3(x, y + 1, z));
+            newVertices.Add(new Vector3(x + 1, y + 1, z));
             newVertices.Add(new Vector3(x + 1, y, z));
-            newVertices.Add(new Vector3(x + 1, y - 1, z));
 
             AddTrianglesQuad();
         }
 
         void VoxelWest(int x, int y, int z, byte type) {
-            newVertices.Add(new Vector3(x, y - 1, z + 1));
             newVertices.Add(new Vector3(x, y, z + 1));
+            newVertices.Add(new Vector3(x, y + 1, z + 1));
+            newVertices.Add(new Vector3(x, y + 1, z));
             newVertices.Add(new Vector3(x, y, z));
-            newVertices.Add(new Vector3(x, y - 1, z));
 
             AddTrianglesQuad();
         }
 
         void VoxelEast(int x, int y, int z, byte type) {
-            newVertices.Add(new Vector3(x + 1, y - 1, z));
             newVertices.Add(new Vector3(x + 1, y, z));
+            newVertices.Add(new Vector3(x + 1, y + 1, z));
+            newVertices.Add(new Vector3(x + 1, y + 1, z + 1));
             newVertices.Add(new Vector3(x + 1, y, z + 1));
-            newVertices.Add(new Vector3(x + 1, y - 1, z + 1));
 
             AddTrianglesQuad();
         }
@@ -162,8 +164,6 @@ namespace App.Gameplay {
                     }
                 }
             }
-
-            // Perform marching cubes calculations
 
             render.material = debugMaterial;
 
