@@ -1,13 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using App;
 
 namespace App.Gameplay {
 
+    /// <summary>
+    /// Types that a voxel can have. 0 is intentionally unused.
+    /// </summary>
     public enum VoxelType { AIR = -1, ROCK = 1 }
 
     [SelectionBase]
+    [RequireComponent(typeof(MeshFilter))]
+    [RequireComponent(typeof(MeshCollider))]
     public class VoxelGrid : MonoBehaviour {
 
         [SerializeField] bool showDebugCells;
@@ -28,76 +31,243 @@ namespace App.Gameplay {
         List<Vector3> vertexList;
         List<int> indexList;
 
+        int faceCount;
+
+        MeshCollider meshCollider;
+        Mesh collisionMesh;
+
         List<GameObject> meshes = new List<GameObject>();
 
+        /// Initialization
         private void Start() {
-            Generate();
-        }
-
-        public void Generate() {
-            data = new Voxel[X, Y, Z];
-
+            // Initialize the vertex and index lists
             vertexList = new List<Vector3>();
             indexList = new List<int>();
 
+            // Initialize the components of the mesh collider
+            meshCollider = GetComponent<MeshCollider>();
+            collisionMesh = GetComponent<MeshFilter>().mesh;
+
+            // Initial generation of the rock
+            Generate();
+        }
+
+        /// <summary>
+        /// Generates a rock.
+        /// </summary>
+        public void Generate() {
+
+            // Initialize the data layer.
+            data = new Voxel[X, Y, Z];
+
+            // Clear geometry lists.
+            vertexList.Clear();
+            indexList.Clear();
+
+            // Populate the data layer.
+            // This is where initial shape generation code will go
             for (int x = 0; x < X; x++) {
                 for (int y = 0; y < Y; y++) {
                     for (int z = 0; z < Z; z++) {
-                        // This is where initial shape generation code will go
                         data[x, y, z] = new Voxel(VoxelType.ROCK);
                     }
                 }
             }
 
-            UpdateMesh();
+            // Generate the initial visual mesh and collider
+            UpdateVisualMesh();
+            UpdateCollisionMesh();
         }
 
-        public bool IndexIsValid(int x, int y, int z) {
-            return !(x >= X || x < 0 || y >= Y || y < 0 || z >= Z || z < 0);
-        }
-
-        public void SetVoxelTypeAtPosition(Vector3Int position, VoxelType type) {
-            SetVoxelTypeAtIndex(position.x, position.y, position.z, type);
-        }
-
+        /// <summary>
+        /// Sets the voxel at coordinates to VoxelType type.
+        /// </summary>
+        /// <param name="x">X position of the voxel to set.</param>
+        /// <param name="y">Y position of the voxel to set.</param>
+        /// <param name="z">Z position of the voxel to set.</param>
+        /// <param name="type">Type to set.</param>
         public void SetVoxelTypeAtIndex(int x, int y, int z, VoxelType type) {
             if (IndexIsValid(x, y, z)) {
                 data[x, y, z] = new Voxel(type);
 
-                UpdateMesh();
+                UpdateVisualMesh();
+                UpdateCollisionMesh();
             }
         }
 
-        public int GetData(int x, int y, int z) {
-            return IndexIsValid(x, y, z) ? GetType(data[x, y, z].Type) : -1;
+        /// <summary>
+        /// Get the integer type of the voxel at coordinates.
+        /// </summary>
+        /// <param name="x">X position of the voxel whose data to get.</param>
+        /// <param name="y">X position of the voxel whose data to get.</param>
+        /// <param name="z">X position of the voxel whose data to get.</param>
+        /// <returns>Integer type of the voxel, validity-checked.</returns>
+        public int GetData(int x, int y, int z) { return IndexIsValid(x, y, z) ? (int)data[x, y, z].Type : -1; }
+
+        /// <summary>
+        /// Checks whether the coordinates are within the bounds of the voxel grid.
+        /// </summary>
+        /// <param name="x">X position to check.</param>
+        /// <param name="y">Y position to check.</param>
+        /// <param name="z">Z position to check.</param>
+        /// <returns>Whether the coordinates are valid.</returns>
+        public bool IndexIsValid(int x, int y, int z) { return !(x >= X || x < 0 || y >= Y || y < 0 || z >= Z || z < 0); }
+
+        #region Geometry & Collider Generation
+
+        /// <summary>
+        /// Creates a collider for a voxel.
+        /// </summary>
+        /// <param name="x">X position of the voxel to generate collision for.</param>
+        /// <param name="y">Y position of the voxel to generate collision for.</param>
+        /// <param name="z">Z position of the voxel to generate collision for.</param>
+        void CreateCollisionVoxel(int x, int y, int z) {
+            if (GetData(x, y, z) != (int)VoxelType.AIR) {
+                if (GetData(x, y + 1, z) == (int)VoxelType.AIR) CollisionVoxelTop(x, y, z);
+                if (GetData(x, y - 1, z) == (int)VoxelType.AIR) CollisionVoxelBottom(x, y, z);
+                if (GetData(x + 1, y, z) == (int)VoxelType.AIR) CollisionVoxelEast(x, y, z);
+                if (GetData(x - 1, y, z) == (int)VoxelType.AIR) CollisionVoxelWest(x, y, z);
+                if (GetData(x, y, z + 1) == (int)VoxelType.AIR) CollisionVoxelNorth(x, y, z);
+                if (GetData(x, y, z - 1) == (int)VoxelType.AIR) CollisionVoxelSouth(x, y, z);
+            }
         }
 
-        public VoxelType GetType(int type) { return (VoxelType)type; }
+        /// Create the up-facing geometry for a cube voxel.
+        void CollisionVoxelTop(int x, int y, int z) {
+            vertexList.Add(new Vector3(x, y + 1, z + 1));
+            vertexList.Add(new Vector3(x + 1, y + 1, z + 1));
+            vertexList.Add(new Vector3(x + 1, y + 1, z));
+            vertexList.Add(new Vector3(x, y + 1, z));
 
-        public int GetType(VoxelType type) { return (int)type; }
+            AddCollisionTriangles();
+        }
 
-        #region Geometry Generation
+        /// Create the down-facing geometry for a cube voxel.
+        void CollisionVoxelBottom(int x, int y, int z) {
+            vertexList.Add(new Vector3(x, y, z));
+            vertexList.Add(new Vector3(x + 1, y, z));
+            vertexList.Add(new Vector3(x + 1, y, z + 1));
+            vertexList.Add(new Vector3(x, y, z + 1));
+
+            AddCollisionTriangles();
+        }
+
+        /// Create the up-facing geometry for a cube voxel.
+        void CollisionVoxelNorth(int x, int y, int z) {
+            vertexList.Add(new Vector3(x + 1, y, z + 1));
+            vertexList.Add(new Vector3(x + 1, y + 1, z + 1));
+            vertexList.Add(new Vector3(x, y + 1, z + 1));
+            vertexList.Add(new Vector3(x, y, z + 1));
+
+            AddCollisionTriangles();
+        }
+
+        /// Create the up-facing geometry for a cube voxel.
+        void CollisionVoxelSouth(int x, int y, int z) {
+            vertexList.Add(new Vector3(x, y, z));
+            vertexList.Add(new Vector3(x, y + 1, z));
+            vertexList.Add(new Vector3(x + 1, y + 1, z));
+            vertexList.Add(new Vector3(x + 1, y, z));
+
+            AddCollisionTriangles();
+        }
+
+        /// Create the up-facing geometry for a cube voxel.
+        void CollisionVoxelWest(int x, int y, int z) {
+            vertexList.Add(new Vector3(x, y, z + 1));
+            vertexList.Add(new Vector3(x, y + 1, z + 1));
+            vertexList.Add(new Vector3(x, y + 1, z));
+            vertexList.Add(new Vector3(x, y, z));
+
+            AddCollisionTriangles();
+        }
+
+        /// Create the up-facing geometry for a cube voxel.
+        void CollisionVoxelEast(int x, int y, int z) {
+            vertexList.Add(new Vector3(x + 1, y, z));
+            vertexList.Add(new Vector3(x + 1, y + 1, z));
+            vertexList.Add(new Vector3(x + 1, y + 1, z + 1));
+            vertexList.Add(new Vector3(x + 1, y, z + 1));
+
+            AddCollisionTriangles();
+        }
+
+        /// Add a quad to the index list.
+        void AddCollisionTriangles() {
+            indexList.Add(faceCount * 4);
+            indexList.Add(faceCount * 4 + 1);
+            indexList.Add(faceCount * 4 + 2);
+            indexList.Add(faceCount * 4); 
+            indexList.Add(faceCount * 4 + 2);
+            indexList.Add(faceCount * 4 + 3);
+
+            faceCount++;
+        }
+
+        /// <summary>
+        /// Updates the collision mesh for the voxel grid.
+        /// </summary>
+        void UpdateCollisionMesh() {
+
+            // Clear the vertex and index lists, and reset the face count.
+            vertexList.Clear();
+            indexList.Clear();
+
+            faceCount = 0;
+
+            for (int x = 0; x < X; x++) {
+                for (int y = 0; y < Y; y++) {
+                    for (int z = 0; z < Z; z++) {
+                        // Create a collision voxel (maybe) at each array position.
+                        CreateCollisionVoxel(x, y, z);
+                    }
+                }
+            }
+
+            // Apply the new vertices and indices to the mesh collider.
+            collisionMesh.Clear();
+
+            collisionMesh.SetVertices(vertexList);
+            collisionMesh.SetTriangles(indexList, 0);
+            collisionMesh.RecalculateNormals();
+            collisionMesh.RecalculateBounds();
+
+            meshCollider.sharedMesh = collisionMesh;
+        }
         
-        void UpdateMesh() {
-            // Marching
-            vertexList = new List<Vector3>();
-            indexList = new List<int>();
+        /// <summary>
+        /// Updates the visual component of the voxel mesh.
+        /// </summary>
+        void UpdateVisualMesh() {
+            // Clear the vertex and index lists
+            vertexList.Clear();
+            indexList.Clear();
 
+            // Re-march relevant cubes
             // Need to march a grid of cubes that is 1 unit larger on each axis than the maximum dimensions of the rock.
             for (int x = -1; x < X; x++) {
                 for (int y = -1; y < Y; y++) {
                     for (int z = -1; z < Z; z++) {
 
                         // March each virtual cell (see March(int x, int y, int z))
+                        /// TODO: Optimize this to re-march only affected cubes when removing voxels from the grid.
                         March(x, y, z);
                     }
                 }
             }
 
-            GenerateFinalMeshes();
+            // Apply the marched vertex and index lists to a number of final visual meshes.
+            GenerateFinalVisualMesh();
         }
 
-        void GenerateFinalMeshes() {
+        /// <summary>
+        /// Generate the final marched cubes mesh.
+        /// If the vertex count is too high for a single mesh, it is split into multiple meshes.
+        /// 
+        /// This implementation is adapted from https://github.com/Scrawk/Marching-Cubes. 
+        /// See license in MarchingCubes.cs
+        /// </summary>
+        void GenerateFinalVisualMesh() {
             // Unity has a vertex limit of ~65000 for a mesh. 
             // Our vert list could end up with more than that, so we gotta split up the meshes in those cases.
 
@@ -105,13 +275,16 @@ namespace App.Gameplay {
             foreach(GameObject m in meshes) { Destroy(m); }
             meshes = new List<GameObject>();
 
+            // Determine how many meshes need to be made.
             int numMeshes = vertexList.Count / maxVertsPerMesh + 1;
 
+            // Create each mesh.
             for (int i = 0; i < numMeshes; i++) {
 
                 List<Vector3> splitVerts = new List<Vector3>();
                 List<int> splitIndices = new List<int>();
 
+                // Make new geometry lists that contain a portion of the total geometry.
                 for (int j = 0; j < maxVertsPerMesh; j++) {
                     int index = i * maxVertsPerMesh + j;
 
@@ -123,6 +296,7 @@ namespace App.Gameplay {
 
                 if (splitVerts.Count == 0) continue;
 
+                // Apply geometry from the split lists to a new mesh.
                 Mesh mesh = new Mesh();
                 mesh.SetVertices(splitVerts);
                 mesh.SetTriangles(splitIndices, 0);
@@ -136,7 +310,8 @@ namespace App.Gameplay {
                 meshObject.GetComponent<Renderer>().material = material;
                 meshObject.GetComponent<MeshFilter>().mesh = mesh;
 
-                meshObject.AddComponent<MeshCollider>();
+                // Align the visual mesh to the mesh collider
+                meshObject.transform.localPosition += new Vector3(0.5f, 0.5f, 0.5f);
 
                 meshes.Add(meshObject);
             }
@@ -217,10 +392,20 @@ namespace App.Gameplay {
             }
         }
 
+        /// <summary>
+        /// Get the offset of the surface of the mesh between two virtual vertices.
+        /// 
+        /// This implementation is adapted from https://github.com/Scrawk/Marching-Cubes. 
+        /// See license in MarchingCubes.cs
+        /// </summary>
+        /// <param name="v1">First vertex.</param>
+        /// <param name="v2">Second vertex.</param>
+        /// <returns>Offset from first to second vertex of the surface of the mesh.</returns>
         float GetOffset(float v1, float v2) {
             float delta = v2 - v1;
             return (delta == 0.0f) ? Surface : (Surface - v1) / delta;
         }
+
         #endregion
     }
 }

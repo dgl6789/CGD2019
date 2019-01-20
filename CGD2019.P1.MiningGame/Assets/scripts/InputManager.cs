@@ -1,46 +1,52 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using App.Gameplay;
 
 namespace App {
 
     public class InputManager : MonoBehaviour {
 
+        // Singleton instance (reference this class' members via InputManager.Instance from any context that is 'using App;')
         public static InputManager Instance;
 
+        /// Reference to the rock's voxel grid.
         [SerializeField] VoxelGrid voxelGrid;
-
-        // Use this for initialization
+        
+        /// Singleton initialization.
         void Awake() {
             if (Instance == null) Instance = this;
             else Destroy(this);
         }
 
+        /// <summary>
+        /// Checks for inputs each frame.
+        /// </summary>
         public void Update() {
-            // Wrap these in state machine checks when applicable.
+            // Wrap these in state machine checks wherever applicable.
             GameState state = StateManager.Instance.State;
-
 
             switch(state) {
                 default:
                 case GameState.MINING:
-                    if(Input.GetButtonDown("Click")) {
-                        DoRockTap();
-                    }
+                    if(Input.GetButtonDown("Click")) DeformRockPoint();
                     break;
             }
         }
 
-        public void DoRockTap() {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        /// <summary>
+        /// Deforms the voxel rock by removing the voxel under the mouse position.
+        /// </summary>
+        public void DeformRockPoint() {
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit)) {
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)) {
 
-                Vector3 pos = hit.point - hit.normal * 0.5f;
+                Vector3 voxelPosition = hit.point - hit.normal * 0.5f;
 
-                voxelGrid.SetVoxelTypeAtPosition(new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), Mathf.FloorToInt(pos.z)), VoxelType.AIR);
+                voxelGrid.SetVoxelTypeAtIndex(
+                    Mathf.FloorToInt(voxelPosition.x), 
+                    Mathf.FloorToInt(voxelPosition.y), 
+                    Mathf.FloorToInt(voxelPosition.z), 
+                    VoxelType.AIR);
             }
         }
     }
