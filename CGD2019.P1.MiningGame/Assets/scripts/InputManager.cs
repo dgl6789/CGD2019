@@ -37,6 +37,7 @@ namespace App {
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit)) {
+
                 Vector3 pos = hit.point - hit.normal * 0.5f;
 
                 voxelGrid.SetVoxelTypeAtPosition(new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), Mathf.FloorToInt(pos.z)), VoxelType.AIR);
