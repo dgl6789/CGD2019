@@ -339,7 +339,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 301e32ab9559fda4e8cc496347f0c6b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showDebugCells: 0
+  xMod: 1
+  yMod: 1
+  zMod: 1
   Surface: 0
   dimensions: {x: 8, y: 8, z: 8}
   material: {fileID: 2100000, guid: 365c52cbc51126a47b52056d411ad4d1, type: 2}

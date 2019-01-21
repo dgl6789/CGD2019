@@ -12,6 +12,9 @@ namespace App.Gameplay {
     [RequireComponent(typeof(MeshFilter), typeof(MeshCollider))]
     public class VoxelGrid : MonoBehaviour {
 
+        private float xMod;
+        private float yMod;
+        private float zMod;
         // Cutoff for the surface in marching cubes.
         [SerializeField] float Surface;
 
@@ -111,7 +114,9 @@ namespace App.Gameplay {
         private void shapedRock(Voxel[,,] rock)
         {
             VoxelType[,,] Rock = new VoxelType[X, Y, Z];//make face
-        
+            xMod = Random.value * 2f;
+            yMod = Random.value * 2f;
+            zMod = Random.value * 2f;
             for (int x = 0; x < X; x++)
             {
                 for (int y = 0; y < Y; y++)
@@ -119,7 +124,7 @@ namespace App.Gameplay {
                     for (int z = 0; z < Z; z++)
                     {
                         
-                        if (Random.value > ((Mathf.Abs((X/2f)-(float)x)/(X/2f))/3f+ (Mathf.Abs((Y / 2f) - (float)y) / (Y / 2f)) / 3f + (Mathf.Abs((Z / 2f) - (float)z) / (Z / 2f)) / 3f)*.9f)//assign voxeltype
+                        if (Random.value > ((Mathf.Abs((X*xMod/2f)-(float)x)/(X/2f))/3f+ (Mathf.Abs((Y*yMod / 2f) - (float)y) / (Y / 2f)) / 3f + (Mathf.Abs((Z*zMod / 2f) - (float)z) / (Z / 2f)) / 3f)*1.1f)//assign voxeltype
                             Rock[x,y, z] = VoxelType.ROCK;
                         else
                         {
