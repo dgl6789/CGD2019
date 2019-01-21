@@ -68,20 +68,142 @@ namespace App.Gameplay {
 
             // Populate the data layer.
             // This is where initial shape generation code will go
-            // (Chris your code goes here)
-            for (int x = 0; x < X; x++) {
-                for (int y = 0; y < Y; y++) {
-                    for (int z = 0; z < Z; z++) {
-                        data[x, y, z] = new Voxel(VoxelType.ROCK);
-                    }
-                }
-            }
-
+            shapedRock(data);
+            
             // Generate the initial visual mesh and collider
             UpdateVisualMesh();
             UpdateCollisionMesh();
         }
+        private void placeRandomVoxels(Voxel[,,] rock)
+        {
+            List<VoxelType[,]> Faces = new List<VoxelType[,]>();//potential faces
+            for (int i = 0; i < 20; i++)
+            {
+                VoxelType[,] face = new VoxelType[Y, Z];//make face
+                for (int x = 0; x < Y; x++)
+                {
+                    for (int y = 0; y < Z; y++)
+                    {
+                        if (Random.value > .5f)//assign voxeltype
+                            face[x, y] = VoxelType.ROCK;
+                        else
+                        {
+                            face[x, y] = VoxelType.AIR;
+                        }
+                    }
+                }
+                Faces.Add(face);//add the face to the list of faces
+            }
+            for (int x = 0; x < X; x++)
+            {
+                VoxelType[,] thisFace = Faces[Random.Range(0, 20)];
+                for (int y = 0; y < Y; y++)
+                {
+                    for (int z = 0; z < Z; z++)
+                    {
+                        rock[x, y, z] = new Voxel(thisFace[y, z]);//assign
+                    }
+                }
+            }
+           
 
+        }
+        private void shapedRock(Voxel[,,] rock)
+        {
+            VoxelType[,,] Rock = new VoxelType[X, Y, Z];//make face
+        
+            for (int x = 0; x < X; x++)
+            {
+                for (int y = 0; y < Y; y++)
+                {
+                    for (int z = 0; z < Z; z++)
+                    {
+                        
+                        if (Random.value > ((Mathf.Abs((X/2f)-(float)x)/(X/2f))/3f+ (Mathf.Abs((Y / 2f) - (float)y) / (Y / 2f)) / 3f + (Mathf.Abs((Z / 2f) - (float)z) / (Z / 2f)) / 3f)*.9f)//assign voxeltype
+                            Rock[x,y, z] = VoxelType.ROCK;
+                        else
+                        {
+                            Rock[x, y, z] = VoxelType.AIR;
+                        }
+                    }
+                }
+                //add the face to the list of faces
+            }
+            for (int x = 0; x < X; x++)
+            {
+                for (int y = 0; y < Y; y++)
+                {
+                    for (int z = 0; z < Z; z++)
+                    {
+                        if (Rock[x, y, z] == VoxelType.ROCK)//assign voxeltype
+                        {
+                            bool hasNeighbor = false;
+                            if (x + 1 < X)
+                            {
+                                if (Rock[x + 1, y, z] == VoxelType.ROCK)
+                                {
+                                    hasNeighbor = true;
+                                }
+                            }
+                            if (x - 1 >= 0)
+                            {
+                                if (Rock[x - 1, y, z] == VoxelType.ROCK)
+                                {
+                                    hasNeighbor = true;
+                                }
+                            }
+                            if (y + 1 < Y)
+                            {
+                                if (Rock[x, y + 1, z] == VoxelType.ROCK)
+                                {
+                                    hasNeighbor = true;
+                                }
+                            }
+                            if (y - 1 >= 0)
+                            {
+                                if (Rock[x, y - 1, z] == VoxelType.ROCK)
+                                {
+                                    hasNeighbor = true;
+                                }
+                            }
+                            if (z + 1 < Z)
+                            {
+                                if (Rock[x, y, z + 1] == VoxelType.ROCK)
+                                {
+                                    hasNeighbor = true;
+                                }
+                            }
+                            if (z - 1 >= 0)
+                            {
+                                if (Rock[x, y, z - 1] == VoxelType.ROCK)
+                                {
+                                    hasNeighbor = true;
+                                }
+                            }
+                            if (!hasNeighbor)
+                            {
+                                Rock[x, y, z] = VoxelType.AIR;
+                            }
+                        }
+                        
+                       
+                    }
+                }
+                //add the face to the list of faces
+            }
+            for (int x = 0; x < X; x++)
+            {
+                
+                for (int y = 0; y < Y; y++)
+                {
+                    for (int z = 0; z < Z; z++)
+                    {
+                        rock[x, y, z] = new Voxel(Rock[x, y, z]);
+                    }
+                }
+            }
+
+        }
         /// <summary>
         /// Sets the voxel at coordinates to VoxelType type.
         /// </summary>
