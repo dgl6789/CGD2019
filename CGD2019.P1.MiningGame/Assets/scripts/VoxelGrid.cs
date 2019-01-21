@@ -124,7 +124,10 @@ namespace App.Gameplay {
                     for (int z = 0; z < Z; z++)
                     {
                         
-                        if (Random.value > ((Mathf.Abs((X*xMod/2f)-(float)x)/(X/2f))/3f+ (Mathf.Abs((Y*yMod / 2f) - (float)y) / (Y / 2f)) / 3f + (Mathf.Abs((Z*zMod / 2f) - (float)z) / (Z / 2f)) / 3f)*1.1f)//assign voxeltype
+                        if (Random.value > ((Mathf.Abs((X*xMod /2f)-(float)x) / (X /2f)) / 3f+
+                            (Mathf.Abs((Y*yMod / 2f) - (float)y) / (Y / 2f)) / 3f+
+                            (Mathf.Abs((Z*zMod / 2f) - (float)z) / (Z / 2f)) / 3f)
+                            *1.1f)//assign voxeltype
                             Rock[x,y, z] = VoxelType.ROCK;
                         else
                         {
