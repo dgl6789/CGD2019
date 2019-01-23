@@ -9,8 +9,13 @@ public class Gemeration : MonoBehaviour {
     public int range = 0;
     public List<GameObject> gemPrefabs = new List<GameObject>();
 
+    //gemerator position
+    Vector3 gemOrigin;
+
 	// Use this for initialization
 	void Start () {
+        gemOrigin = gameObject.transform.position;
+
         GenerateGems();
 	}
 	
@@ -43,7 +48,7 @@ public class Gemeration : MonoBehaviour {
 
             //place position within specified range of origin
             float rangePercentage = Random.Range(0.0f, 1.0f) * range;
-            gemPosition = gemPosition * rangePercentage;
+            gemPosition = gemPosition * rangePercentage + gemOrigin;
 
             Debug.Log("Placing gem " + i + " at " + gemPosition);
 
