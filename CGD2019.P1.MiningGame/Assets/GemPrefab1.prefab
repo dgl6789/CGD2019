@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33208976878371058}
   - component: {fileID: 23847180425510306}
   - component: {fileID: 65453695399414018}
+  - component: {fileID: 114598385708986106}
   m_Layer: 0
   m_Name: GemPrefab1
   m_TagString: Untagged
@@ -96,3 +97,15 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114598385708986106
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1920451552321434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e1b48bbd5d80584c9089ddaa5f9e87c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugIsFree: 0
