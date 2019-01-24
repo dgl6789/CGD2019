@@ -9,6 +9,9 @@ namespace App
         [SerializeField] Sprite itemSprite;
         public Sprite ItemSprite { get { return itemSprite; } }
 
+        [SerializeField] string itemName;
+        public string ItemName { get { return itemName; } }
+
         [SerializeField] string itemText;
         public string ItemText { get { return itemText; } }
     }

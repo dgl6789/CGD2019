@@ -26,6 +26,9 @@ namespace App {
 
             switch(state) {
                 default:
+                case GameState.MENU:
+                    /// TODO: Input behavior for menu state
+                    break;
                 case GameState.MINING:
                     if(Input.GetButtonDown("Click")) DeformRockPoint();
                     break;

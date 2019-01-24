@@ -34,6 +34,9 @@ namespace App
         }
 
         private void Start() {
+            items = new List<InventoryItem>();
+            equippedItems = new List<ToolItem>();
+
             LoadInventory();
 
             // TODO: Add some default items to the inventory

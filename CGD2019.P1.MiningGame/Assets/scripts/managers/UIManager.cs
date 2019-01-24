@@ -32,6 +32,9 @@ namespace App.UI {
         [SerializeField] RectTransform inventoryUIObject;
         [SerializeField] RectTransform equippedToolUIObject;
 
+        [Header("Miscellaneous")]
+        [SerializeField] string defaultInventoryPanelText;
+
         // Use this for initialization
         void Awake()
         {
@@ -40,6 +43,10 @@ namespace App.UI {
             else Destroy(this);
         }
 
+        /// <summary>
+        /// Open a modal by ModalState.
+        /// </summary>
+        /// <param name="modal">Modal to open.</param>
         public void OpenModal(ModalState modal) {
             OpenModal((int)modal);
         }
@@ -49,13 +56,7 @@ namespace App.UI {
         /// </summary>
         /// <param name="modal">Modal state to open.</param>
         public void OpenModal(int modal) {
-
-            // Setup the modal before opening it.
-            switch((ModalState)modal) {
-                case ModalState.INVENTORY:
-                    LoadInventoryToInventoryModal();
-                    break;
-            }
+            DoModalSetup((ModalState)modal);
 
             for(int i = 0; i < modalTransforms.Length; i++) { modalAnimators[i].SetBool("Open", i == modal); }
         }
@@ -65,7 +66,21 @@ namespace App.UI {
         /// </summary>
         /// <param name="modal">Modal index to open or close.</param>
         public void ToggleModal(int modal) {
-            modalAnimators[modal].SetBool("Open", !modalAnimators[modal].GetBool("Open"));
+            bool opened = !modalAnimators[modal].GetBool("Open");
+
+            DoModalSetup((ModalState)modal);
+
+            modalAnimators[modal].SetBool("Open", opened);
+        }
+
+        void DoModalSetup(ModalState modal) {
+            // Setup the modal before opening it.
+            switch (modal) {
+                case ModalState.INVENTORY:
+                    LoadInventoryToInventoryModal();
+                    ResetInventoryPanelText();
+                    break;
+            }
         }
 
         /// <summary>
@@ -90,6 +105,9 @@ namespace App.UI {
             for(int i = 0; i < stateTransforms.Length; i++) { if(stateTransforms[i]) stateTransforms[i].gameObject.SetActive((int)state == i); }
         }
 
+        /// <summary>
+        /// Load the item inventory from the inventory manager to the UI inventory panel.
+        /// </summary>
         public void LoadInventoryToInventoryModal() {
             // Remove existing inventory items
             foreach (RectTransform r in inventoryItemArea.GetComponentsInChildren<RectTransform>()) { if(r != inventoryItemArea) Destroy(r.gameObject); }
@@ -131,6 +149,9 @@ namespace App.UI {
             }
         }
         
+        /// <summary>
+        /// Load the equipped tools from the inventory manager to the UI equipment bar.
+        /// </summary>
         public void LoadInventoryToEquipmentBar() {
             // Remove existing equipment objects
             foreach (RectTransform r in ingameEquipmentArea.GetComponentsInChildren<RectTransform>()) { if (r != ingameEquipmentArea) Destroy(r.gameObject); }
@@ -158,6 +179,7 @@ namespace App.UI {
             
             bool foundActiveItem = false;
 
+            // Find the tool item that should be highlighted.
             foreach (RectTransform r in ingameEquipmentArea.GetComponentsInChildren<RectTransform>()) {
                 if(r.GetComponent<UIEquippedTool>() && r.GetComponent<UIEquippedTool>().Item == item) {
                     activeToolBorder.anchoredPosition = r.anchoredPosition;
@@ -167,7 +189,33 @@ namespace App.UI {
                 }
             }
 
+            // Set the cursor inactive if no tool item is selected.
             activeToolBorder.gameObject.SetActive(foundActiveItem);
         }
+
+        /// <summary>
+        /// Set the text shown in the inventory text box.
+        /// </summary>
+        /// <param name="item">Item to show text for.</param>
+        public void SetInventoryPanelText(InventoryItem item) {
+            string name = item.ItemName;
+            string text = item.ItemText;
+
+            // Get item type-specific strings
+            if(item is ToolItem) {
+                /// TODO: determine which tool attributes should be added to the final string.
+            } else {
+                /// TODO: determine which mineral attributes should be added to the final string.
+            }
+
+            string f = name + "\n" + text;
+
+            InventoryInfoboxText.text = f;
+        }
+
+        /// <summary>
+        /// Set the inventory panel text to the default.
+        /// </summary>
+        public void ResetInventoryPanelText() { InventoryInfoboxText.text = defaultInventoryPanelText; }
     }
 }
