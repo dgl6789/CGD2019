@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using App.UI;
 
 namespace App {
 
@@ -8,7 +9,7 @@ namespace App {
     /// State of the input functionality. This is mostly used to inform
     /// the input manager as to which inputs to accept during each state.
     /// </summary>
-    public enum GameState { MINING /* Add other game/UI states here as needed */ }
+    public enum GameState { MENU, PLAYSERVICES, MINING /* Add other game/UI states here as needed */ }
 
     public class StateManager : MonoBehaviour {
 
@@ -25,31 +26,57 @@ namespace App {
             // Singleton intitialization.
             if (Instance == null) Instance = this;
             else Destroy(this);
+        }
 
+        private void Start()
+        {
             // Initial state setup.
             SwapState(defaultState);
         }
 
         /// <summary>
-        /// Swap to a new game state. Use this in-editor when setting up Unity UI buttons' click events.
+        /// Swap to a new game state. Use this in-editor when setting up Unity's UI buttons' click events.
+        /// </summary>
+        /// <param name="state">Integer-based game state to swap to.</param>
+        public void SwapState(int state) { SwapState((GameState)state); }
+
+        /// <summary>
+        /// Swap to a new game state.
         /// </summary>
         /// <param name="state"></param>
         public void SwapState(GameState state) {
+
             // Do any cleanup necessary to switch away from the old state.
             switch (State) { 
                 default:
+                case GameState.MENU:
+                    /// TODO: Cleanup for menu state.
+                    break;
+                case GameState.PLAYSERVICES:
+                    Debug.Log("Closed Google Play services.");
+                    break;
                 case GameState.MINING:
-                    /// TODO: Setup for mining state.
+                    /// TODO: Cleanup for mining state.
                     break;
             }
+
+            // Swap out the UI
+            UIManager.Instance.SwapState(state);
 
             State = state; // Set the new state
 
             // Do any setup necessary to switch to the new state.
             switch (State) { 
                 default:
+                case GameState.MENU:
+                    /// TODO: Setup for menu state.
+                    break;
+                case GameState.PLAYSERVICES:
+                    Debug.Log("Opened Google Play services.");
+                    break;
                 case GameState.MINING:
-                    /// TODO: Cleanup for mining state.
+                    /// TODO: Setup for mining state.
+                    UIManager.Instance.SetActiveToolBorder(InventoryManager.Instance.ActiveTool);
                     break;
             }
         }
