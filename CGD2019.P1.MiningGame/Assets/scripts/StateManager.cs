@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using App.UI;
 
 namespace App {
 
@@ -8,7 +9,7 @@ namespace App {
     /// State of the input functionality. This is mostly used to inform
     /// the input manager as to which inputs to accept during each state.
     /// </summary>
-    public enum GameState { MINING /* Add other game/UI states here as needed */ }
+    public enum GameState { MENU, PLAYSERVICES, MINING /* Add other game/UI states here as needed */ }
 
     public class StateManager : MonoBehaviour {
 
@@ -35,19 +36,35 @@ namespace App {
         /// </summary>
         /// <param name="state"></param>
         public void SwapState(GameState state) {
+
             // Do any cleanup necessary to switch away from the old state.
             switch (State) { 
                 default:
+                case GameState.MENU:
+                    /// TODO: Setup for menu state.
+                    break;
+                case GameState.PLAYSERVICES:
+                    Debug.Log("Opened Google Play services.");
+                    break;
                 case GameState.MINING:
                     /// TODO: Setup for mining state.
                     break;
             }
+
+            // Swap out the UI
+            UIManager.Instance.SwapState(state);
 
             State = state; // Set the new state
 
             // Do any setup necessary to switch to the new state.
             switch (State) { 
                 default:
+                case GameState.MENU:
+                    /// TODO: Cleanup for menu state.
+                    break;
+                case GameState.PLAYSERVICES:
+                    Debug.Log("Closed Google Play services.");
+                    break;
                 case GameState.MINING:
                     /// TODO: Cleanup for mining state.
                     break;
