@@ -643,7 +643,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -2.0115967, y: 26.420242}
+  m_AnchoredPosition: {x: -2.0117188, y: 26.420242}
   m_SizeDelta: {x: -50.599976, y: -102.162964}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &379403977
@@ -1864,7 +1864,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.9100342, y: -659}
+  m_AnchoredPosition: {x: 0.91015625, y: -658.99994}
   m_SizeDelta: {x: -1, y: -1310.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &899713080
@@ -2541,6 +2541,7 @@ GameObject:
   - component: {fileID: 1579994443}
   - component: {fileID: 1579994446}
   - component: {fileID: 1579994445}
+  - component: {fileID: 1579994447}
   m_Layer: 0
   m_Name: Rock
   m_TagString: Untagged
@@ -2561,7 +2562,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Surface: 0
   dimensions: {x: 16, y: 16, z: 16}
-  material: {fileID: 2100000, guid: 365c52cbc51126a47b52056d411ad4d1, type: 2}
+  material: {fileID: 2100000, guid: 65ed0f6d0baa9834e866cd6ee785d86d, type: 2}
   maxVertsPerMesh: 60000
 --- !u!4 &1579994444
 Transform:
@@ -2597,6 +2598,22 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1579994442}
   m_Mesh: {fileID: 0}
+--- !u!114 &1579994447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1579994442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d30d46bd08319c040923e713c26bb8fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  voxelGrid: {fileID: 1579994443}
+  gemCount: 10
+  range: 5
+  gemPrefabs:
+  - {fileID: 1920451552321434, guid: 38c67dc38a8b35f459f5c77b11bf3419, type: 2}
 --- !u!1 &1583354852
 GameObject:
   m_ObjectHideFlags: 0
@@ -2780,7 +2797,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 197.2
+  m_fontSize: 221.7
   m_fontSizeBase: 52.99
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3293,7 +3310,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 36.5
+  m_fontSize: 41.55
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

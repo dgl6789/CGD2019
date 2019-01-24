@@ -9,6 +9,9 @@ namespace App
         /// Reference to the rock's voxel grid.
         [SerializeField] VoxelGrid voxelGrid;
 
+        // Singleton instance (reference this class' members via StateManager.Instance from any context that is 'using App;')
+        public static Gemeration Instance;
+
         //gemeration values
         public int gemCount = 1;
         public int range = 0;
@@ -17,20 +20,16 @@ namespace App
         //gemerator position
         Vector3 gemOrigin;
 
+        void Awake()
+        {
+            // Singleton intitialization.
+            if (Instance == null) Instance = this;
+            else Destroy(this);
+        }
+
         // Use this for initialization
         void Start()
         {
-            gemOrigin = FindOrigin();
-
-            if (range <= 0)
-            {
-                range = FindDefaultRange();
-            }
-
-            if (gemCount <= 0)
-                gemCount = 1;
-
-            GenerateGems();
         }
 
         // Update is called once per frame
@@ -42,11 +41,21 @@ namespace App
         //generate a number of gems
         public void GenerateGems()
         {
+            gemOrigin = FindOrigin();
+
+            if (range <= 0)
+            {
+                range = FindDefaultRange();
+            }
+
+            if (gemCount <= 0)
+                gemCount = 1;
+
             //loop to generate gems
             for (int i = 0; i < gemCount; i++)
             {
                 //randomly choose a prefab
-                GameObject thisGem = Instantiate(ChoosePrefab());
+                GameObject thisGem = Instantiate(ChoosePrefab(), voxelGrid.transform);
 
                 //if there are no prefabs, exit
                 if (thisGem == null)
@@ -118,7 +127,6 @@ namespace App
             //return if gem is in rock
             if (InRock(gemPosition))
             {
-                Debug.Log("Gem is fine\n");
                 return gemPosition;
             }
             else if (firstPass) //correct for position outside of rock grid
@@ -137,9 +145,7 @@ namespace App
                     gemPosition.z = voxelGrid.Z;
                 else if (gemPosition.z < 0)
                     gemPosition.z = 0;
-
-                //Debug.Log(gemPosition + " is within voxelgrid bounds of " + voxelGrid.X + "," + voxelGrid.Y + "," + voxelGrid.Z + "\n");
-
+                
                 return PullToRock(gemPosition, false);
             }
             else if (Mathf.Abs(gemPosition.x - gemOrigin.x) <= 0.5f && Mathf.Abs(gemPosition.y - gemOrigin.y) <= 0.5f && Mathf.Abs(gemPosition.z - gemOrigin.z) <= 0.5f) //check for close enough to the origin to be safe
@@ -161,11 +167,9 @@ namespace App
             //if origin is in grid then gem is embedded
             if (voxelGrid.GetData((int)gemPosition.x, (int)gemPosition.y, (int)gemPosition.z) == 1)
             {
-                Debug.Log("gem at " + gemPosition + " is in the rock");
                 return true;
             }
 
-            Debug.Log("gem at " + gemPosition + " is NOT in the rock");
             return false;
         }
     }

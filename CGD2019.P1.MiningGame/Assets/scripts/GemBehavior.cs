@@ -12,7 +12,7 @@ public class GemBehavior : MonoBehaviour
     //gem behavior values
     int health = 0;
 
-    public bool debugIsFree = false;
+    public bool debugIsFree = true;
 
     // Use this for initialization
     void Start()

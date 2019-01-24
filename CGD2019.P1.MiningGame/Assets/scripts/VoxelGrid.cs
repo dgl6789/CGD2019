@@ -76,6 +76,7 @@ namespace App.Gameplay {
             // Generate the initial visual mesh and collider
             UpdateVisualMesh();
             UpdateCollisionMesh();
+            Gemeration.Instance.GenerateGems();
         }
         private void placeRandomVoxels(Voxel[,,] rock)
         {
