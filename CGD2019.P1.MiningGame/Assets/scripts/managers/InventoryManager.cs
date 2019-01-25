@@ -11,7 +11,7 @@ namespace App
         // Singleton instance (reference this class' members via InventoryManager.Instance from any context that is 'using App;')
         public static InventoryManager Instance;
 
-        [HideInInspector] public List<InventoryItem> items;
+        public List<InventoryItem> items;
         [HideInInspector] public List<ToolItem> equippedItems;
 
         // The tool that is currently being used.
@@ -34,12 +34,13 @@ namespace App
         }
 
         private void Start() {
-            items = new List<InventoryItem>();
+            //items = new List<InventoryItem>();
             equippedItems = new List<ToolItem>();
 
             LoadInventory();
 
             // TODO: Add some default items to the inventory
+            //items.Add(new InventoryItem gem)
         }
 
         /// <summary>

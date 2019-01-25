@@ -116,14 +116,16 @@ namespace App.UI {
             int it = 0;
 
             int numItemsPerRow = Mathf.FloorToInt(inventoryItemArea.rect.width / (inventoryUIObject.rect.width + 5));
-            int numRows = Mathf.CeilToInt(InventoryManager.Instance.items.Count / numItemsPerRow);
-
+            int numRows = Mathf.CeilToInt(InventoryManager.Instance.items.Count / (float)numItemsPerRow);
+            
             // Adjust the size of the scrollable area to accomodate the inventory UI items
             inventoryItemArea.offsetMax = new Vector2(0, inventoryItemArea.rect.yMin + (5 + (numRows * (inventoryUIObject.rect.height + 5))));
 
             // Inventory items
             for(int y = 0; y < numRows; y++) {
                 for (int x = 0; x < numItemsPerRow; x++) {
+                    if (InventoryManager.Instance.items.Count <= it) break;
+
                     RectTransform i = Instantiate(inventoryUIObject, inventoryItemArea.transform);
 
                     i.anchoredPosition = new Vector2(
@@ -134,6 +136,8 @@ namespace App.UI {
                     i.GetComponent<UIInventoryItem>().InitializeWithData(InventoryManager.Instance.items[it]);
                     it++;
                 }
+
+                if (InventoryManager.Instance.items.Count <= it) break;
             }
 
             // Equipped Items

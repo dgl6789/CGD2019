@@ -404,7 +404,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d543c7e2cb453c44bbabdcd09762f53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  items: []
+  items:
+  - {fileID: 11400000, guid: bd9ea310970228344b976406b88ede2d, type: 2}
+  - {fileID: 11400000, guid: 177f66eae3d73104ea669ed8799f5c93, type: 2}
   equippedItems: []
 --- !u!1 &343430770
 GameObject:
