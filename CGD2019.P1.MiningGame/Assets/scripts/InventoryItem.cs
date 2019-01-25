@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace App
 {
-    public class InventoryItem : ScriptableObject
+    public class InventoryItem : MonoBehaviour
     {
         [SerializeField] Sprite itemSprite;
         public Sprite ItemSprite { get { return itemSprite; } }

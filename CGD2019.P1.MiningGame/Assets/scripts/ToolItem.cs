@@ -6,7 +6,6 @@ namespace App
 {
     public enum ToolType { LARGE, SMALL }
 
-    [CreateAssetMenu(fileName = "Tool", menuName = "Item/Tool", order = 0)]
     public class ToolItem : InventoryItem
     {
         [SerializeField] ToolType type;
