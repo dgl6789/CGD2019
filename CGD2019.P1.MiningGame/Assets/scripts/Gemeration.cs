@@ -15,9 +15,7 @@ namespace App
         //gemeration values
         public int gemCount = 1;
         public int range = 0;
-
-        [SerializeField] GameObject gemPrefab;
-        [SerializeField] List<MineralItem> gemObjects;
+        public List<GameObject> gemPrefabs = new List<GameObject>();
 
         //gemerator position
         Vector3 gemOrigin;
@@ -57,7 +55,7 @@ namespace App
             for (int i = 0; i < gemCount; i++)
             {
                 //randomly choose a prefab
-                GameObject thisGem = Instantiate(gemPrefab, voxelGrid.transform);
+                GameObject thisGem = Instantiate(ChoosePrefab(), voxelGrid.transform);
 
                 //if there are no prefabs, exit
                 if (thisGem == null)
@@ -82,6 +80,33 @@ namespace App
                 //set the gem's position
                 thisGem.transform.position = gemPosition;
             }
+        }
+
+        //choose a gem prefab to use
+        private GameObject ChoosePrefab()
+        {
+            //null if there are no prefabs set
+            if (gemPrefabs.Count == 0)
+            {
+                return null;
+            }
+
+            GameObject thisGem;
+
+            //if there's only one prefab, choose that one
+            if (gemPrefabs.Count == 1)
+            {
+                thisGem = gemPrefabs[0];
+            }
+            else
+            {
+                //choose a prefab at random if there are prefabs to choose from
+                int chosenPrefab = Random.Range(0, gemPrefabs.Count);
+
+                thisGem = gemPrefabs[chosenPrefab];
+            }
+
+            return thisGem;
         }
 
         //method to find the center of the voxel grid
