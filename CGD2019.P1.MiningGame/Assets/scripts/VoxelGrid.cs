@@ -11,10 +11,11 @@ namespace App.Gameplay {
     [SelectionBase]
     [RequireComponent(typeof(MeshFilter), typeof(MeshCollider))]
     public class VoxelGrid : MonoBehaviour {
-
-        private float xMod;
-        private float yMod;
-        private float zMod;
+        [Range(0, 1)]
+        public float spawnRate;
+        public float xMin;
+        public float yMin;
+        public float zMin;
         // Cutoff for the surface in marching cubes.
         [SerializeField] float Surface;
 
@@ -115,87 +116,24 @@ namespace App.Gameplay {
         private void shapedRock(Voxel[,,] rock)
         {
             VoxelType[,,] Rock = new VoxelType[X, Y, Z];//make face
-            xMod = Random.value * 2f;
-            yMod = Random.value * 2f;
-            zMod = Random.value * 2f;
+            float xBounds = Random.Range(xMin, X);
+            float yBounds = Random.Range(yMin, Y);
+            float zBounds = Random.Range(zMin, Z);
             for (int x = 0; x < X; x++)
             {
                 for (int y = 0; y < Y; y++)
                 {
                     for (int z = 0; z < Z; z++)
                     {
-                        
-                        if (Random.value > ((Mathf.Abs((X*xMod /2f)-(float)x) / (X /2f)) / 3f+
-                            (Mathf.Abs((Y*yMod / 2f) - (float)y) / (Y / 2f)) / 3f+
-                            (Mathf.Abs((Z*zMod / 2f) - (float)z) / (Z / 2f)) / 3f)
-                            *1.1f)//assign voxeltype
-                            Rock[x,y, z] = VoxelType.ROCK;
-                        else
+                        if (Mathf.Pow(x-X/2f, 2) / Mathf.Pow(xBounds, 2) + Mathf.Pow(y-Y/2f, 2) / Mathf.Pow(yBounds, 2) + Mathf.Pow(z-Z/2f, 2) / Mathf.Pow(zBounds, 2) <= 1f)
                         {
-                            Rock[x, y, z] = VoxelType.AIR;
-                        }
-                    }
-                }
-                //add the face to the list of faces
-            }
-            for (int x = 0; x < X; x++)
-            {
-                for (int y = 0; y < Y; y++)
-                {
-                    for (int z = 0; z < Z; z++)
-                    {
-                        if (Rock[x, y, z] == VoxelType.ROCK)//assign voxeltype
-                        {
-                            bool hasNeighbor = false;
-                            if (x + 1 < X)
-                            {
-                                if (Rock[x + 1, y, z] == VoxelType.ROCK)
-                                {
-                                    hasNeighbor = true;
-                                }
-                            }
-                            if (x - 1 >= 0)
-                            {
-                                if (Rock[x - 1, y, z] == VoxelType.ROCK)
-                                {
-                                    hasNeighbor = true;
-                                }
-                            }
-                            if (y + 1 < Y)
-                            {
-                                if (Rock[x, y + 1, z] == VoxelType.ROCK)
-                                {
-                                    hasNeighbor = true;
-                                }
-                            }
-                            if (y - 1 >= 0)
-                            {
-                                if (Rock[x, y - 1, z] == VoxelType.ROCK)
-                                {
-                                    hasNeighbor = true;
-                                }
-                            }
-                            if (z + 1 < Z)
-                            {
-                                if (Rock[x, y, z + 1] == VoxelType.ROCK)
-                                {
-                                    hasNeighbor = true;
-                                }
-                            }
-                            if (z - 1 >= 0)
-                            {
-                                if (Rock[x, y, z - 1] == VoxelType.ROCK)
-                                {
-                                    hasNeighbor = true;
-                                }
-                            }
-                            if (!hasNeighbor)
+                            if (Random.value < spawnRate)
+                                Rock[x, y, z] = VoxelType.ROCK;
+                            else
                             {
                                 Rock[x, y, z] = VoxelType.AIR;
                             }
                         }
-                        
-                       
                     }
                 }
                 //add the face to the list of faces
