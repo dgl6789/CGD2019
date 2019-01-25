@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using App.Gameplay;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using System.Collections.Generic;
 
 namespace App {
 
@@ -10,7 +13,7 @@ namespace App {
 
         /// Reference to the rock's voxel grid.
         [SerializeField] VoxelGrid voxelGrid;
-        
+
         /// Singleton initialization.
         void Awake() {
             if (Instance == null) Instance = this;
@@ -24,13 +27,16 @@ namespace App {
             // Wrap these in state machine checks wherever applicable.
             GameState state = StateManager.Instance.State;
 
-            switch(state) {
+            switch (state) {
                 default:
                 case GameState.MENU:
                     /// TODO: Input behavior for menu state
                     break;
                 case GameState.MINING:
-                    if(Input.GetButtonDown("Click")) DeformRockPoint();
+                    if (Input.GetButtonDown("Click")) {
+                        DeformRockPoint();
+                        TryMineGem();
+                    }
                     break;
             }
         }
@@ -50,6 +56,14 @@ namespace App {
                     Mathf.FloorToInt(voxelPosition.y), 
                     Mathf.FloorToInt(voxelPosition.z), 
                     VoxelType.AIR);
+            }
+        }
+
+        public void TryMineGem() {
+            RaycastHit hit;
+
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)) {
+                if (hit.collider.tag.Equals("Mineral")) hit.collider.GetComponent<GemBehavior>().TryMine();
             }
         }
     }

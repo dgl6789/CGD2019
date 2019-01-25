@@ -72,50 +72,16 @@ namespace App.Gameplay {
 
             // Populate the data layer.
             // This is where initial shape generation code will go
-            shapedRock(data);
+            shapedRock();
             
             // Generate the initial visual mesh and collider
             UpdateVisualMesh();
             UpdateCollisionMesh();
             Gemeration.Instance.GenerateGems();
         }
-        private void placeRandomVoxels(Voxel[,,] rock)
+        
+        private void shapedRock()
         {
-            List<VoxelType[,]> Faces = new List<VoxelType[,]>();//potential faces
-            for (int i = 0; i < 20; i++)
-            {
-                VoxelType[,] face = new VoxelType[Y, Z];//make face
-                for (int x = 0; x < Y; x++)
-                {
-                    for (int y = 0; y < Z; y++)
-                    {
-                        if (Random.value > .5f)//assign voxeltype
-                            face[x, y] = VoxelType.ROCK;
-                        else
-                        {
-                            face[x, y] = VoxelType.AIR;
-                        }
-                    }
-                }
-                Faces.Add(face);//add the face to the list of faces
-            }
-            for (int x = 0; x < X; x++)
-            {
-                VoxelType[,] thisFace = Faces[Random.Range(0, 20)];
-                for (int y = 0; y < Y; y++)
-                {
-                    for (int z = 0; z < Z; z++)
-                    {
-                        rock[x, y, z] = new Voxel(thisFace[y, z]);//assign
-                    }
-                }
-            }
-           
-
-        }
-        private void shapedRock(Voxel[,,] rock)
-        {
-            VoxelType[,,] Rock = new VoxelType[X, Y, Z];//make face
             float xBounds = Random.Range(xMin, X);
             float yBounds = Random.Range(yMin, Y);
             float zBounds = Random.Range(zMin, Z);
@@ -125,32 +91,14 @@ namespace App.Gameplay {
                 {
                     for (int z = 0; z < Z; z++)
                     {
-                        if (Mathf.Pow(x-X/2f, 2) / Mathf.Pow(xBounds, 2) + Mathf.Pow(y-Y/2f, 2) / Mathf.Pow(yBounds, 2) + Mathf.Pow(z-Z/2f, 2) / Mathf.Pow(zBounds, 2) <= 1f)
-                        {
-                            if (Random.value < spawnRate)
-                                Rock[x, y, z] = VoxelType.ROCK;
-                            else
-                            {
-                                Rock[x, y, z] = VoxelType.AIR;
-                            }
-                        }
-                    }
-                }
-                //add the face to the list of faces
-            }
-            for (int x = 0; x < X; x++)
-            {
-                
-                for (int y = 0; y < Y; y++)
-                {
-                    for (int z = 0; z < Z; z++)
-                    {
-                        rock[x, y, z] = new Voxel(Rock[x, y, z]);
+                        if (Mathf.Pow(x-X/2f, 2) / Mathf.Pow(xBounds, 2) + Mathf.Pow(y-Y/2f, 2) / Mathf.Pow(yBounds, 2) + Mathf.Pow(z-Z/2f, 2) / Mathf.Pow(zBounds, 2) <= 1f) {
+                            data[x, y, z] = Random.value < spawnRate ? new Voxel(VoxelType.ROCK) : new Voxel(VoxelType.AIR);
+                        } else data[x, y, z] = new Voxel(VoxelType.AIR);
                     }
                 }
             }
-
         }
+
         /// <summary>
         /// Sets the voxel at coordinates to VoxelType type.
         /// </summary>
