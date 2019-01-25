@@ -2266,23 +2266,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 301e32ab9559fda4e8cc496347f0c6b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  spawnRate: 0.71
-  xMin: 3
-  yMin: 3
-  zMin: 3
-=======
-=======
->>>>>>> Stashed changes
   spawnRate: 0.769
   xMin: 2
   yMin: 2
   zMin: 2
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
   Surface: 0
   dimensions: {x: 16, y: 16, z: 16}
   material: {fileID: 2100000, guid: 65ed0f6d0baa9834e866cd6ee785d86d, type: 2}
@@ -2522,15 +2509,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
   m_fontSize: 197.4
-=======
-  m_fontSize: 197.6
->>>>>>> Stashed changes
-=======
-  m_fontSize: 197.6
->>>>>>> Stashed changes
   m_fontSizeBase: 52.99
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3199,15 +3178,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
   m_fontSize: 36.55
-=======
-  m_fontSize: 36.6
->>>>>>> Stashed changes
-=======
-  m_fontSize: 36.6
->>>>>>> Stashed changes
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
