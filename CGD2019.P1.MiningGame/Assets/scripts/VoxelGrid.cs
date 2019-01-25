@@ -11,6 +11,9 @@ namespace App.Gameplay {
     [SelectionBase]
     [RequireComponent(typeof(MeshFilter), typeof(MeshCollider))]
     public class VoxelGrid : MonoBehaviour {
+
+        public static VoxelGrid Instance;
+
         [Range(0, 1)]
         public float spawnRate;
         public float xMin;
@@ -43,6 +46,11 @@ namespace App.Gameplay {
         Mesh collisionMesh;
 
         List<GameObject> meshes = new List<GameObject>();
+
+        private void Awake() {
+            if (Instance == null) Instance = this;
+            else Destroy(this);
+        }
 
         /// Initialization
         private void Start() {

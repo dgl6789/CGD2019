@@ -37,6 +37,7 @@ namespace App {
                         DeformRockPoint();
                         TryMineGem();
                     }
+                    CameraRotation.Instance.DoRotationUpdate();
                     break;
             }
         }

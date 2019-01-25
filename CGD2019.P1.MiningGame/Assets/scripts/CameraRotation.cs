@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraRotation : MonoBehaviour {
+
+    public static CameraRotation Instance;
+
     private Touch initTouch = new Touch();
     public Camera cam;
 
@@ -14,8 +17,14 @@ public class CameraRotation : MonoBehaviour {
     public float rotSpeed = 1f;
     public float dir = 1;
     Vector2 lastMousePos;
-	// Use this for initialization
-	void Start () {
+
+    private void Awake() {
+        if (Instance == null) Instance = this;
+        else Destroy(this);
+    }
+
+    // Use this for initialization
+    void Start () {
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         Rock = GameObject.Find("Rock");
         rockPos = Rock.transform.position;
@@ -25,7 +34,7 @@ public class CameraRotation : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void FixedUpdate ()
+	public void DoRotationUpdate()
     {
         
         if (lastMousePos.x != Vector2.positiveInfinity.x)
