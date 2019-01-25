@@ -2260,6 +2260,7 @@ GameObject:
   - component: {fileID: 1118827222}
   - component: {fileID: 1118827221}
   - component: {fileID: 1118827220}
+  - component: {fileID: 1118827223}
   m_Layer: 0
   m_Name: _Camera
   m_TagString: MainCamera
@@ -2327,6 +2328,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 15, y: 45, z: 0}
+--- !u!114 &1118827223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1118827219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aeb8b2b1d46688f49a74f48836c3349d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 0}
+  rockPos: {x: 0, y: 0, z: 0}
+  rotSpeed: 0.5
+  dir: 1
 --- !u!1 &1202409281
 GameObject:
   m_ObjectHideFlags: 0
@@ -2560,6 +2576,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 301e32ab9559fda4e8cc496347f0c6b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnRate: 0.71
+  xMin: 3
+  yMin: 3
+  zMin: 3
   Surface: 0
   dimensions: {x: 16, y: 16, z: 16}
   material: {fileID: 2100000, guid: 65ed0f6d0baa9834e866cd6ee785d86d, type: 2}
@@ -2797,7 +2817,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 221.7
+  m_fontSize: 197.4
   m_fontSizeBase: 52.99
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3310,7 +3330,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 41.55
+  m_fontSize: 36.55
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
