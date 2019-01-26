@@ -11,6 +11,7 @@ public class CameraRotation : MonoBehaviour {
 
     private float rotX = 0f;
     private float rotY = 0f;
+    private Vector3 origRot;
     private GameObject Rock;
     public Vector3 rockPos;
     public float rotSpeed = 1f;
@@ -51,7 +52,6 @@ public class CameraRotation : MonoBehaviour {
         {
             lastMousePos = Vector2.positiveInfinity;
         }
-
         foreach (Touch touch in Input.touches)
         {
             if (touch.phase == TouchPhase.Began)

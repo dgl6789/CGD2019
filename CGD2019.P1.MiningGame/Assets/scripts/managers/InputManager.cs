@@ -14,29 +14,10 @@ namespace App {
         /// Reference to the rock's voxel grid.
         [SerializeField] VoxelGrid voxelGrid;
 
-        /// Reference to the graphics raycaster
-        [SerializeField] GraphicRaycaster uiRaycaster;
-
-        [Header("Camera Controls")]
-        Camera camera;
-        Vector2 inputRotation, lastMousePosition;
-
-        [SerializeField] float rotationSpeed;
-        [SerializeField] float rotationSmoothing;
-
-        [SerializeField] float zoomSpeed;
-        [SerializeField] float zoomSmoothing;
-
-        Vector2 MouseDelta { get { return new Vector2(lastMousePosition.x - Input.mousePosition.x, lastMousePosition.y - Input.mousePosition.y); } }
-
         /// Singleton initialization.
         void Awake() {
             if (Instance == null) Instance = this;
             else Destroy(this);
-        }
-
-        private void Start() {
-            camera = Camera.main;
         }
 
         /// <summary>
@@ -52,15 +33,13 @@ namespace App {
                     /// TODO: Input behavior for menu state
                     break;
                 case GameState.MINING:
-                    if (GameClick()) {
+                    if (Input.GetButtonDown("Click")) {
                         DeformRockPoint();
                         TryMineGem();
                     }
                     CameraRotation.Instance.DoRotationUpdate();
                     break;
             }
-
-            lastMousePosition = Input.mousePosition;
         }
 
         /// <summary>
@@ -87,39 +66,6 @@ namespace App {
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)) {
                 if (hit.collider.tag.Equals("Mineral")) hit.collider.GetComponent<GemBehavior>().TryMine();
             }
-        }
-
-        /// <summary>
-        /// Returns whether the position overlaps any canvas elements.
-        /// </summary>
-        /// <param name="position">Position to check.</param>
-        /// <returns>Whether position overlaps UI canvas elements.</returns>
-        bool UIBlocksRaycast(Vector2 position)
-        {
-            PointerEventData pointerData = new PointerEventData(EventSystem.current);
-            List<RaycastResult> results = new List<RaycastResult>();
-
-            //Raycast using the Graphics Raycaster and mouse click position
-            pointerData.position = Input.mousePosition;
-            uiRaycaster.Raycast(pointerData, results);
-
-            return results.Count > 0;
-        }
-
-        /// <summary>
-        /// Determine whether a click/tap occured on the game window.
-        /// </summary>
-        /// <returns>Whether an unblocked click or tap occured at the mouse position.</returns>
-        bool GameClick() { return Input.GetButtonDown("Click") && !UIBlocksRaycast(Input.mousePosition); }
-
-        void DoCameraZoom()
-        {
-
-        }
-
-        void DoCameraPan()
-        {
-
         }
     }
 }
