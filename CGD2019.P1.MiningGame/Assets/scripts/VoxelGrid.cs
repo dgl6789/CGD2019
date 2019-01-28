@@ -96,9 +96,28 @@ namespace App.Gameplay {
         
         private void shapedRock()
         {
-            float xBounds = Random.Range(xMin, X);
-            float yBounds = Random.Range(yMin, Y);
-            float zBounds = Random.Range(zMin, Z);
+            float temp = Random.value;
+
+            float xBounds = Random.Range(xMin, (X / 2)-2);
+            float yBounds = Random.Range(yMin, (Y / 2)-2);
+            float zBounds = Random.Range(zMin, (Z / 2)-2);
+
+            if (temp <= .33f)
+            {
+                yBounds = Random.Range(xBounds - 2, xBounds + 2);
+                zBounds = Random.Range(xBounds - 2, xBounds + 2);
+            }
+            else if (temp <= .66f)
+            {
+                xBounds = Random.Range(yBounds - 2, yBounds + 2);
+                zBounds = Random.Range(yBounds - 2, yBounds + 2);
+            }
+            else
+            {
+                xBounds = Random.Range(yBounds - 2, yBounds + 2);
+                zBounds = Random.Range(yBounds - 2, yBounds + 2);
+            }
+
             for (int x = 0; x < X; x++)
             {
                 for (int y = 0; y < Y; y++)
