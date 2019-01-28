@@ -47,6 +47,12 @@ namespace App.Gameplay {
 
         List<GameObject> meshes = new List<GameObject>();
 
+        public Vector3 Center {
+            get {
+                return ((Vector3)dimensions / 2);
+            }
+        }
+
         private void Awake() {
             if (Instance == null) Instance = this;
             else Destroy(this);

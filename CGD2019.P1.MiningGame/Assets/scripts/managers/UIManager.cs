@@ -11,6 +11,9 @@ namespace App.UI {
         // Singleton instance (reference this class' members via UIManager.Instance from any context that is 'using App.UI;')
         public static UIManager Instance;
 
+        [SerializeField] bool DrawDebugText;
+        [SerializeField] string version;
+
         [Header("UI Transforms")]
         [SerializeField] RectTransform[] stateTransforms;
         [SerializeField] RectTransform[] modalTransforms;
@@ -28,6 +31,7 @@ namespace App.UI {
         [SerializeField] TextMeshProUGUI InventoryInfoboxFlavorText;
         [SerializeField] TextMeshProUGUI InventoryInfoboxNameText;
         [SerializeField] TextMeshProUGUI inventoryValueText;
+        [SerializeField] TextMeshProUGUI debugText;
 
         [Header("Objects")]
         [SerializeField] RectTransform inventoryUIObject;
@@ -42,6 +46,12 @@ namespace App.UI {
             // Singleton intitialization.
             if (Instance == null) Instance = this;
             else Destroy(this);
+        }
+
+        private void Start() {
+            debugText.gameObject.SetActive(DrawDebugText);
+
+            WriteDebug("Version: " + version);
         }
 
         /// <summary>
@@ -214,6 +224,10 @@ namespace App.UI {
         public void ResetInventoryPanelText() {
             InventoryInfoboxNameText.text = "???";
             InventoryInfoboxFlavorText.text = defaultInventoryPanelText;
+        }
+
+        public void WriteDebug(string text) {
+            debugText.text = text;
         }
     }
 }
