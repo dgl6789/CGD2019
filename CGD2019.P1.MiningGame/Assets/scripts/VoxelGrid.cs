@@ -19,6 +19,13 @@ namespace App.Gameplay {
         public float xMin;
         public float yMin;
         public float zMin;
+
+        // Rock bounds
+        [SerializeField] Vector3 rockBounds;
+        public float XBounds { get { return rockBounds.x; } }
+        public float YBounds { get { return rockBounds.y; } }
+        public float ZBounds { get { return rockBounds.z; } }
+
         // Cutoff for the surface in marching cubes.
         [SerializeField] float Surface;
 
@@ -87,11 +94,13 @@ namespace App.Gameplay {
             // Populate the data layer.
             // This is where initial shape generation code will go
             shapedRock();
-            
+
+            // Generate gems
+            Gemeration.Instance.GenerateGems();
+
             // Generate the initial visual mesh and collider
             UpdateVisualMesh();
             UpdateCollisionMesh();
-            Gemeration.Instance.GenerateGems();
         }
         
         private void shapedRock()
@@ -101,6 +110,10 @@ namespace App.Gameplay {
             float xBounds = Random.Range(xMin, (X / 2)-2);
             float yBounds = Random.Range(yMin, (Y / 2)-2);
             float zBounds = Random.Range(zMin, (Z / 2)-2);
+
+            rockBounds.x = xBounds;
+            rockBounds.y = yBounds;
+            rockBounds.z = zBounds;
 
             if (temp <= .33f)
             {

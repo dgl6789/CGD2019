@@ -35,11 +35,13 @@ namespace App
 
             if (range <= 0)
             {
-                range = FindDefaultRange();
+                range = Mathf.RoundToInt((voxelGrid.XBounds + voxelGrid.YBounds + voxelGrid.ZBounds) / 3.0f);
             }
 
             if (gemCount <= 0)
-                gemCount = 1;
+            {
+                gemCount = Mathf.RoundToInt((voxelGrid.XBounds + voxelGrid.YBounds + voxelGrid.ZBounds) / 3.0f) * 2;
+            }
 
             //loop to generate gems
             for (int i = 0; i < gemCount; i++)
@@ -72,12 +74,6 @@ namespace App
         Vector3 FindOrigin()
         {
             return new Vector3(voxelGrid.X / 2.0f, voxelGrid.Y / 2.0f, voxelGrid.Z / 2.0f);
-        }
-
-        //method to find default range value using voxel grid dimensions
-        int FindDefaultRange()
-        {
-            return (int)((voxelGrid.X + voxelGrid.Y + voxelGrid.Z) / 3.0f);
         }
 
         //method to correct for floating gems
