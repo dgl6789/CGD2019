@@ -6,7 +6,7 @@ namespace App.Gameplay {
     /// <summary>
     /// Types that a voxel can have. 0 is intentionally unused.
     /// </summary>
-    public enum VoxelType { AIR = -1, ROCK = 1 }
+    public enum VoxelType { AIR = -1, ROCK = 1, HARD_ROCK = 2, SOLID_ROCK = 3 }
 
     [SelectionBase]
     [RequireComponent(typeof(MeshFilter), typeof(MeshCollider))]
@@ -24,7 +24,9 @@ namespace App.Gameplay {
 
         [SerializeField] Vector3Int dimensions;
 
+        // Rock material and texture atlas
         [SerializeField] Material material;
+        [SerializeField] Vector2Int atlasDimensions;
 
         // Must be divisible by 3 (for even triangles)
         [SerializeField] int maxVertsPerMesh;
@@ -87,11 +89,12 @@ namespace App.Gameplay {
             // Populate the data layer.
             // This is where initial shape generation code will go
             shapedRock();
-            
+
             // Generate the initial visual mesh and collider
+            Gemeration.Instance.GenerateGems();
+
             UpdateVisualMesh();
             UpdateCollisionMesh();
-            Gemeration.Instance.GenerateGems();
         }
         
         private void shapedRock()
