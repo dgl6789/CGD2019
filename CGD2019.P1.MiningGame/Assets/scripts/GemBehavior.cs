@@ -2,61 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GemBehavior : MonoBehaviour
-{
+namespace App.Gameplay {
+    public class GemBehavior : MonoBehaviour {
 
-    //voxel mesh reference
+        [HideInInspector] bool debugIsFree = true;
 
-    //inventory reference
+        MineralItem itemData;
+        
+        public void Initialize(MineralItem itemData) {
+            this.itemData = itemData;
 
-    //gem behavior values
-    int health = 0;
+            // TODO: Set the gem's mesh to the mesh specified by itemData
+        }
 
-    public bool debugIsFree = true;
+        //method to mine gem
+        public void TryMine() {
+            if (IsMineable()) {
+                //add gem to inventory
+                InventoryManager.Instance.AddItem(itemData);
 
-    // Use this for initialization
-    void Start()
-    {
-        health = 20;
-    }
+                //delete gameobject
+                Destroy(gameObject);
+            }
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        //destroy the gem if it's taken too much damage
-        if (health <= 0)
-        {
-            Destroy(gameObject);
+        //method to determine if the gem can be mined
+        bool IsMineable() {
+            return debugIsFree;
         }
     }
-
-    //triggers when clicked
-    private void OnMouseDown()
-    {
-        //if the gem is sufficiently clear, mine it
-        if (IsMineable())
-        {
-            Mine();
-        }
-        else
-        {
-            health--;
-        }
-    }
-
-    //method to mine gem
-    void Mine()
-    {
-        //add points and gem to inventory
-
-        //delete gameobject
-        Destroy(gameObject);
-    }
-
-    //method to determine if the gem can be mined
-    bool IsMineable()
-    {
-        return debugIsFree;
-    }
-
 }

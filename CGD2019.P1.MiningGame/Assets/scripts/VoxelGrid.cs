@@ -12,9 +12,13 @@ namespace App.Gameplay {
     [RequireComponent(typeof(MeshFilter), typeof(MeshCollider))]
     public class VoxelGrid : MonoBehaviour {
 
-        private float xMod;
-        private float yMod;
-        private float zMod;
+        public static VoxelGrid Instance;
+
+        [Range(0, 1)]
+        public float spawnRate;
+        public float xMin;
+        public float yMin;
+        public float zMin;
         // Cutoff for the surface in marching cubes.
         [SerializeField] float Surface;
 
@@ -42,6 +46,17 @@ namespace App.Gameplay {
         Mesh collisionMesh;
 
         List<GameObject> meshes = new List<GameObject>();
+
+        public Vector3 Center {
+            get {
+                return ((Vector3)dimensions / 2);
+            }
+        }
+
+        private void Awake() {
+            if (Instance == null) Instance = this;
+            else Destroy(this);
+        }
 
         /// Initialization
         private void Start() {
@@ -71,148 +86,52 @@ namespace App.Gameplay {
 
             // Populate the data layer.
             // This is where initial shape generation code will go
-            shapedRock(data);
+            shapedRock();
             
             // Generate the initial visual mesh and collider
             UpdateVisualMesh();
             UpdateCollisionMesh();
             Gemeration.Instance.GenerateGems();
         }
-        private void placeRandomVoxels(Voxel[,,] rock)
+        
+        private void shapedRock()
         {
-            List<VoxelType[,]> Faces = new List<VoxelType[,]>();//potential faces
-            for (int i = 0; i < 20; i++)
-            {
-                VoxelType[,] face = new VoxelType[Y, Z];//make face
-                for (int x = 0; x < Y; x++)
-                {
-                    for (int y = 0; y < Z; y++)
-                    {
-                        if (Random.value > .5f)//assign voxeltype
-                            face[x, y] = VoxelType.ROCK;
-                        else
-                        {
-                            face[x, y] = VoxelType.AIR;
-                        }
-                    }
-                }
-                Faces.Add(face);//add the face to the list of faces
-            }
-            for (int x = 0; x < X; x++)
-            {
-                VoxelType[,] thisFace = Faces[Random.Range(0, 20)];
-                for (int y = 0; y < Y; y++)
-                {
-                    for (int z = 0; z < Z; z++)
-                    {
-                        rock[x, y, z] = new Voxel(thisFace[y, z]);//assign
-                    }
-                }
-            }
-           
+            float temp = Random.value;
 
-        }
-        private void shapedRock(Voxel[,,] rock)
-        {
-            VoxelType[,,] Rock = new VoxelType[X, Y, Z];//make face
-            xMod = Random.value * 2f;
-            yMod = Random.value * 2f;
-            zMod = Random.value * 2f;
-            for (int x = 0; x < X; x++)
+            float xBounds = Random.Range(xMin, (X / 2)-2);
+            float yBounds = Random.Range(yMin, (Y / 2)-2);
+            float zBounds = Random.Range(zMin, (Z / 2)-2);
+
+            if (temp <= .33f)
             {
-                for (int y = 0; y < Y; y++)
-                {
-                    for (int z = 0; z < Z; z++)
-                    {
-                        
-                        if (Random.value > ((Mathf.Abs((X*xMod /2f)-(float)x) / (X /2f)) / 3f+
-                            (Mathf.Abs((Y*yMod / 2f) - (float)y) / (Y / 2f)) / 3f+
-                            (Mathf.Abs((Z*zMod / 2f) - (float)z) / (Z / 2f)) / 3f)
-                            *1.1f)//assign voxeltype
-                            Rock[x,y, z] = VoxelType.ROCK;
-                        else
-                        {
-                            Rock[x, y, z] = VoxelType.AIR;
-                        }
-                    }
-                }
-                //add the face to the list of faces
+                yBounds = Random.Range(xBounds - 2, xBounds + 2);
+                zBounds = Random.Range(xBounds - 2, xBounds + 2);
             }
-            for (int x = 0; x < X; x++)
+            else if (temp <= .66f)
             {
-                for (int y = 0; y < Y; y++)
-                {
-                    for (int z = 0; z < Z; z++)
-                    {
-                        if (Rock[x, y, z] == VoxelType.ROCK)//assign voxeltype
-                        {
-                            bool hasNeighbor = false;
-                            if (x + 1 < X)
-                            {
-                                if (Rock[x + 1, y, z] == VoxelType.ROCK)
-                                {
-                                    hasNeighbor = true;
-                                }
-                            }
-                            if (x - 1 >= 0)
-                            {
-                                if (Rock[x - 1, y, z] == VoxelType.ROCK)
-                                {
-                                    hasNeighbor = true;
-                                }
-                            }
-                            if (y + 1 < Y)
-                            {
-                                if (Rock[x, y + 1, z] == VoxelType.ROCK)
-                                {
-                                    hasNeighbor = true;
-                                }
-                            }
-                            if (y - 1 >= 0)
-                            {
-                                if (Rock[x, y - 1, z] == VoxelType.ROCK)
-                                {
-                                    hasNeighbor = true;
-                                }
-                            }
-                            if (z + 1 < Z)
-                            {
-                                if (Rock[x, y, z + 1] == VoxelType.ROCK)
-                                {
-                                    hasNeighbor = true;
-                                }
-                            }
-                            if (z - 1 >= 0)
-                            {
-                                if (Rock[x, y, z - 1] == VoxelType.ROCK)
-                                {
-                                    hasNeighbor = true;
-                                }
-                            }
-                            if (!hasNeighbor)
-                            {
-                                Rock[x, y, z] = VoxelType.AIR;
-                            }
-                        }
-                        
-                       
-                    }
-                }
-                //add the face to the list of faces
+                xBounds = Random.Range(yBounds - 2, yBounds + 2);
+                zBounds = Random.Range(yBounds - 2, yBounds + 2);
             }
-            for (int x = 0; x < X; x++)
+            else
             {
-                
-                for (int y = 0; y < Y; y++)
-                {
-                    for (int z = 0; z < Z; z++)
-                    {
-                        rock[x, y, z] = new Voxel(Rock[x, y, z]);
-                    }
-                }
+                xBounds = Random.Range(yBounds - 2, yBounds + 2);
+                zBounds = Random.Range(yBounds - 2, yBounds + 2);
             }
 
+            for (int x = 0; x < X; x++)
+            {
+                for (int y = 0; y < Y; y++)
+                {
+                    for (int z = 0; z < Z; z++)
+                    {
+                        if (Mathf.Pow(x-X/2f, 2) / Mathf.Pow(xBounds, 2) + Mathf.Pow(y-Y/2f, 2) / Mathf.Pow(yBounds, 2) + Mathf.Pow(z-Z/2f, 2) / Mathf.Pow(zBounds, 2) <= 1f) {
+                            data[x, y, z] = Random.value < spawnRate ? new Voxel(VoxelType.ROCK) : new Voxel(VoxelType.AIR);
+                        } else data[x, y, z] = new Voxel(VoxelType.AIR);
+                    }
+                }
+            }
         }
+
         /// <summary>
         /// Sets the voxel at coordinates to VoxelType type.
         /// </summary>

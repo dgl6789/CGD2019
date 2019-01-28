@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using App.UI;
+using App.Gameplay;
 
 namespace App {
 
@@ -77,6 +78,8 @@ namespace App {
                 case GameState.MINING:
                     /// TODO: Setup for mining state.
                     UIManager.Instance.SetActiveToolBorder(InventoryManager.Instance.ActiveTool);
+
+                    VoxelGrid.Instance.Generate();
                     break;
             }
         }

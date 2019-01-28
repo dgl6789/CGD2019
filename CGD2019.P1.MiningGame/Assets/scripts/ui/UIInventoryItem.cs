@@ -9,14 +9,8 @@ namespace App.UI
     public class UIInventoryItem : MonoBehaviour
     {
         [SerializeField] InventoryItem item;
-
-        TextMeshProUGUI infoboxText;
+        
         [SerializeField] Image itemImage;
-
-        private void Start()
-        {
-            infoboxText = UIManager.Instance.InventoryInfoboxText;
-        }
 
         /// <summary>
         /// Initializes an inventory UI item. 
@@ -39,7 +33,7 @@ namespace App.UI
         /// with the currently equipped tool of the same type.
         /// </summary>
         public void OnTapItem() {
-            infoboxText.text = item.ItemText;
+            UIManager.Instance.SetInventoryPanelText(item);
 
             if (item is ToolItem) {
                 ToolItem i = item as ToolItem;

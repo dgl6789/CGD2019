@@ -11,6 +11,9 @@ namespace App.UI {
         // Singleton instance (reference this class' members via UIManager.Instance from any context that is 'using App.UI;')
         public static UIManager Instance;
 
+        [SerializeField] bool DrawDebugText;
+        [SerializeField] string version;
+
         [Header("UI Transforms")]
         [SerializeField] RectTransform[] stateTransforms;
         [SerializeField] RectTransform[] modalTransforms;
@@ -25,8 +28,10 @@ namespace App.UI {
         [SerializeField] Animator[] modalAnimators;
 
         [Header("Text")]
-        public TextMeshProUGUI InventoryInfoboxText;
-        [SerializeField] TextMeshProUGUI valueRemainingText;
+        [SerializeField] TextMeshProUGUI InventoryInfoboxFlavorText;
+        [SerializeField] TextMeshProUGUI InventoryInfoboxNameText;
+        [SerializeField] TextMeshProUGUI inventoryValueText;
+        [SerializeField] TextMeshProUGUI debugText;
 
         [Header("Objects")]
         [SerializeField] RectTransform inventoryUIObject;
@@ -41,6 +46,12 @@ namespace App.UI {
             // Singleton intitialization.
             if (Instance == null) Instance = this;
             else Destroy(this);
+        }
+
+        private void Start() {
+            debugText.gameObject.SetActive(DrawDebugText);
+
+            WriteDebug("Version: " + version);
         }
 
         /// <summary>
@@ -116,7 +127,8 @@ namespace App.UI {
             int it = 0;
 
             int numItemsPerRow = Mathf.FloorToInt(inventoryItemArea.rect.width / (inventoryUIObject.rect.width + 5));
-            int numRows = Mathf.CeilToInt(InventoryManager.Instance.items.Count / numItemsPerRow);
+            int numRows = Mathf.CeilToInt((float)InventoryManager.Instance.items.Count / numItemsPerRow);
+            
 
             // Adjust the size of the scrollable area to accomodate the inventory UI items
             inventoryItemArea.offsetMax = new Vector2(0, inventoryItemArea.rect.yMin + (5 + (numRows * (inventoryUIObject.rect.height + 5))));
@@ -124,16 +136,20 @@ namespace App.UI {
             // Inventory items
             for(int y = 0; y < numRows; y++) {
                 for (int x = 0; x < numItemsPerRow; x++) {
+                    if (it >= InventoryManager.Instance.items.Count) break;
+
                     RectTransform i = Instantiate(inventoryUIObject, inventoryItemArea.transform);
 
                     i.anchoredPosition = new Vector2(
-                        5 + (x * (inventoryUIObject.rect.width + 5)),
-                        5 + (y * (inventoryUIObject.rect.height + 5))
+                        5 + (x * (inventoryUIObject.rect.width + 5)) + inventoryUIObject.rect.width / 2,
+                        5 - (y * (inventoryUIObject.rect.height + 5)) - inventoryUIObject.rect.height / 2
                     );
 
                     i.GetComponent<UIInventoryItem>().InitializeWithData(InventoryManager.Instance.items[it]);
                     it++;
                 }
+
+                if (it >= InventoryManager.Instance.items.Count) break;
             }
 
             // Equipped Items
@@ -141,8 +157,8 @@ namespace App.UI {
                 RectTransform t = Instantiate(inventoryUIObject, inventoryEquippedArea.transform);
 
                 t.anchoredPosition = new Vector2(
-                    5 + (i * (inventoryUIObject.rect.width + 5)),
-                    5 + inventoryEquippedArea.rect.yMin
+                    5 + (i * (inventoryUIObject.rect.width + 5)) + inventoryUIObject.rect.width / 2,
+                    inventoryEquippedArea.rect.y
                 );
 
                 t.GetComponent<UIInventoryItem>().InitializeWithData(InventoryManager.Instance.equippedItems[i]);
@@ -161,8 +177,8 @@ namespace App.UI {
                 RectTransform t = Instantiate(equippedToolUIObject, ingameEquipmentArea.transform);
 
                 t.anchoredPosition = new Vector2(
-                    5 + (i * (equippedToolUIObject.rect.width + 5)),
-                    5 + ingameEquipmentArea.rect.yMin
+                    5 + (i * (equippedToolUIObject.rect.width + 5)) + equippedToolUIObject.rect.width / 2,
+                    ingameEquipmentArea.rect.y
                 );
 
                 t.GetComponent<UIEquippedTool>().InitializeWithData(InventoryManager.Instance.equippedItems[i]);
@@ -182,7 +198,7 @@ namespace App.UI {
             // Find the tool item that should be highlighted.
             foreach (RectTransform r in ingameEquipmentArea.GetComponentsInChildren<RectTransform>()) {
                 if(r.GetComponent<UIEquippedTool>() && r.GetComponent<UIEquippedTool>().Item == item) {
-                    activeToolBorder.anchoredPosition = r.anchoredPosition;
+                    activeToolBorder.position = r.position;
 
                     foundActiveItem = true;
                     break;
@@ -198,24 +214,20 @@ namespace App.UI {
         /// </summary>
         /// <param name="item">Item to show text for.</param>
         public void SetInventoryPanelText(InventoryItem item) {
-            string name = item.ItemName;
-            string text = item.ItemText;
-
-            // Get item type-specific strings
-            if(item is ToolItem) {
-                /// TODO: determine which tool attributes should be added to the final string.
-            } else {
-                /// TODO: determine which mineral attributes should be added to the final string.
-            }
-
-            string f = name + "\n" + text;
-
-            InventoryInfoboxText.text = f;
+            InventoryInfoboxNameText.text = item.ItemName;
+            InventoryInfoboxFlavorText.text = item.ItemText;
         }
 
         /// <summary>
         /// Set the inventory panel text to the default.
         /// </summary>
-        public void ResetInventoryPanelText() { InventoryInfoboxText.text = defaultInventoryPanelText; }
+        public void ResetInventoryPanelText() {
+            InventoryInfoboxNameText.text = "???";
+            InventoryInfoboxFlavorText.text = defaultInventoryPanelText;
+        }
+
+        public void WriteDebug(string text) {
+            debugText.text = text;
+        }
     }
 }
