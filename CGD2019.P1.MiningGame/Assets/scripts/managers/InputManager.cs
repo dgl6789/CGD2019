@@ -15,9 +15,7 @@ namespace App {
 
         /// Reference to the rock's voxel grid.
         [SerializeField] VoxelGrid voxelGrid;
-
-<<<<<<< HEAD
-=======
+        
         /// Reference to the graphics raycaster
         [SerializeField] GraphicRaycaster uiRaycaster;
 
@@ -38,19 +36,15 @@ namespace App {
         [SerializeField] float distanceFromVoxelGrid;
 
         [SerializeField] Transform desiredTransform;
-
-
+        
         Vector2 MouseDelta { get { return new Vector2(lastMousePosition.x - Input.mousePosition.x, lastMousePosition.y - Input.mousePosition.y); } }
-
->>>>>>> inventory-upgrades-fixes
+        
         /// Singleton initialization.
         void Awake() {
             if (Instance == null) Instance = this;
             else Destroy(this);
         }
-
-<<<<<<< HEAD
-=======
+        
         private void Start() {
             camera = Camera.main;
 
@@ -59,8 +53,7 @@ namespace App {
             desiredZoom = camera.orthographicSize;
             desiredTransform.position = camera.transform.position;
         }
-
->>>>>>> inventory-upgrades-fixes
+        
         /// <summary>
         /// Checks for inputs each frame.
         /// </summary>
@@ -77,7 +70,7 @@ namespace App {
                     /// TODO: Input behavior for menu state
                     break;
                 case GameState.MINING:
-                    if (Input.GetButtonDown("Click")) {
+                    if (Input.GetButtonDown("LeftClick")) {
                         DeformRockPoint();
                         TryMineGem();
                     }
@@ -87,13 +80,10 @@ namespace App {
                     DoCameraZoom();
                     break;
             }
-<<<<<<< HEAD
-=======
 
             SmoothCamera();
 
             lastMousePosition = Input.mousePosition;
->>>>>>> inventory-upgrades-fixes
         }
 
         /// <summary>
@@ -125,8 +115,6 @@ namespace App {
                 if (hit.collider.tag.Equals("Mineral")) hit.collider.GetComponent<GemBehavior>().TryMine();
             }
         }
-<<<<<<< HEAD
-=======
 
         /// <summary>
         /// Returns whether the position overlaps any canvas elements.
@@ -229,7 +217,6 @@ namespace App {
             }
         }
         #endregion
-
->>>>>>> inventory-upgrades-fixes
+        
     }
 }
