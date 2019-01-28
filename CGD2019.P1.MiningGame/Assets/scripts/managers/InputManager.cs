@@ -20,9 +20,8 @@ namespace App {
         [SerializeField] GraphicRaycaster uiRaycaster;
 
         [Header("Camera Controls")]
-        Camera camera;
+        Camera cam;
         Vector2 inputRotation, lastMousePosition;
-        Touch initTouch;
         float desiredZoom;
 
         [SerializeField] Vector2 rotationSpeed;
@@ -46,12 +45,11 @@ namespace App {
         }
         
         private void Start() {
-            camera = Camera.main;
+            cam = Camera.main;
 
             Platform = Application.platform;
-            initTouch = new Touch();
-            desiredZoom = camera.orthographicSize;
-            desiredTransform.position = camera.transform.position;
+            desiredZoom = cam.orthographicSize;
+            desiredTransform.position = cam.transform.position;
         }
         
         /// <summary>
@@ -61,8 +59,8 @@ namespace App {
             // Wrap these in state machine checks wherever applicable.
             GameState state = StateManager.Instance.State;
 
-            Debug.DrawLine(camera.transform.position, voxelGrid.Center);
-            Debug.DrawLine(camera.transform.position, Vector3.zero);
+            Debug.DrawLine(cam.transform.position, voxelGrid.Center);
+            Debug.DrawLine(cam.transform.position, Vector3.zero);
 
             switch (state) {
                 default:
@@ -169,8 +167,8 @@ namespace App {
         /// </summary>
         /// <param name="delta"></param>
         void DoCameraPan(Vector2 delta) {
-            desiredTransform.RotateAround(voxelGrid.Center, camera.transform.up, delta.x * (Platform == RuntimePlatform.Android ? rotationSpeed.x : -rotationSpeed.y));
-            desiredTransform.RotateAround(voxelGrid.Center, camera.transform.right, delta.y * (Platform == RuntimePlatform.Android ? -rotationSpeed.x : rotationSpeed.y));
+            desiredTransform.RotateAround(voxelGrid.Center, cam.transform.up, delta.x * (Platform == RuntimePlatform.Android ? rotationSpeed.x : -rotationSpeed.y));
+            desiredTransform.RotateAround(voxelGrid.Center, cam.transform.right, delta.y * (Platform == RuntimePlatform.Android ? -rotationSpeed.x : rotationSpeed.y));
 
             desiredTransform.position = (desiredTransform.position - voxelGrid.Center).normalized * distanceFromVoxelGrid + voxelGrid.Center;
         }
@@ -206,14 +204,14 @@ namespace App {
         /// Smooth the camera effects by lerping between the camera position and camera transformer.
         /// </summary>
         void SmoothCamera() {
-            if (Vector3.Distance(camera.transform.position, desiredTransform.position) > 0.01f) {
-                camera.transform.position = Vector3.Lerp(camera.transform.position, desiredTransform.position, Time.deltaTime * rotationSmoothing);
+            if (Vector3.Distance(cam.transform.position, desiredTransform.position) > 0.01f) {
+                cam.transform.position = Vector3.Lerp(cam.transform.position, desiredTransform.position, Time.deltaTime * rotationSmoothing);
 
-                camera.transform.LookAt(voxelGrid.Center, camera.transform.up);
+                cam.transform.LookAt(voxelGrid.Center, cam.transform.up);
             }
 
-            if (Mathf.Abs(desiredZoom - camera.orthographicSize) > 0.01f) {
-                camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, desiredZoom, Time.deltaTime * zoomSmoothing);
+            if (Mathf.Abs(desiredZoom - cam.orthographicSize) > 0.01f) {
+                cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, desiredZoom, Time.deltaTime * zoomSmoothing);
             }
         }
         #endregion

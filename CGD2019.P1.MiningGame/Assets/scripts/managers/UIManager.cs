@@ -4,7 +4,7 @@ using TMPro;
 using App;
 
 namespace App.UI {
-    public enum ModalState { NONE, INVENTORY, OPTIONS /* If a modal is added, put a state for it here and assign its animator and transform in the inspector */}
+    public enum ModalState { NONE, INVENTORY, SHOP, OPTIONS /* If a modal is added, put a state for it here and assign its animator and transform in the inspector */}
 
     public class UIManager : MonoBehaviour
     {
@@ -69,7 +69,7 @@ namespace App.UI {
         public void OpenModal(int modal) {
             DoModalSetup((ModalState)modal);
 
-            for(int i = 0; i < modalTransforms.Length; i++) { modalAnimators[i].SetBool("Open", i == modal); }
+            modalAnimators[modal].SetBool("Open", true);
         }
 
         /// <summary>
@@ -79,7 +79,8 @@ namespace App.UI {
         public void ToggleModal(int modal) {
             bool opened = !modalAnimators[modal].GetBool("Open");
 
-            DoModalSetup((ModalState)modal);
+            if (opened) OpenModal(modal);
+            else CloseModal(modal);
 
             modalAnimators[modal].SetBool("Open", opened);
         }
@@ -91,6 +92,18 @@ namespace App.UI {
                     LoadInventoryToInventoryModal();
                     ResetInventoryPanelText();
                     break;
+                case ModalState.SHOP:
+                    if(!ModalIsOpen(ModalState.INVENTORY)) OpenModal(ModalState.INVENTORY);
+                    break;
+            }
+        }
+
+        void DoModalTeardown(ModalState modal) {
+            // Clean up the modal before closing it.
+            switch (modal) {
+                case ModalState.SHOP:
+                    if (ModalIsOpen(ModalState.INVENTORY)) CloseModal((int)ModalState.INVENTORY);
+                    break;
             }
         }
 
@@ -100,12 +113,20 @@ namespace App.UI {
         /// <param name="modal">Modal to close.</param>
         public void CloseModal(int modal = 0) {
             if(modal == 0) {
-                for (int i = 0; i < modalTransforms.Length; i++) { modalAnimators[i].SetBool("Open", false); }
+                for (int i = 0; i < modalTransforms.Length; i++) {
+                    modalAnimators[i].SetBool("Open", false);
+                    DoModalTeardown((ModalState)i);
+                }
 
                 return;
             }
             
             modalAnimators[modal].SetBool("Open", false);
+            DoModalTeardown((ModalState)modal);
+        }
+
+        public bool ModalIsOpen(ModalState modal) {
+            return modalAnimators[(int)modal].GetBool("Open");
         }
 
         /// <summary>
