@@ -15,7 +15,7 @@ namespace App
         //gemeration values
         public int gemCount = 1;
         public int range = 0;
-        [SerializeField] GameObject gemPrefab;
+        [SerializeField] List<GameObject> gemPrefabs;
         [SerializeField] List<MineralItem> gemObjects;
 
         //gemerator position
@@ -46,9 +46,12 @@ namespace App
             //loop to generate gems
             for (int i = 0; i < gemCount; i++)
             {
-                //randomly choose a prefab
-                GemBehavior thisGem = Instantiate(gemPrefab, voxelGrid.transform).GetComponent<GemBehavior>();
-                
+                //randomly choose a gem
+                MineralItem gemChosen = gemObjects[Random.Range(0, gemObjects.Count)];
+                GemBehavior thisGem = Instantiate(GetGemPrefab(gemChosen), voxelGrid.transform).GetComponent<GemBehavior>();
+
+                float valueMod = 1.0f - gemChosen.Value / 1000;
+
                 //generate random position and normalize it
                 Vector3 gemPosition = new Vector3(
                     Random.Range(-1.0f, 1.0f),
@@ -56,7 +59,7 @@ namespace App
                     Random.Range(-1.0f, 1.0f)).normalized;
 
                 //place position within specified range of origin
-                float rangePercentage = Random.Range(0.0f, 1.0f) * range;
+                float rangePercentage = Random.Range(valueMod / 2.0f, valueMod) * range;
                 gemPosition = gemPosition * rangePercentage + gemOrigin;
 
                 //correct for floating gems
@@ -66,7 +69,7 @@ namespace App
                 thisGem.transform.position = gemPosition;
 
                 // Set the gem's internal data
-                thisGem.Initialize(gemObjects[Random.Range(0, gemObjects.Count)]);
+                thisGem.Initialize(gemChosen);
             }
         }
 
@@ -74,6 +77,22 @@ namespace App
         Vector3 FindOrigin()
         {
             return new Vector3(voxelGrid.X / 2.0f, voxelGrid.Y / 2.0f, voxelGrid.Z / 2.0f);
+        }
+
+        //method to get the appropraite model for a chosen gem
+        GameObject GetGemPrefab(MineralItem chosenGem)
+        {
+            //loop through gem prefabs looking for specified one
+            foreach(GameObject gem in gemPrefabs)
+            {
+                if (gem.name == chosenGem.ModelName)
+                {
+                    return gem;
+                }
+            }
+
+            //return the first prefab by default
+            return gemPrefabs[0];
         }
 
         //method to correct for floating gems

@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 65453695399414018}
   - component: {fileID: 114598385708986106}
   m_Layer: 0
-  m_Name: GemObject
+  m_Name: gemModelEmerald
   m_TagString: Mineral
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
