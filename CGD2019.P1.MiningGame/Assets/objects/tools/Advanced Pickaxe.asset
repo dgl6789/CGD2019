@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bec6b44051ced14a95da64dd633cf5b, type: 3}
+  m_Name: Advanced Pickaxe
+  m_EditorClassIdentifier: 
+  itemSprite: {fileID: 21300000, guid: 309631927c425cb4cb55a981b4cb659e, type: 3}
+  itemName: Advanced Pickaxe
+  itemText: Breaks the rock in a big radius. Zam!
+  type: 0
+  inputType: 0
+  breakRadius: 2
+  sustainedBreakCooldown: 0

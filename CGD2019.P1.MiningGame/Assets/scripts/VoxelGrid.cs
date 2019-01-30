@@ -6,7 +6,7 @@ namespace App.Gameplay {
     /// <summary>
     /// Types that a voxel can have. 0 is intentionally unused.
     /// </summary>
-    public enum VoxelType { AIR = -1, ROCK = 1, HARD_ROCK = 2, SOLID_ROCK = 3 }
+    public enum VoxelType { AIR = -1, ROCK = 1, HARD_ROCK = 2 }
 
     [SelectionBase]
     [RequireComponent(typeof(MeshFilter), typeof(MeshCollider))]
@@ -27,6 +27,7 @@ namespace App.Gameplay {
         // Rock material and texture atlas
         [SerializeField] Material material;
         [SerializeField] Vector2Int atlasDimensions;
+        [SerializeField] float textureResolution = 0.25f;
 
         // Must be divisible by 3 (for even triangles)
         [SerializeField] int maxVertsPerMesh;
@@ -39,7 +40,10 @@ namespace App.Gameplay {
 
         // Geometry lists
         List<Vector3> vertexList;
+        List<Vector2> uvList;
         List<int> indexList;
+
+        Vector2[] uvTable;
 
         int faceCount;
 
@@ -51,7 +55,7 @@ namespace App.Gameplay {
 
         public Vector3 Center {
             get {
-                return ((Vector3)dimensions / 2);
+                return (Vector3)dimensions / 2;
             }
         }
 
@@ -64,8 +68,9 @@ namespace App.Gameplay {
         private void Start() {
             // Initialize the vertex and index lists
             vertexList = new List<Vector3>();
+            uvList = new List<Vector2>();
             indexList = new List<int>();
-
+            
             // Initialize the components of the mesh collider
             meshCollider = GetComponent<MeshCollider>();
             collisionMesh = GetComponent<MeshFilter>().mesh;
@@ -84,6 +89,7 @@ namespace App.Gameplay {
 
             // Clear geometry lists.
             vertexList.Clear();
+            uvList.Clear();
             indexList.Clear();
 
             // Populate the data layer.
@@ -128,7 +134,7 @@ namespace App.Gameplay {
                     for (int z = 0; z < Z; z++)
                     {
                         if (Mathf.Pow(x-X/2f, 2) / Mathf.Pow(xBounds, 2) + Mathf.Pow(y-Y/2f, 2) / Mathf.Pow(yBounds, 2) + Mathf.Pow(z-Z/2f, 2) / Mathf.Pow(zBounds, 2) <= 1f) {
-                            data[x, y, z] = Random.value < spawnRate ? new Voxel(VoxelType.ROCK) : new Voxel(VoxelType.AIR);
+                            data[x, y, z] = Random.value < spawnRate ? new Voxel(VoxelType.ROCK) : new Voxel(VoxelType.HARD_ROCK);
                         } else data[x, y, z] = new Voxel(VoxelType.AIR);
                     }
                 }
@@ -149,6 +155,20 @@ namespace App.Gameplay {
                 UpdateVisualMesh();
                 UpdateCollisionMesh();
             }
+        }
+
+        /// <summary>
+        /// Sets multiple voxels at coordinates to VoxelType type.
+        /// </summary>
+        /// <param name="voxelIndices">Array of indices to set.</param>
+        /// <param name="type">Type to set each voxel at index.</param>
+        public void SetMultipleVoxelTypesAtIndices(Vector3Int[] voxelIndices, VoxelType type)
+        {
+            foreach(Vector3Int i in voxelIndices)
+                if (IndexIsValid(i.x, i.y, i.z)) { data[i.x, i.y, i.z] = new Voxel(type); }
+
+            UpdateVisualMesh();
+            UpdateCollisionMesh();
         }
 
         /// <summary>
@@ -267,6 +287,7 @@ namespace App.Gameplay {
 
             // Clear the vertex and index lists, and reset the face count.
             vertexList.Clear();
+            uvList.Clear();
             indexList.Clear();
 
             faceCount = 0;
@@ -297,6 +318,7 @@ namespace App.Gameplay {
         void UpdateVisualMesh() {
             // Clear the vertex and index lists
             vertexList.Clear();
+            uvList.Clear();
             indexList.Clear();
 
             // Re-march relevant cubes
@@ -338,6 +360,7 @@ namespace App.Gameplay {
             for (int i = 0; i < numMeshes; i++) {
 
                 List<Vector3> splitVerts = new List<Vector3>();
+                List<Vector2> splitUVs = new List<Vector2>();
                 List<int> splitIndices = new List<int>();
 
                 // Make new geometry lists that contain a portion of the total geometry.
@@ -346,6 +369,7 @@ namespace App.Gameplay {
 
                     if (index < vertexList.Count) {
                         splitVerts.Add(vertexList[index]);
+                        splitUVs.Add(uvList[index]);
                         splitIndices.Add(j);
                     }
                 }
@@ -355,6 +379,7 @@ namespace App.Gameplay {
                 // Apply geometry from the split lists to a new mesh.
                 Mesh mesh = new Mesh();
                 mesh.SetVertices(splitVerts);
+                mesh.SetUVs(0, splitUVs);
                 mesh.SetTriangles(splitIndices, 0);
                 mesh.RecalculateBounds();
                 mesh.RecalculateNormals();
@@ -424,11 +449,28 @@ namespace App.Gameplay {
 
                 index = vertexList.Count;
 
-                for (int j = 0; j < 3; j++) {
-                    vert = MarchingCubes.TriangleConnectionTable[flagIndex, i * 3 + j];
-                    indexList.Add(index + j); // This might be index + (2 - j); depending on the winding order
-                    vertexList.Add(EdgeVertex[vert]);
+                int type = GetData(x, y, z);
+
+                string s = "";
+
+                if (type > -1)
+                {
+                    for (int j = 0; j < 3; j++)
+                    {
+                        vert = MarchingCubes.TriangleConnectionTable[flagIndex, i * 3 + j];
+
+                        indexList.Add(index + j);
+                        vertexList.Add(EdgeVertex[vert]);
+
+                        Vector2 uv = GetTexturePosition(type, j);
+
+                        if (type == -1) s += "(" + uv.x + ", " + uv.y + "), ";
+
+                        uvList.Add(uv);
+                    }
                 }
+
+                if(s != "") Debug.Log(s);
             }
         }
 
@@ -444,6 +486,17 @@ namespace App.Gameplay {
         float GetOffset(float v1, float v2) {
             float delta = v2 - v1;
             return (delta == 0.0f) ? Surface : (Surface - v1) / delta;
+        }
+
+        Vector2 GetTexturePosition(int type, int vertex) {
+            int t = Mathf.Max(type, 0);
+
+            Vector2 r = new Vector2(
+                textureResolution * (t % atlasDimensions.x) + (textureResolution / 2),
+                1 - textureResolution * Mathf.Floor(t / (float)atlasDimensions.y) - (textureResolution / 2)
+            );
+            
+            return r;
         }
 
         #endregion
