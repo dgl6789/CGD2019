@@ -2472,8 +2472,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 377700010}
   m_HandleRect: {fileID: 377700009}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.99999994
+  m_Value: 0.5
+  m_Size: 0.9999998
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2544,7 +2544,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00003369187}
+  m_AnchoredPosition: {x: 0, y: 0.000015258789}
   m_SizeDelta: {x: -0.3, y: 0.000011702138}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1579994442
@@ -2578,13 +2578,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnRate: 1
-  xMin: 2
-  yMin: 2
-  zMin: 2
+  xMin: 4
+  yMin: 4
+  zMin: 4
   rockBounds: {x: 0, y: 0, z: 0}
   Surface: 0
   dimensions: {x: 16, y: 16, z: 16}
-  material: {fileID: 2100000, guid: 65ed0f6d0baa9834e866cd6ee785d86d, type: 2}
+  material: {fileID: 2100000, guid: 29d160bc80e41c444b8d6acdb1c68511, type: 2}
   maxVertsPerMesh: 60000
 --- !u!4 &1579994444
 Transform:
@@ -2632,16 +2632,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   voxelGrid: {fileID: 1579994443}
-  gemCount: 0
+  totalRockValue: 0
   range: 0
   gemPrefabs:
   - {fileID: 1920451552321434, guid: 0294ac40d9501de4691292fdcdf42a79, type: 2}
   - {fileID: 1920451552321434, guid: 38c67dc38a8b35f459f5c77b11bf3419, type: 2}
   - {fileID: 1920451552321434, guid: 736cfb2cb2d057a44a51635db0f85743, type: 2}
+  - {fileID: 1920451552321434, guid: d5c5fb51ed46af44e863429a15f52caa, type: 2}
+  - {fileID: 1920451552321434, guid: be4ef0f02fc1f6c418227e35d435516d, type: 2}
+  - {fileID: 1920451552321434, guid: 636ebb492c81c384da891f54dfcb026b, type: 2}
   gemObjects:
   - {fileID: 11400000, guid: 817451f1c5353114d8fcfcf373a4be40, type: 2}
   - {fileID: 11400000, guid: 44ccd4cf4dd01a74b9ace232de422fc0, type: 2}
   - {fileID: 11400000, guid: dd1d8d637ffe65a448e4ed965a00abdf, type: 2}
+  - {fileID: 11400000, guid: c3de7749ceedee04d85b0a909b63e71b, type: 2}
+  - {fileID: 11400000, guid: ae2b3f289d53f3d4d94039ac53c0e138, type: 2}
+  - {fileID: 11400000, guid: d756748ef8d6a4e489a87dd618f0589a, type: 2}
 --- !u!1 &1583354852
 GameObject:
   m_ObjectHideFlags: 0
@@ -2825,7 +2831,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 197.4
+  m_fontSize: 197.5
   m_fontSizeBase: 52.99
   m_fontWeight: 400
   m_enableAutoSizing: 1

@@ -9,10 +9,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ac3b54af9e921044984dfcc2e0b9efa7, type: 3}
-  m_Name: Emerald
+  m_Name: Ruby
   m_EditorClassIdentifier: 
   itemSprite: {fileID: 21300000, guid: 6328a0d6c9b1de044a9a41a3c86c82c1, type: 3}
-  itemName: Emerald
-  itemText: Also the best Pokemon game. Objectively.
-  modelName: gemModelEmerald
-  value: 400
+  itemName: Ruby
+  itemText: Red rocks
+  modelName: gemModelRuby
+  value: 300

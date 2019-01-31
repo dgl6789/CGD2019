@@ -13,7 +13,7 @@ namespace App
         public static Gemeration Instance;
 
         //gemeration values
-        public int gemCount = 1;
+        public int totalRockValue = 0;
         public int range = 0;
         [SerializeField] List<GameObject> gemPrefabs;
         [SerializeField] List<MineralItem> gemObjects;
@@ -31,52 +31,60 @@ namespace App
         //generate a number of gems
         public void GenerateGems()
         {
-            gemOrigin = FindOrigin();
+            ResetGemerationValues();
 
-            if (range <= 0)
-            {
-                range = Mathf.RoundToInt((voxelGrid.XBounds + voxelGrid.YBounds + voxelGrid.ZBounds) / 3.0f);
-            }
-
-            if (gemCount <= 0)
-            {
-                gemCount = Mathf.RoundToInt((voxelGrid.XBounds + voxelGrid.YBounds + voxelGrid.ZBounds) / 3.0f) * 2;
-            }
-
-            //loop to generate gems
-            for (int i = 0; i < gemCount; i++)
+            do
             {
                 //randomly choose a gem
                 MineralItem gemChosen = gemObjects[Random.Range(0, gemObjects.Count)];
-                GemBehavior thisGem = Instantiate(GetGemPrefab(gemChosen), voxelGrid.transform).GetComponent<GemBehavior>();
+                
+                //check that this gem still fits within remaining value
+                if (totalRockValue >= gemChosen.Value)
+                {
+                    SpawnGem(gemChosen);
 
-                float valueMod = 1.0f - gemChosen.Value / 1000;
-
-                //generate random position and normalize it
-                Vector3 gemPosition = new Vector3(
-                    Random.Range(-1.0f, 1.0f),
-                    Random.Range(-1.0f, 1.0f),
-                    Random.Range(-1.0f, 1.0f)).normalized;
-
-                //place position within specified range of origin
-                float rangePercentage = Random.Range(valueMod / 2.0f, valueMod) * range;
-                gemPosition = gemPosition * rangePercentage + gemOrigin;
-
-                //correct for floating gems
-                gemPosition = PullToRock(gemPosition);
-
-                //set the gem's position
-                thisGem.transform.position = gemPosition;
-
-                // Set the gem's internal data
-                thisGem.Initialize(gemChosen);
-            }
+                    //subtract from total value
+                    totalRockValue -= gemChosen.Value;
+                }
+            } while (totalRockValue > 0);
         }
 
-        //method to find the center of the voxel grid
-        Vector3 FindOrigin()
+        //method to set up values for gemeration
+        void ResetGemerationValues()
         {
-            return new Vector3(voxelGrid.X / 2.0f, voxelGrid.Y / 2.0f, voxelGrid.Z / 2.0f);
+            totalRockValue = 1500;
+
+            gemOrigin = new Vector3(voxelGrid.X / 2.0f, voxelGrid.Y / 2.0f, voxelGrid.Z / 2.0f);
+
+            range = Mathf.RoundToInt((voxelGrid.XBounds + voxelGrid.YBounds + voxelGrid.ZBounds) / 3.0f);
+        }
+
+        //method to spawn a specific gem
+        void SpawnGem(MineralItem gemChosen)
+        { 
+            float valueMod = 1.0f - (gemChosen.Value / 1000.0f);
+
+            //instantiate gem object
+            GemBehavior thisGem = Instantiate(GetGemPrefab(gemChosen), voxelGrid.transform).GetComponent<GemBehavior>();
+
+            //generate random position and normalize it
+            Vector3 gemPosition = new Vector3(
+                Random.Range(-1.0f, 1.0f),
+                Random.Range(-1.0f, 1.0f),
+                Random.Range(-1.0f, 1.0f)).normalized;
+
+            //place position within specified range of origin
+            float rangePercentage = Random.Range(valueMod / 2.0f, valueMod) * range;
+            gemPosition = gemPosition * rangePercentage + gemOrigin;
+
+            //correct for floating gems
+            gemPosition = PullToRock(gemPosition);
+
+            //set the gem's position
+            thisGem.transform.position = gemPosition;
+
+            // Set the gem's internal data
+            thisGem.Initialize(gemChosen);
         }
 
         //method to get the appropraite model for a chosen gem
