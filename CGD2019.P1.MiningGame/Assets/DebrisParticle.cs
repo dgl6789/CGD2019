@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace App.Util {
+namespace App.Gameplay {
 
     /// <summary>
     /// Chooses a random mesh from an array on start.
@@ -10,6 +10,7 @@ namespace App.Util {
     public class DebrisParticle : MonoBehaviour {
 
         [SerializeField] Mesh[] Meshes;
+        [SerializeField] Material[] Materials;
 
         [SerializeField] Vector2 startScale;
         [SerializeField] float shrinkRate;
@@ -24,7 +25,8 @@ namespace App.Util {
         Rigidbody rb;
 
         // Choose a mesh and starting conditions
-        void Start() {
+        public void Initialize(int type) {
+            GetComponent<MeshRenderer>().material = Materials[Mathf.Clamp(type, 1, Materials.Length)];
             GetComponent<MeshFilter>().mesh = Meshes[Random.Range(0, Meshes.Length)];
 
             float r = Random.Range(startScale.x, startScale.y);
@@ -46,11 +48,11 @@ namespace App.Util {
             StartCoroutine(Shrink());
         }
 
-        private void FixedUpdate() {
+        void FixedUpdate() {
             rb.AddForce(-Camera.main.transform.up * gravityScale);
         }
 
-        public IEnumerator Shrink() {
+        IEnumerator Shrink() {
             while(transform.localScale.sqrMagnitude > sizeMinimum) {
                 transform.localScale *= shrinkRate;
 

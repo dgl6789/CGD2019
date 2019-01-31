@@ -114,6 +114,11 @@ MonoBehaviour:
   Meshes:
   - {fileID: 4300000, guid: 90f9beb04ab79814d9997cb428a3f4ea, type: 3}
   - {fileID: 4300000, guid: 63d21e4fe5d78db4ab7368d883cafbc1, type: 3}
+  Materials:
+  - {fileID: 0}
+  - {fileID: 2100000, guid: 692310f96f5cffc4b92a638cfe6f1337, type: 2}
+  - {fileID: 2100000, guid: ad048eb448dec3a418ad4af9c4d34ac8, type: 2}
+  - {fileID: 2100000, guid: 56d455ff1ca691f4e81357a3db7c9e73, type: 2}
   startScale: {x: 1, y: 2}
   shrinkRate: 0.95
   sizeMinimum: 0.01

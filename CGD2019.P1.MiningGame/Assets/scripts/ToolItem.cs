@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace App
 {
-    public enum ToolType { POINT, AREA }
+    public enum ToolType { POINT, AREA, CHISEL }
     public enum ToolInputType { INSTANT, SUSTAINED }
 
     [CreateAssetMenu(fileName = "Tool", menuName = "Item/Tool", order = 1)]

@@ -72,15 +72,14 @@ namespace App {
                     if (i != null) {
                         switch (i.InputType) {
                             case ToolInputType.INSTANT:
-                                if (Input.GetButtonDown("LeftClick")) {
-                                    StartCoroutine(DeformRock(i));
-                                    TryMineGem();
-                                }
+                                if (Input.GetButtonDown("LeftClick")) StartCoroutine(DeformRock(i));
                                 break;
                             case ToolInputType.SUSTAINED:
                                 if (Input.GetButton("LeftClick")) StartCoroutine(DeformRock(i));
                                 break;
                         }
+
+                        if (i.Type == ToolType.CHISEL && Input.GetButtonDown("LeftClick")) TryMineGem();
                     }
 
                     if (GetInputDelta() != Vector2.zero) { DoCameraPan(GetInputDelta()); }

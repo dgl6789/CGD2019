@@ -205,7 +205,7 @@ namespace App.Gameplay {
             int r = Random.Range(debrisParticleCount.x, debrisParticleCount.y + 1);
 
             for (int i = 0; i < r; i++) {
-                Instantiate(DebrisParticle, new Vector3(x, y, z), Quaternion.identity, transform);
+                Instantiate(DebrisParticle, new Vector3(x, y, z), Quaternion.identity, transform).GetComponent<DebrisParticle>().Initialize(GetData(x, y, z));
             }
         }
 

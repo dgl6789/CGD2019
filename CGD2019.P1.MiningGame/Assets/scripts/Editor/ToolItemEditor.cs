@@ -6,7 +6,10 @@ using App;
 
 [CustomEditor(typeof(ToolItem))]
 public class ToolItemEditor : Editor {
-    public SerializedProperty 
+    public SerializedProperty
+        itemName,
+        itemText,
+        itemSprite,
         type, 
         inputType, 
         power, 
@@ -15,6 +18,9 @@ public class ToolItemEditor : Editor {
 
     void OnEnable() {
         // Setup the SerializedProperties
+        itemName = serializedObject.FindProperty("itemName");
+        itemText = serializedObject.FindProperty("itemText");
+        itemSprite = serializedObject.FindProperty("itemSprite");
         type = serializedObject.FindProperty("type");
         inputType = serializedObject.FindProperty("inputType");
         power = serializedObject.FindProperty("power");
@@ -25,9 +31,13 @@ public class ToolItemEditor : Editor {
     public override void OnInspectorGUI() {
         serializedObject.Update();
 
+        EditorGUILayout.PropertyField(itemName);
+        EditorGUILayout.PropertyField(itemText);
+        EditorGUILayout.PropertyField(itemSprite);
+
+        EditorGUILayout.Space();
+
         EditorGUILayout.PropertyField(type);
-        EditorGUILayout.PropertyField(inputType);
-        EditorGUILayout.PropertyField(power);
 
         ToolType toolType = (ToolType)type.enumValueIndex;
         ToolInputType toolInputType = (ToolInputType)inputType.enumValueIndex;
@@ -35,8 +45,17 @@ public class ToolItemEditor : Editor {
         // Draw property fields based on which should be shown
         // given the tool and input enum types.
         switch (toolType) {
+            case ToolType.POINT:
+                EditorGUILayout.PropertyField(inputType);
+                EditorGUILayout.PropertyField(power, new GUIContent("Power"));
+                break;
             case ToolType.AREA:
+                EditorGUILayout.PropertyField(inputType);
+                EditorGUILayout.PropertyField(power, new GUIContent("Power"));
                 EditorGUILayout.PropertyField(breakRadius, new GUIContent("Break Radius"));
+                break;
+            case ToolType.CHISEL:
+
                 break;
         }
 

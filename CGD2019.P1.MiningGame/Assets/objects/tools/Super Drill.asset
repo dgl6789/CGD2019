@@ -9,13 +9,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3bec6b44051ced14a95da64dd633cf5b, type: 3}
-  m_Name: Advanced Pickaxe
+  m_Name: Super Drill
   m_EditorClassIdentifier: 
   itemSprite: {fileID: 21300000, guid: 309631927c425cb4cb55a981b4cb659e, type: 3}
-  itemName: Advanced Pickaxe
-  itemText: Breaks the rock in a big radius. Zam!
-  type: 1
-  inputType: 0
+  itemName: Super Drill
+  itemText: Tap and hold to grind through a rock like butter.
+  type: 0
+  inputType: 1
   power: 2
-  sustainedBreakCooldown: 0
-  breakRadius: 3
+  sustainedBreakCooldown: 0.1
+  breakRadius: 0

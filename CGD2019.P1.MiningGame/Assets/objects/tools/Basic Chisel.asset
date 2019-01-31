@@ -9,13 +9,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3bec6b44051ced14a95da64dd633cf5b, type: 3}
-  m_Name: Advanced Pickaxe
+  m_Name: Basic Chisel
   m_EditorClassIdentifier: 
-  itemSprite: {fileID: 21300000, guid: 309631927c425cb4cb55a981b4cb659e, type: 3}
-  itemName: Advanced Pickaxe
-  itemText: Breaks the rock in a big radius. Zam!
-  type: 1
+  itemSprite: {fileID: 21300000, guid: 314ec40e5f8ff50469b5089c781e5e48, type: 3}
+  itemName: Chisel
+  itemText: Use this to mine gems.
+  type: 2
   inputType: 0
-  power: 2
+  power: 0
   sustainedBreakCooldown: 0
-  breakRadius: 3
+  breakRadius: 0
