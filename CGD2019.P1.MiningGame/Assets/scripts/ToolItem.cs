@@ -4,13 +4,26 @@ using UnityEngine;
 
 namespace App
 {
-    public enum ToolType { LARGE, SMALL }
+    public enum ToolType { POINT, AREA }
+    public enum ToolInputType { INSTANT, SUSTAINED }
 
     [CreateAssetMenu(fileName = "Tool", menuName = "Item/Tool", order = 1)]
     public class ToolItem : InventoryItem
     {
         [SerializeField] ToolType type;
-        public ToolType Type { get { return Type; } }
+        public ToolType Type { get { return type; } }
+
+        [SerializeField] ToolInputType inputType;
+        public ToolInputType InputType { get { return inputType; } }
+
+        [SerializeField] float power;
+        public float Power { get { return power; } }
+
+        [SerializeField] float sustainedBreakCooldown;
+        public float SustainedBreakCooldown { get { return sustainedBreakCooldown; } }
+
+        [SerializeField] float breakRadius;
+        public float BreakRadius { get { return breakRadius; } }
 
         bool equipped;
         public bool Equipped {

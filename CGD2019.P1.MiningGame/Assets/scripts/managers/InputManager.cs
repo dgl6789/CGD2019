@@ -3,6 +3,7 @@ using App.Gameplay;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace App {
 
@@ -18,6 +19,7 @@ namespace App {
         
         /// Reference to the graphics raycaster
         [SerializeField] GraphicRaycaster uiRaycaster;
+        [SerializeField] float touchInputDelay;
 
         [Header("Camera Controls")]
         Camera cam;
@@ -58,19 +60,27 @@ namespace App {
         public void Update() {
             // Wrap these in state machine checks wherever applicable.
             GameState state = StateManager.Instance.State;
-
-            Debug.DrawLine(cam.transform.position, voxelGrid.Center);
-            Debug.DrawLine(cam.transform.position, Vector3.zero);
-
+            
             switch (state) {
                 default:
                 case GameState.MENU:
                     /// TODO: Input behavior for menu state
                     break;
                 case GameState.MINING:
-                    if (Input.GetButtonDown("LeftClick")) {
-                        DeformRockPoint();
-                        TryMineGem();
+                    ToolItem i = InventoryManager.Instance.ActiveTool;
+
+                    if (i != null) {
+                        switch (i.InputType) {
+                            case ToolInputType.INSTANT:
+                                if (Input.GetButtonDown("LeftClick")) {
+                                    StartCoroutine(DeformRock(i));
+                                    TryMineGem();
+                                }
+                                break;
+                            case ToolInputType.SUSTAINED:
+                                if (Input.GetButton("LeftClick")) StartCoroutine(DeformRock(i));
+                                break;
+                        }
                     }
 
                     if (GetInputDelta() != Vector2.zero) { DoCameraPan(GetInputDelta()); }
@@ -87,20 +97,43 @@ namespace App {
         /// <summary>
         /// Deforms the voxel rock by removing the voxel under the mouse position.
         /// </summary>
-        public void DeformRockPoint() {
-            if (Platform == RuntimePlatform.Android && Input.touchCount > 1) return;
+        public IEnumerator DeformRock(ToolItem item) {
+            Debug.Log(0);
+            if (item == null) yield break;
+            Debug.Log(1);
+            if (Platform == RuntimePlatform.Android) {
+                yield return new WaitForSeconds(touchInputDelay);
 
+                if(Input.touchCount > 1) yield break;
+            }
+            Debug.Log(2);
             RaycastHit hit;
 
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)) {
+            if (!Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)) yield break;
+            Debug.Log(3);
+            Vector3 voxelPosition = hit.point - hit.normal * 0.5f;
 
-                Vector3 voxelPosition = hit.point - hit.normal * 0.5f;
+            switch (item.Type) {
+                case ToolType.POINT:
+                    voxelGrid.SetVoxelTypeAtIndex(
+                        Mathf.FloorToInt(voxelPosition.x),
+                        Mathf.FloorToInt(voxelPosition.y),
+                        Mathf.FloorToInt(voxelPosition.z),
+                        VoxelType.AIR);
+                    break;
+                case ToolType.AREA:
+                    List<Vector3Int> indices = new List<Vector3Int>();
 
-                voxelGrid.SetVoxelTypeAtIndex(
-                    Mathf.FloorToInt(voxelPosition.x), 
-                    Mathf.FloorToInt(voxelPosition.y), 
-                    Mathf.FloorToInt(voxelPosition.z), 
-                    VoxelType.AIR);
+                    for(int x = 0; x < voxelGrid.X; x++) {
+                        for (int y = 0; y < voxelGrid.Y; y++) {
+                            for (int z = 0; z < voxelGrid.Z; z++) {
+                                if (Mathf.Pow(x - voxelPosition.x, 2) + Mathf.Pow(y - voxelPosition.y, 2) + Mathf.Pow(z - voxelPosition.z, 2) <= item.BreakRadius) indices.Add(new Vector3Int(x, y, z));
+                            }
+                        }
+                    }
+
+                    voxelGrid.SetMultipleVoxelTypesAtIndices(indices.ToArray(), VoxelType.AIR);
+                    break;
             }
         }
 
