@@ -33,6 +33,13 @@ namespace App.UI {
         [SerializeField] TextMeshProUGUI inventoryValueText;
         [SerializeField] TextMeshProUGUI debugText;
 
+        [Header("Sprites")]
+        [SerializeField] Sprite inventoryOpenImage;
+        [SerializeField] Sprite inventoryClosedImage;
+
+        [Header("Images")]
+        [SerializeField] Image inventoryImage;
+
         [Header("Objects")]
         [SerializeField] RectTransform inventoryUIObject;
         [SerializeField] RectTransform equippedToolUIObject;
@@ -89,6 +96,7 @@ namespace App.UI {
             // Setup the modal before opening it.
             switch (modal) {
                 case ModalState.INVENTORY:
+                    SetInventoryButtonImage(true);
                     LoadInventoryToInventoryModal();
                     ResetInventoryPanelText();
                     break;
@@ -101,6 +109,9 @@ namespace App.UI {
         void DoModalTeardown(ModalState modal) {
             // Clean up the modal before closing it.
             switch (modal) {
+                case ModalState.INVENTORY:
+                    SetInventoryButtonImage(false);
+                    break;
                 case ModalState.SHOP:
                     if (ModalIsOpen(ModalState.INVENTORY)) CloseModal((int)ModalState.INVENTORY);
                     break;
@@ -250,5 +261,7 @@ namespace App.UI {
         public void WriteDebug(string text) {
             debugText.text = text;
         }
+
+        public void SetInventoryButtonImage(bool open) { inventoryImage.sprite = open ? inventoryOpenImage : inventoryClosedImage; }
     }
 }

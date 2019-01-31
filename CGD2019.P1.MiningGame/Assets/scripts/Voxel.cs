@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace App.Gameplay {
 
@@ -14,5 +15,16 @@ namespace App.Gameplay {
 
         // Initialize with given voxel type.
         public Voxel(VoxelType type) { this.type = (int)type; }
+
+        /// <summary>
+        /// Try to destroy this voxel (i.e. replace it with air).
+        /// </summary>
+        /// <param name="power">Power of the tool performing the attempted destruction.</param>
+        /// <returns>Whether the voxel withstands the attempted destruction.</returns>
+        public bool CanDestroy(int power) { return power >= type && type > 0; }
+
+        public void DoDestroy() {
+            /// TODO: Place per-voxel destruction behavior here.
+        }
     }
 }

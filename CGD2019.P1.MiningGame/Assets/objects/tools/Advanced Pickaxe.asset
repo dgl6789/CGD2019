@@ -14,7 +14,8 @@ MonoBehaviour:
   itemSprite: {fileID: 21300000, guid: 309631927c425cb4cb55a981b4cb659e, type: 3}
   itemName: Advanced Pickaxe
   itemText: Breaks the rock in a big radius. Zam!
-  type: 0
+  type: 1
   inputType: 0
-  breakRadius: 2
+  power: 1
   sustainedBreakCooldown: 0
+  breakRadius: 3

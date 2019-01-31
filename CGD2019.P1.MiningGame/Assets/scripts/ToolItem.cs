@@ -16,8 +16,8 @@ namespace App
         [SerializeField] ToolInputType inputType;
         public ToolInputType InputType { get { return inputType; } }
 
-        [SerializeField] float power;
-        public float Power { get { return power; } }
+        [SerializeField] int power;
+        public int Power { get { return power; } }
 
         [SerializeField] float sustainedBreakCooldown;
         public float SustainedBreakCooldown { get { return sustainedBreakCooldown; } }

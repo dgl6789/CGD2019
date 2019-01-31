@@ -95,31 +95,30 @@ namespace App {
         }
 
         /// <summary>
-        /// Deforms the voxel rock by removing the voxel under the mouse position.
+        /// Deforms the voxel rock by removing the voxel(s) under the mouse position.
         /// </summary>
         public IEnumerator DeformRock(ToolItem item) {
-            Debug.Log(0);
             if (item == null) yield break;
-            Debug.Log(1);
+
             if (Platform == RuntimePlatform.Android) {
                 yield return new WaitForSeconds(touchInputDelay);
 
                 if(Input.touchCount > 1) yield break;
             }
-            Debug.Log(2);
+
             RaycastHit hit;
 
             if (!Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)) yield break;
-            Debug.Log(3);
+
             Vector3 voxelPosition = hit.point - hit.normal * 0.5f;
 
             switch (item.Type) {
                 case ToolType.POINT:
-                    voxelGrid.SetVoxelTypeAtIndex(
+                    voxelGrid.TryVoxelDestruction(
                         Mathf.FloorToInt(voxelPosition.x),
                         Mathf.FloorToInt(voxelPosition.y),
                         Mathf.FloorToInt(voxelPosition.z),
-                        VoxelType.AIR);
+                        item.Power);
                     break;
                 case ToolType.AREA:
                     List<Vector3Int> indices = new List<Vector3Int>();
@@ -132,7 +131,7 @@ namespace App {
                         }
                     }
 
-                    voxelGrid.SetMultipleVoxelTypesAtIndices(indices.ToArray(), VoxelType.AIR);
+                    voxelGrid.TryMultipleVoxelDestruction(indices.ToArray(), item.Power);
                     break;
             }
         }
@@ -155,7 +154,7 @@ namespace App {
         bool UIBlocksRaycast(Vector2 position)
         {
             PointerEventData pointerData = new PointerEventData(EventSystem.current);
-            System.Collections.Generic.List<RaycastResult> results = new System.Collections.Generic.List<RaycastResult>();
+            List<RaycastResult> results = new List<RaycastResult>();
 
             //Raycast using the Graphics Raycaster and mouse click position
             pointerData.position = Input.mousePosition;

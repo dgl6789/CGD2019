@@ -14,6 +14,11 @@ namespace App.Gameplay {
 
         public static VoxelGrid Instance;
 
+        [SerializeField] GameObject DebrisParticle;
+        [SerializeField] Vector2Int debrisParticleCount;
+        [SerializeField] float destroyShakeAmount;
+        [SerializeField] float destroyShakeDuration;
+
         [Range(0, 1)]
         public float spawnRate;
         public float xMin;
@@ -42,8 +47,6 @@ namespace App.Gameplay {
         List<Vector3> vertexList;
         List<Vector2> uvList;
         List<int> indexList;
-
-        Vector2[] uvTable;
 
         int faceCount;
 
@@ -157,6 +160,29 @@ namespace App.Gameplay {
             }
         }
 
+        public void TryVoxelDestruction(int x, int y, int z, int power = 0) {
+            if (IndexIsValid(x, y, z) && data[x, y, z].CanDestroy(power)) {
+                SpawnDebrisParticles(x, y, z);
+                
+                data[x, y, z].DoDestroy();
+                SetVoxelTypeAtIndex(x, y, z, VoxelType.AIR);
+            }
+        }
+
+        public void TryMultipleVoxelDestruction(Vector3Int[] voxelIndices, int power = 0) {
+            foreach (Vector3Int i in voxelIndices) {
+                if (IndexIsValid(i.x, i.y, i.z) && data[i.x, i.y, i.z].CanDestroy(power)) {
+                    SpawnDebrisParticles(i.x, i.y, i.z);
+
+                    data[i.x, i.y, i.z].DoDestroy();
+                    data[i.x, i.y, i.z] = new Voxel(VoxelType.AIR);
+                }
+            }
+
+            UpdateVisualMesh();
+            UpdateCollisionMesh();
+        }
+
         /// <summary>
         /// Sets multiple voxels at coordinates to VoxelType type.
         /// </summary>
@@ -169,6 +195,18 @@ namespace App.Gameplay {
 
             UpdateVisualMesh();
             UpdateCollisionMesh();
+        }
+
+        public void SpawnDebrisParticles(int x, int y, int z) {
+            // Shake the camera
+            CameraEffects.Instance.Shake(destroyShakeAmount, destroyShakeDuration);
+
+            // Spawn debris
+            int r = Random.Range(debrisParticleCount.x, debrisParticleCount.y + 1);
+
+            for (int i = 0; i < r; i++) {
+                Instantiate(DebrisParticle, new Vector3(x, y, z), Quaternion.identity, transform);
+            }
         }
 
         /// <summary>
@@ -321,12 +359,10 @@ namespace App.Gameplay {
             uvList.Clear();
             indexList.Clear();
 
-            // Re-march relevant cubes
-            // Need to march a grid of cubes that is 1 unit larger on each axis than the maximum dimensions of the rock.
-            for (int x = -1; x < X; x++) {
-                for (int y = -1; y < Y; y++) {
-                    for (int z = -1; z < Z; z++) {
-
+            // Re-march cubes
+            for (int x = 0; x < X; x++) {
+                for (int y = 0; y < Y; y++) {
+                    for (int z = 0; z < Z; z++) {
                         // March each virtual cell (see March(int x, int y, int z))
                         /// TODO: Optimize this to re-march only affected cubes when removing voxels from the grid.
                         March(x, y, z);
@@ -414,13 +450,14 @@ namespace App.Gameplay {
                 cell[i] = GetData(
                     x + MarchingCubes.VertexOffset[i, 0], 
                     y + MarchingCubes.VertexOffset[i, 1], 
-                    z + MarchingCubes.VertexOffset[i, 2]);
+                    z + MarchingCubes.VertexOffset[i, 2]
+                    );
             }
 
             int flagIndex = 0;
 
             // Determine which vertices of this cell are inside the surface and which are not.
-            for (int i = 0; i < 8; i++) if (cell[i] <= Surface) flagIndex |= 1 << i;
+            for (int i = 0; i < 8; i++) if (cell[i] < Surface) flagIndex |= 1 << i;
 
             int edgeFlags = MarchingCubes.CubeEdgeFlags[flagIndex];
 
@@ -451,26 +488,14 @@ namespace App.Gameplay {
 
                 int type = GetData(x, y, z);
 
-                string s = "";
-
-                if (type > -1)
+                for (int j = 0; j < 3; j++)
                 {
-                    for (int j = 0; j < 3; j++)
-                    {
-                        vert = MarchingCubes.TriangleConnectionTable[flagIndex, i * 3 + j];
+                    vert = MarchingCubes.TriangleConnectionTable[flagIndex, i * 3 + j];
 
-                        indexList.Add(index + j);
-                        vertexList.Add(EdgeVertex[vert]);
-
-                        Vector2 uv = GetTexturePosition(type, j);
-
-                        if (type == -1) s += "(" + uv.x + ", " + uv.y + "), ";
-
-                        uvList.Add(uv);
-                    }
+                    indexList.Add(index + j);
+                    vertexList.Add(EdgeVertex[vert]);
+                    uvList.Add(GetTexturePosition(type, j));
                 }
-
-                if(s != "") Debug.Log(s);
             }
         }
 
@@ -489,7 +514,7 @@ namespace App.Gameplay {
         }
 
         Vector2 GetTexturePosition(int type, int vertex) {
-            int t = Mathf.Max(type, 0);
+            int t = Mathf.Max(type, 1);
 
             Vector2 r = new Vector2(
                 textureResolution * (t % atlasDimensions.x) + (textureResolution / 2),

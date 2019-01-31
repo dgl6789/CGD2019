@@ -438,6 +438,7 @@ MonoBehaviour:
   Platform: 0
   voxelGrid: {fileID: 1579994443}
   uiRaycaster: {fileID: 1884452790}
+  touchInputDelay: 0.025
   rotationSpeed: {x: 1, y: 1}
   rotationSmoothing: 10
   zoomDirectionThreshold: 0.75
@@ -505,6 +506,10 @@ MonoBehaviour:
   InventoryInfoboxNameText: {fileID: 1670264486}
   inventoryValueText: {fileID: 197724731}
   debugText: {fileID: 408999643}
+  inventoryOpenImage: {fileID: 21300000, guid: e605c9cc6b89e3c45b942c2ee7b752fb, type: 3}
+  inventoryClosedImage: {fileID: 21300000, guid: e4c358c9e2f9f0c4692819dc727f5d8f,
+    type: 3}
+  inventoryImage: {fileID: 2057659255}
   inventoryUIObject: {fileID: 224286082990802218, guid: ece63638652d1a24dbd405d2abfef245,
     type: 2}
   equippedToolUIObject: {fileID: 224975189272168884, guid: 8af7b53e9a3876249b12bc5d60ec0e8a,
@@ -2839,7 +2844,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 821424183}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.9999998
+  m_Size: 0.9999999
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3045,6 +3050,7 @@ GameObject:
   - component: {fileID: 1118827222}
   - component: {fileID: 1118827221}
   - component: {fileID: 1118827220}
+  - component: {fileID: 1118827223}
   m_Layer: 0
   m_Name: _Camera
   m_TagString: MainCamera
@@ -3112,6 +3118,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 15, y: 45, z: 0}
+--- !u!114 &1118827223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1118827219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0bb7deb70d825a45a145b1f92203aec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1140096576
 GameObject:
   m_ObjectHideFlags: 0
@@ -3142,7 +3159,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.0000015073981}
+  m_AnchoredPosition: {x: 0, y: 0.000031556177}
   m_SizeDelta: {x: -0.3, y: 0.000011702138}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1202409281
@@ -3289,7 +3306,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 377700010}
   m_HandleRect: {fileID: 377700009}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 0.5
   m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3448,7 +3465,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.0000136819}
+  m_AnchoredPosition: {x: 0, y: -0.000045776367}
   m_SizeDelta: {x: -0.3, y: 0.000011702138}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1540691196
@@ -3551,13 +3568,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 301e32ab9559fda4e8cc496347f0c6b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnRate: 1
+  DebrisParticle: {fileID: 1121469368447618, guid: 4befb8165e2381b4b83b5ef61462ad16,
+    type: 2}
+  debrisParticleCount: {x: 2, y: 5}
+  destroyShakeAmount: 0.25
+  destroyShakeDuration: 0.1
+  spawnRate: 0.299
   xMin: 2
   yMin: 2
   zMin: 2
   Surface: 0
   dimensions: {x: 16, y: 16, z: 16}
   material: {fileID: 2100000, guid: 65ed0f6d0baa9834e866cd6ee785d86d, type: 2}
+  atlasDimensions: {x: 4, y: 4}
+  textureResolution: 0.25
   maxVertsPerMesh: 60000
 --- !u!4 &1579994444
 Transform:
@@ -3794,7 +3818,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 197.2
+  m_fontSize: 197.15
   m_fontSizeBase: 52.99
   m_fontWeight: 400
   m_enableAutoSizing: 1

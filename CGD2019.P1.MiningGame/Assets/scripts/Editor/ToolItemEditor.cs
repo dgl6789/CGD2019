@@ -13,8 +13,7 @@ public class ToolItemEditor : Editor {
         breakRadius, 
         sustainedBreakCooldown;
 
-    void OnEnable()
-    {
+    void OnEnable() {
         // Setup the SerializedProperties
         type = serializedObject.FindProperty("type");
         inputType = serializedObject.FindProperty("inputType");
@@ -23,8 +22,7 @@ public class ToolItemEditor : Editor {
         sustainedBreakCooldown = serializedObject.FindProperty("sustainedBreakCooldown");
     }
 
-    public override void OnInspectorGUI()
-    {
+    public override void OnInspectorGUI() {
         serializedObject.Update();
 
         EditorGUILayout.PropertyField(type);
@@ -36,21 +34,18 @@ public class ToolItemEditor : Editor {
 
         // Draw property fields based on which should be shown
         // given the tool and input enum types.
-        switch (toolType)
-        {
+        switch (toolType) {
             case ToolType.AREA:
                 EditorGUILayout.PropertyField(breakRadius, new GUIContent("Break Radius"));
                 break;
         }
 
-        switch (toolInputType)
-        {
+        switch (toolInputType) {
             case ToolInputType.SUSTAINED:
                 EditorGUILayout.PropertyField(sustainedBreakCooldown, new GUIContent("Sustained Break Cooldown"));
                 break;
         }
-
-
+        
         serializedObject.ApplyModifiedProperties();
     }
 }
