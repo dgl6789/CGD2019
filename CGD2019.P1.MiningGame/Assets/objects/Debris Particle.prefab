@@ -114,8 +114,10 @@ MonoBehaviour:
   Meshes:
   - {fileID: 4300000, guid: 90f9beb04ab79814d9997cb428a3f4ea, type: 3}
   - {fileID: 4300000, guid: 63d21e4fe5d78db4ab7368d883cafbc1, type: 3}
-  shrinkRate: 0.98
+  startScale: {x: 1, y: 2}
+  shrinkRate: 0.95
   sizeMinimum: 0.01
   angularVelocity: {x: 0, y: 720}
+  velocityUpwardBias: 4
   velocity: {x: -10, y: 10}
-  gravityScale: 18
+  gravityScale: 27

@@ -20,11 +20,11 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.14204344, g: 0.16389401, b: 0.2264151, a: 1}
+  m_AmbientSkyColor: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 1
+  m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
@@ -527,7 +527,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   items:
-  - {fileID: 11400000, guid: 6c80c244c1797d041b0fde4c42510b5a, type: 2}
+  - {fileID: 11400000, guid: 036db9c311caa5240affb3b0a18f4a22, type: 2}
   equippedItems: []
 --- !u!1 &343430770
 GameObject:
@@ -3159,7 +3159,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000031556177}
+  m_AnchoredPosition: {x: 0, y: 0.000026138501}
   m_SizeDelta: {x: -0.3, y: 0.000011702138}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1202409281
@@ -3573,10 +3573,10 @@ MonoBehaviour:
   debrisParticleCount: {x: 2, y: 5}
   destroyShakeAmount: 0.25
   destroyShakeDuration: 0.1
-  spawnRate: 0.299
-  xMin: 2
-  yMin: 2
-  zMin: 2
+  spawnRate: 0.9
+  xMin: 5
+  yMin: 5
+  zMin: 5
   Surface: 0
   dimensions: {x: 16, y: 16, z: 16}
   material: {fileID: 2100000, guid: 65ed0f6d0baa9834e866cd6ee785d86d, type: 2}
