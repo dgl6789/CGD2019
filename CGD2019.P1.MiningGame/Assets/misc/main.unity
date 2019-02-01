@@ -439,7 +439,7 @@ MonoBehaviour:
   Platform: 0
   voxelGrid: {fileID: 1579994443}
   uiRaycaster: {fileID: 1884452790}
-  touchInputDelay: 0
+  touchInputDelay: 0.075
   rotationSpeed: {x: 1, y: 1}
   rotationSmoothing: 10
   zoomDirectionThreshold: 0.75
@@ -495,8 +495,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 428564655}
   - {fileID: 1265594363}
-  playerInventoryItemArea: {fileID: 0}
-  shopInventoryItemArea: {fileID: 0}
+  playerInventoryItemArea: {fileID: 1330320723}
+  shopInventoryItemArea: {fileID: 1140096577}
   inventoryEquippedArea: {fileID: 759096865}
   ingameEquipmentArea: {fileID: 379403976}
   activeToolBorder: {fileID: 571675763}
@@ -506,15 +506,17 @@ MonoBehaviour:
   - {fileID: 1265594364}
   InventoryInfoboxFlavorText: {fileID: 1849882737}
   InventoryInfoboxNameText: {fileID: 1670264486}
-  shopCurrencyText: {fileID: 0}
+  shopCurrencyText: {fileID: 2024438580}
   debugText: {fileID: 408999643}
-  inventoryOpenImage: {fileID: 0}
-  inventoryClosedImage: {fileID: 0}
-  inventoryImage: {fileID: 0}
-  newRockButton: {fileID: 0}
+  inventoryOpenImage: {fileID: 21300000, guid: e605c9cc6b89e3c45b942c2ee7b752fb, type: 3}
+  inventoryClosedImage: {fileID: 21300000, guid: e4c358c9e2f9f0c4692819dc727f5d8f,
+    type: 3}
+  inventoryImage: {fileID: 2057659255}
+  newRockButton: {fileID: 510157475}
   inventoryUIObject: {fileID: 224286082990802218, guid: ece63638652d1a24dbd405d2abfef245,
     type: 2}
-  shopUIObject: {fileID: 0}
+  shopUIObject: {fileID: 224038397117936636, guid: e7aa7bbe71a8d8c48a9c81401a18f7bb,
+    type: 2}
   equippedToolUIObject: {fileID: 224975189272168884, guid: 8af7b53e9a3876249b12bc5d60ec0e8a,
     type: 2}
   defaultInventoryPanelText: Tap an item to see its description.
@@ -3141,7 +3143,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00007628148}
+  m_AnchoredPosition: {x: 0, y: 0.000096232616}
   m_SizeDelta: {x: -0.3, y: 0.000011702138}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1202409281
@@ -3557,7 +3559,7 @@ MonoBehaviour:
   Surface: 0
   dimensions: {x: 16, y: 16, z: 16}
   material: {fileID: 2100000, guid: 65ed0f6d0baa9834e866cd6ee785d86d, type: 2}
-  atlasDimensions: {x: 0, y: 0}
+  atlasDimensions: {x: 4, y: 4}
   textureResolution: 0.25
   maxVertsPerMesh: 60000
 --- !u!4 &1579994444
@@ -3608,7 +3610,7 @@ MonoBehaviour:
   voxelGrid: {fileID: 1579994443}
   gemCount: 1
   range: 5
-  gemPrefab: {fileID: 0}
+  gemPrefab: {fileID: 1920451552321434, guid: 38c67dc38a8b35f459f5c77b11bf3419, type: 2}
   gemObjects:
   - {fileID: 11400000, guid: 817451f1c5353114d8fcfcf373a4be40, type: 2}
   - {fileID: 11400000, guid: 817451f1c5353114d8fcfcf373a4be40, type: 2}

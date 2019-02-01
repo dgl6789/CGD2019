@@ -277,8 +277,14 @@ namespace App.UI {
         /// </summary>
         /// <param name="item">Item to show text for.</param>
         public void SetInventoryPanelText(InventoryItem item) {
-            InventoryInfoboxNameText.text = item.ItemName;
+            
+
             InventoryInfoboxFlavorText.text = item.ItemText;
+            if (item is MineralItem) {
+                InventoryInfoboxNameText.text = item.ItemName + string.Format(" (${0:n0})", item.Value);
+            } else {
+                InventoryInfoboxNameText.text = item.ItemName;
+            }
         }
 
         /// <summary>
@@ -290,7 +296,7 @@ namespace App.UI {
         }
 
         public void SetCurrencyText() {
-            shopCurrencyText.text = "$" + InventoryManager.Instance.PlayerCurrency;
+            shopCurrencyText.text = string.Format("${0:n0}", InventoryManager.Instance.PlayerCurrency);
         }
 
         public void WriteDebug(string text) {

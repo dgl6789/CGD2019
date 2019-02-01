@@ -45,8 +45,6 @@ namespace App
             equippedItems = new List<ToolItem>();
 
             LoadInventory();
-
-            AdjustCurrency(2500);
         }
 
         /// <summary>
