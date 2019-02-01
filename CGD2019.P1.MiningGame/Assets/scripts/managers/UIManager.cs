@@ -172,10 +172,9 @@ namespace App.UI {
 
             int numItemsPerRow = Mathf.FloorToInt(itemArea.rect.width / (uiItemObject.rect.width + 5));
             int numRows = Mathf.CeilToInt(itemCount / (float)numItemsPerRow);
-
-
+            
             // Adjust the size of the scrollable area to accomodate the inventory UI items
-            itemArea.offsetMax = new Vector2(0, itemArea.rect.yMin + (5 + (numRows * (uiItemObject.rect.height + 5))));
+            // itemArea.offsetMax = new Vector2(0, itemArea.rect.yMin + (5 + (numRows * (uiItemObject.rect.height + 5))));
 
             // Inventory items
             for(int y = 0; y < numRows; y++) {
@@ -186,7 +185,7 @@ namespace App.UI {
 
                     i.anchoredPosition = new Vector2(
                         5 + (x * (i.rect.width + 5)) + i.rect.width / 2,
-                        5 - (y * (i.rect.height + 5)) - i.rect.height / 2
+                        -5 - (y * (i.rect.height + 5)) - i.rect.height / 2
                     );
 
                     if (inventory.Equals(InventoryType.PLAYER)) i.GetComponent<UIInventoryItem>().InitializeWithData(InventoryManager.Instance.playerItems[it]);
@@ -259,7 +258,7 @@ namespace App.UI {
                 }
             }
             
-            InventoryInfoboxFlavorText.text += " Tap again to " + (InventoryManager.Instance.playerItems.Contains(item.Item) ? "sell." : "buy.");
+            if(ModalIsOpen(ModalState.SHOP)) InventoryInfoboxFlavorText.text += " Tap again to " + (InventoryManager.Instance.playerItems.Contains(item.Item) ? "sell." : "buy.");
         }
 
         /// <summary>
