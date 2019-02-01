@@ -19,7 +19,7 @@ namespace App.Gameplay {
         public void TryMine() {
             if (IsMineable()) {
                 //add gem to inventory
-                InventoryManager.Instance.AddItem(itemData);
+                InventoryManager.Instance.AddItem(itemData, InventoryType.PLAYER);
 
                 //delete gameobject
                 Destroy(gameObject);

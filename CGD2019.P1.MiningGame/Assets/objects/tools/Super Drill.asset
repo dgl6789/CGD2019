@@ -11,9 +11,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bec6b44051ced14a95da64dd633cf5b, type: 3}
   m_Name: Super Drill
   m_EditorClassIdentifier: 
-  itemSprite: {fileID: 21300000, guid: 309631927c425cb4cb55a981b4cb659e, type: 3}
+  itemSprite: {fileID: 21300000, guid: df7e5ded2a2c77c43bfc0f3b055ca56f, type: 3}
   itemName: Super Drill
   itemText: Tap and hold to grind through a rock like butter.
+  value: 10000
   type: 0
   inputType: 1
   power: 2

@@ -14,6 +14,8 @@ namespace App {
 
         [HideInInspector] public RuntimePlatform Platform;
 
+        bool inputIsLocked;
+
         /// Reference to the rock's voxel grid.
         [SerializeField] VoxelGrid voxelGrid;
         
@@ -46,6 +48,9 @@ namespace App {
             else Destroy(this);
         }
         
+        /// <summary>
+        /// Initialization.
+        /// </summary>
         private void Start() {
             cam = Camera.main;
 
@@ -60,37 +65,45 @@ namespace App {
         public void Update() {
             // Wrap these in state machine checks wherever applicable.
             GameState state = StateManager.Instance.State;
-            
-            switch (state) {
-                default:
-                case GameState.MENU:
-                    /// TODO: Input behavior for menu state
-                    break;
-                case GameState.MINING:
-                    ToolItem i = InventoryManager.Instance.ActiveTool;
 
-                    if (i != null) {
-                        switch (i.InputType) {
-                            case ToolInputType.INSTANT:
-                                if (Input.GetButtonDown("LeftClick")) StartCoroutine(DeformRock(i));
-                                break;
-                            case ToolInputType.SUSTAINED:
-                                if (Input.GetButton("LeftClick")) StartCoroutine(DeformRock(i));
-                                break;
+            if (!inputIsLocked) { // Only perform input checks if input is unlocked.
+                // Perform per-state input behavior
+                switch (state) {
+                    default:
+                    case GameState.MENU:
+                        /// TODO: Input behavior for menu state
+                        break;
+                    case GameState.MINING:
+                        // Get the active tool
+                        ToolItem i = InventoryManager.Instance.ActiveTool;
+
+                        // If there is an active tool...
+                        if (i != null) {
+                            // Check tool type-specific inputs.
+                            switch (i.InputType) {
+                                case ToolInputType.INSTANT:
+                                    if (GameClick()) StartCoroutine(DeformRock(i));
+                                    break;
+                                case ToolInputType.SUSTAINED:
+                                    if (GameClickHold()) StartCoroutine(DeformRock(i));
+                                    break;
+                            }
+
+                            if (i.Type == ToolType.CHISEL && GameClick()) TryMineGem();
                         }
 
-                        if (i.Type == ToolType.CHISEL && Input.GetButtonDown("LeftClick")) TryMineGem();
-                    }
+                        // Do camera controls.
+                        if (GetInputDelta() != Vector2.zero) { DoCameraPan(GetInputDelta()); }
 
-                    if (GetInputDelta() != Vector2.zero) { DoCameraPan(GetInputDelta()); }
+                        DoCameraZoom();
+                        break;
+                }
 
-                    DoCameraZoom();
-                    break;
+                // Smooth the camera controls.
+                SmoothCamera();
+
+                lastMousePosition = Input.mousePosition;
             }
-
-            SmoothCamera();
-
-            lastMousePosition = Input.mousePosition;
         }
 
         /// <summary>
@@ -135,6 +148,9 @@ namespace App {
             }
         }
 
+        /// <summary>
+        /// Mine a gem, if there is one at the position mined.
+        /// </summary>
         public void TryMineGem() {
             if (Platform == RuntimePlatform.Android && Input.touchCount > 1) return;
 
@@ -150,7 +166,7 @@ namespace App {
         /// </summary>
         /// <param name="position">Position (screen) to check.</param>
         /// <returns>Whether position overlaps UI canvas elements.</returns>
-        bool UIBlocksRaycast(Vector2 position)
+        bool UIBlocksRaycast(Vector2 position, bool printNames = false)
         {
             PointerEventData pointerData = new PointerEventData(EventSystem.current);
             List<RaycastResult> results = new List<RaycastResult>();
@@ -159,14 +175,37 @@ namespace App {
             pointerData.position = Input.mousePosition;
             uiRaycaster.Raycast(pointerData, results);
 
+            if(printNames) {
+                string s = "";
+
+                foreach(RaycastResult r in results) {
+                    s += r.gameObject.name + ", ";
+                }
+
+                s.TrimEnd(new char[] { ' ', ',' });
+                Debug.Log(s);
+            }
+
             return results.Count > 0;
         }
 
         /// <summary>
-        /// Determine whether a click/tap occured on the game window.
+        /// Determine whether a click/tap occured on the game window at the mouse position.
         /// </summary>
         /// <returns>Whether an unblocked click or tap occured at the mouse position.</returns>
         bool GameClick() { return Input.GetButtonDown("LeftClick") && !UIBlocksRaycast(Input.mousePosition); }
+
+        /// <summary>
+        /// Determine whether a click/tap is occuring on the game window at the mouse position.
+        /// </summary>
+        /// <returns>Whether an unblocked click or tap is occuring at the mouse position.</returns>
+        bool GameClickHold() { return Input.GetButton("LeftClick") && !UIBlocksRaycast(Input.mousePosition); }
+
+        /// <summary>
+        /// Lock or unlock the input.
+        /// </summary>
+        /// <param name="locked">Whether input should be locked.</param>
+        public void LockInput(bool locked = true) { inputIsLocked = locked; }
 
     #region Camera Controls
         /// <summary>

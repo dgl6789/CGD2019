@@ -14,5 +14,8 @@ namespace App
 
         [SerializeField] string itemText;
         public string ItemText { get { return itemText; } }
+
+        [SerializeField] int value;
+        public int Value { get { return value; } }
     }
 }

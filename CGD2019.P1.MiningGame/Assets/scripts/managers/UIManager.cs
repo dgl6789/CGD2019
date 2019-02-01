@@ -18,7 +18,9 @@ namespace App.UI {
         [SerializeField] RectTransform[] stateTransforms;
         [SerializeField] RectTransform[] modalTransforms;
 
-        [SerializeField] RectTransform inventoryItemArea;
+        [SerializeField] RectTransform playerInventoryItemArea;
+        [SerializeField] RectTransform shopInventoryItemArea;
+
         [SerializeField] RectTransform inventoryEquippedArea;
         [SerializeField] RectTransform ingameEquipmentArea;
 
@@ -30,7 +32,7 @@ namespace App.UI {
         [Header("Text")]
         [SerializeField] TextMeshProUGUI InventoryInfoboxFlavorText;
         [SerializeField] TextMeshProUGUI InventoryInfoboxNameText;
-        [SerializeField] TextMeshProUGUI inventoryValueText;
+        [SerializeField] TextMeshProUGUI shopCurrencyText;
         [SerializeField] TextMeshProUGUI debugText;
 
         [Header("Sprites")]
@@ -40,8 +42,12 @@ namespace App.UI {
         [Header("Images")]
         [SerializeField] Image inventoryImage;
 
+        [Header("Buttons")]
+        public Button newRockButton;
+
         [Header("Objects")]
         [SerializeField] RectTransform inventoryUIObject;
+        [SerializeField] RectTransform shopUIObject;
         [SerializeField] RectTransform equippedToolUIObject;
 
         [Header("Miscellaneous")]
@@ -97,11 +103,12 @@ namespace App.UI {
             switch (modal) {
                 case ModalState.INVENTORY:
                     SetInventoryButtonImage(true);
-                    LoadInventoryToInventoryModal();
+                    LoadInventoryToInventoryModal(InventoryType.PLAYER);
                     ResetInventoryPanelText();
                     break;
                 case ModalState.SHOP:
-                    if(!ModalIsOpen(ModalState.INVENTORY)) OpenModal(ModalState.INVENTORY);
+                    LoadInventoryToInventoryModal(InventoryType.SHOP);
+                    if (!ModalIsOpen(ModalState.INVENTORY)) OpenModal(ModalState.INVENTORY);
                     break;
             }
         }
@@ -149,51 +156,62 @@ namespace App.UI {
         }
 
         /// <summary>
-        /// Load the item inventory from the inventory manager to the UI inventory panel.
+        /// Load the item inventory from the inventory manager to a UI inventory panel.
         /// </summary>
-        public void LoadInventoryToInventoryModal() {
+        public void LoadInventoryToInventoryModal(InventoryType inventory) {
+            RectTransform itemArea = inventory.Equals(InventoryType.PLAYER) ? playerInventoryItemArea : shopInventoryItemArea;
+            int itemCount = inventory.Equals(InventoryType.PLAYER) ? InventoryManager.Instance.playerItems.Count : InventoryManager.Instance.shopItems.Count;
+            RectTransform uiItemObject = inventory.Equals(InventoryType.PLAYER) ? inventoryUIObject : shopUIObject;
+
             // Remove existing inventory items
-            foreach (RectTransform r in inventoryItemArea.GetComponentsInChildren<RectTransform>()) { if(r != inventoryItemArea) Destroy(r.gameObject); }
-            foreach (RectTransform r in inventoryEquippedArea.GetComponentsInChildren<RectTransform>()) { if (r != inventoryEquippedArea) Destroy(r.gameObject); }
+            foreach (RectTransform r in itemArea.GetComponentsInChildren<RectTransform>()) { if(r != itemArea) Destroy(r.gameObject); }
+
+            
 
             int it = 0;
 
-            int numItemsPerRow = Mathf.FloorToInt(inventoryItemArea.rect.width / (inventoryUIObject.rect.width + 5));
-            int numRows = Mathf.CeilToInt((float)InventoryManager.Instance.items.Count / numItemsPerRow);
-            
+            int numItemsPerRow = Mathf.FloorToInt(itemArea.rect.width / (uiItemObject.rect.width + 5));
+            int numRows = Mathf.CeilToInt(itemCount / (float)numItemsPerRow);
+
 
             // Adjust the size of the scrollable area to accomodate the inventory UI items
-            inventoryItemArea.offsetMax = new Vector2(0, inventoryItemArea.rect.yMin + (5 + (numRows * (inventoryUIObject.rect.height + 5))));
+            itemArea.offsetMax = new Vector2(0, itemArea.rect.yMin + (5 + (numRows * (uiItemObject.rect.height + 5))));
 
             // Inventory items
             for(int y = 0; y < numRows; y++) {
                 for (int x = 0; x < numItemsPerRow; x++) {
-                    if (it >= InventoryManager.Instance.items.Count) break;
+                    if (it >= itemCount) break;
 
-                    RectTransform i = Instantiate(inventoryUIObject, inventoryItemArea.transform);
+                    RectTransform i = Instantiate(uiItemObject, itemArea.transform);
 
                     i.anchoredPosition = new Vector2(
-                        5 + (x * (inventoryUIObject.rect.width + 5)) + inventoryUIObject.rect.width / 2,
-                        5 - (y * (inventoryUIObject.rect.height + 5)) - inventoryUIObject.rect.height / 2
+                        5 + (x * (i.rect.width + 5)) + i.rect.width / 2,
+                        5 - (y * (i.rect.height + 5)) - i.rect.height / 2
                     );
 
-                    i.GetComponent<UIInventoryItem>().InitializeWithData(InventoryManager.Instance.items[it]);
+                    if (inventory.Equals(InventoryType.PLAYER)) i.GetComponent<UIInventoryItem>().InitializeWithData(InventoryManager.Instance.playerItems[it]);
+                    else i.GetComponent<UIShopItem>().InitializeWithData(InventoryManager.Instance.shopItems[it]);
+
                     it++;
                 }
 
-                if (it >= InventoryManager.Instance.items.Count) break;
+                if (it >= itemCount) break;
             }
 
-            // Equipped Items
-            for(int i = 0; i < InventoryManager.Instance.equippedItems.Count; i++) {
-                RectTransform t = Instantiate(inventoryUIObject, inventoryEquippedArea.transform);
+            // Equipped Items (if necessary)
+            if (inventory.Equals(InventoryType.PLAYER)) {
+                foreach (RectTransform r in inventoryEquippedArea.GetComponentsInChildren<RectTransform>()) { if (r != inventoryEquippedArea) Destroy(r.gameObject); }
 
-                t.anchoredPosition = new Vector2(
-                    5 + (i * (inventoryUIObject.rect.width + 5)) + inventoryUIObject.rect.width / 2,
-                    inventoryEquippedArea.rect.y
-                );
+                for (int i = 0; i < InventoryManager.Instance.equippedItems.Count; i++) {
+                    RectTransform t = Instantiate(inventoryUIObject, inventoryEquippedArea.transform);
 
-                t.GetComponent<UIInventoryItem>().InitializeWithData(InventoryManager.Instance.equippedItems[i]);
+                    t.anchoredPosition = new Vector2(
+                        5 + (i * (inventoryUIObject.rect.width + 5)) + inventoryUIObject.rect.width / 2,
+                        inventoryEquippedArea.rect.y
+                    );
+
+                    t.GetComponent<UIInventoryItem>().InitializeWithData(InventoryManager.Instance.equippedItems[i]);
+                }
             }
         }
         
@@ -217,6 +235,19 @@ namespace App.UI {
             }
 
             SetActiveToolBorder(InventoryManager.Instance.ActiveTool);
+        }
+
+        public void OnItemTapped(UIInventoryItem item) {
+            /// TODO: indicate to all active shop ui items (and inventory ui items if both the shop and inventory modals are open)
+            /// to reset their isTappedOnce booleans, except for the item that was tapped.
+            /// 
+            foreach(RectTransform r in shopInventoryItemArea.GetComponentsInChildren<RectTransform>()) {
+                UIInventoryItem i = r.GetComponent<UIInventoryItem>();
+
+                if(r != shopInventoryItemArea && i != null && i != item) {
+                    i.UntapItem();
+                }
+            }
         }
 
         /// <summary>
@@ -258,9 +289,15 @@ namespace App.UI {
             InventoryInfoboxFlavorText.text = defaultInventoryPanelText;
         }
 
+        public void SetCurrencyText() {
+            shopCurrencyText.text = "$" + InventoryManager.Instance.PlayerCurrency;
+        }
+
         public void WriteDebug(string text) {
             debugText.text = text;
         }
+
+        public void SetButtonEnabled(Button button, bool enabled = true) { button.interactable = enabled; }
 
         public void SetInventoryButtonImage(bool open) { inventoryImage.sprite = open ? inventoryOpenImage : inventoryClosedImage; }
     }

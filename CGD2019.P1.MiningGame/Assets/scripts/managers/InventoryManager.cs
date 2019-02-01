@@ -6,16 +6,20 @@ using System;
 
 namespace App
 {
+    public enum InventoryType { PLAYER, SHOP }
+
     public class InventoryManager : MonoBehaviour
     {
         // Singleton instance (reference this class' members via InventoryManager.Instance from any context that is 'using App;')
         public static InventoryManager Instance;
 
-        public List<InventoryItem> items;
+        int playerCurrency;
+        public int PlayerCurrency { get { return playerCurrency; } }
+
+        public List<InventoryItem> playerItems;
         [HideInInspector] public List<ToolItem> equippedItems;
 
-        int inventoryValue;
-        public int InventoryValue { get { return inventoryValue; } }
+        public List<InventoryItem> shopItems;
 
         // The tool that is currently being used.
         ToolItem activeTool;
@@ -42,7 +46,7 @@ namespace App
 
             LoadInventory();
 
-            // TODO: Add some default items to the inventory
+            AdjustCurrency(2500);
         }
 
         /// <summary>
@@ -53,7 +57,7 @@ namespace App
         /// <returns></returns>
         public bool SetItemEquipped(InventoryItem item, bool value)
         {
-            if (!items.Contains(item) || !(item is ToolItem)) return false;
+            if (!playerItems.Contains(item) || !(item is ToolItem)) return false;
 
             ToolItem i = item as ToolItem;
             ToolItem toRemove = null;
@@ -67,37 +71,42 @@ namespace App
             // Remove the existing item of the swap type and put it back in the inventory
             if (toRemove != null) {
                 equippedItems.Remove(toRemove);
-                AddItem(toRemove);
+                AddItem(toRemove, InventoryType.PLAYER);
             }
 
             // Add the new item to the equipped items (the old one was either removed or never existed)
             if (value) {
                 equippedItems.Add(i);
-                items.Remove(i);
+                playerItems.Remove(i);
             }
 
             UIManager.Instance.LoadInventoryToEquipmentBar();
-            UIManager.Instance.LoadInventoryToInventoryModal();
+            UIManager.Instance.LoadInventoryToInventoryModal(InventoryType.PLAYER);
 
             SaveInventory();
 
             return value;
         }
 
-        public void AddItem(InventoryItem item) {
-            if(item is MineralItem) {
-                MineralItem m = item as MineralItem;
+        public void AddItem(InventoryItem item, InventoryType inventory) {
+            if (inventory.Equals(InventoryType.PLAYER)) playerItems.Add(item);
+            else shopItems.Add(item);
 
-                inventoryValue += m.Value;
+            UIManager.Instance.LoadInventoryToInventoryModal(inventory);
+        }
 
-                items.Add(m);
-            } else {
-                ToolItem t = item as ToolItem;
+        public void RemoveItem(InventoryItem item, InventoryType inventory) {
+            if (inventory.Equals(InventoryType.PLAYER)) playerItems.Remove(item);
+            else shopItems.Remove(item);
 
-                items.Add(t);
-            }
+            UIManager.Instance.LoadInventoryToInventoryModal(inventory);
+        }
 
-            UIManager.Instance.LoadInventoryToInventoryModal();
+        public void AdjustCurrency(int adj) {
+            playerCurrency += adj;
+
+            // Update the currency text
+            UIManager.Instance.SetCurrencyText();
         }
 
     #region Save / Load

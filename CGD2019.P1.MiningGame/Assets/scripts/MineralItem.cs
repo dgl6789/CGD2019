@@ -9,8 +9,5 @@ namespace App
     {
         [SerializeField] string modelName;
         public string ModelName { get { return modelName; } }
-
-        [SerializeField] int value;
-        public int Value {  get { return value; } }
     }
 }

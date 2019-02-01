@@ -14,11 +14,6 @@ namespace App.Gameplay {
 
         public static VoxelGrid Instance;
 
-        [SerializeField] GameObject DebrisParticle;
-        [SerializeField] Vector2Int debrisParticleCount;
-        [SerializeField] float destroyShakeAmount;
-        [SerializeField] float destroyShakeDuration;
-
         [Range(0, 1)]
         public float spawnRate;
         public float xMin;
@@ -73,7 +68,7 @@ namespace App.Gameplay {
             vertexList = new List<Vector3>();
             uvList = new List<Vector2>();
             indexList = new List<int>();
-            
+
             // Initialize the components of the mesh collider
             meshCollider = GetComponent<MeshCollider>();
             collisionMesh = GetComponent<MeshFilter>().mesh;
@@ -99,46 +94,37 @@ namespace App.Gameplay {
             // This is where initial shape generation code will go
             shapedRock();
 
-            // Generate the initial visual mesh and collider
+            // Generate the initial visual mesh, collider, and gems
             Gemeration.Instance.GenerateGems();
 
             UpdateVisualMesh();
             UpdateCollisionMesh();
         }
-        
-        private void shapedRock()
-        {
+
+        private void shapedRock() {
             float temp = Random.value;
 
-            float xBounds = Random.Range(xMin, (X / 2)-2);
-            float yBounds = Random.Range(yMin, (Y / 2)-2);
-            float zBounds = Random.Range(zMin, (Z / 2)-2);
+            float xBounds = Random.Range(xMin, (X / 2) - 2);
+            float yBounds = Random.Range(yMin, (Y / 2) - 2);
+            float zBounds = Random.Range(zMin, (Z / 2) - 2);
 
-            if (temp <= .33f)
-            {
+            if (temp <= .33f) {
                 yBounds = Random.Range(xBounds - 2, xBounds + 2);
                 zBounds = Random.Range(xBounds - 2, xBounds + 2);
-            }
-            else if (temp <= .66f)
-            {
+            } else if (temp <= .66f) {
                 xBounds = Random.Range(yBounds - 2, yBounds + 2);
                 zBounds = Random.Range(yBounds - 2, yBounds + 2);
-            }
-            else
-            {
+            } else {
                 xBounds = Random.Range(yBounds - 2, yBounds + 2);
                 zBounds = Random.Range(yBounds - 2, yBounds + 2);
             }
 
-            for (int x = 0; x < X; x++)
-            {
-                for (int y = 0; y < Y; y++)
-                {
-                    for (int z = 0; z < Z; z++)
-                    {
-                        if (Mathf.Pow(x-X/2f, 2) / Mathf.Pow(xBounds, 2) + Mathf.Pow(y-Y/2f, 2) / Mathf.Pow(yBounds, 2) + Mathf.Pow(z-Z/2f, 2) / Mathf.Pow(zBounds, 2) <= 1f) {
-                            data[x, y, z] = Random.value < spawnRate ? new Voxel(VoxelType.ROCK) : new Voxel(VoxelType.HARD_ROCK);
-                        } else data[x, y, z] = new Voxel(VoxelType.AIR);
+            for (int x = 0; x < X; x++) {
+                for (int y = 0; y < Y; y++) {
+                    for (int z = 0; z < Z; z++) {
+                        if (Mathf.Pow(x - X / 2f, 2) / Mathf.Pow(xBounds, 2) + Mathf.Pow(y - Y / 2f, 2) / Mathf.Pow(yBounds, 2) + Mathf.Pow(z - Z / 2f, 2) / Mathf.Pow(zBounds, 2) <= 1f) {
+                            data[x, y, z] = Random.value < spawnRate ? new Voxel(VoxelType.ROCK, new Vector3Int(x, y, z)) : new Voxel(VoxelType.HARD_ROCK, new Vector3Int(x, y, z));
+                        } else data[x, y, z] = new Voxel(VoxelType.AIR, new Vector3Int(x, y, z));
                     }
                 }
             }
@@ -153,30 +139,32 @@ namespace App.Gameplay {
         /// <param name="type">Type to set.</param>
         public void SetVoxelTypeAtIndex(int x, int y, int z, VoxelType type) {
             if (IndexIsValid(x, y, z)) {
-                data[x, y, z] = new Voxel(type);
+                data[x, y, z] = new Voxel(type, new Vector3Int(x, y, z));
 
                 UpdateVisualMesh();
                 UpdateCollisionMesh();
             }
         }
 
+        /// <summary>
+        /// Try to destroy (e.g. replace with air) a voxel at coordinates.
+        /// </summary>
+        /// <param name="x">X position of the voxel to attempt to destroy.</param>
+        /// <param name="y">Y position of the voxel to attempt to destroy.</param>
+        /// <param name="z">Z position of the voxel to attempt to destroy.</param>
+        /// <param name="power">Power of the tool being used to attempt the destruction.</param>
         public void TryVoxelDestruction(int x, int y, int z, int power = 0) {
-            if (IndexIsValid(x, y, z) && data[x, y, z].CanDestroy(power)) {
-                SpawnDebrisParticles(x, y, z);
-                
-                data[x, y, z].DoDestroy();
-                SetVoxelTypeAtIndex(x, y, z, VoxelType.AIR);
-            }
+            TryMultipleVoxelDestruction(new Vector3Int[] { new Vector3Int(x, y, z) }, power);
         }
 
+        /// <summary>
+        /// Try to destroy (i.e. replace with air) multiple voxels simultaneously.
+        /// </summary>
+        /// <param name="voxelIndices">Array of coordinates of voxels, each of which will try to destroy.</param>
+        /// <param name="power">Power of the tool being used to attempt the destruction.</param>
         public void TryMultipleVoxelDestruction(Vector3Int[] voxelIndices, int power = 0) {
             foreach (Vector3Int i in voxelIndices) {
-                if (IndexIsValid(i.x, i.y, i.z) && data[i.x, i.y, i.z].CanDestroy(power)) {
-                    SpawnDebrisParticles(i.x, i.y, i.z);
-
-                    data[i.x, i.y, i.z].DoDestroy();
-                    data[i.x, i.y, i.z] = new Voxel(VoxelType.AIR);
-                }
+                if (IndexIsValid(i.x, i.y, i.z)) data[i.x, i.y, i.z].TryDestroy(power);
             }
 
             UpdateVisualMesh();
@@ -188,25 +176,12 @@ namespace App.Gameplay {
         /// </summary>
         /// <param name="voxelIndices">Array of indices to set.</param>
         /// <param name="type">Type to set each voxel at index.</param>
-        public void SetMultipleVoxelTypesAtIndices(Vector3Int[] voxelIndices, VoxelType type)
-        {
-            foreach(Vector3Int i in voxelIndices)
-                if (IndexIsValid(i.x, i.y, i.z)) { data[i.x, i.y, i.z] = new Voxel(type); }
+        public void SetMultipleVoxelTypesAtIndices(Vector3Int[] voxelIndices, VoxelType type) {
+            foreach (Vector3Int i in voxelIndices)
+                if (IndexIsValid(i.x, i.y, i.z)) { data[i.x, i.y, i.z] = new Voxel(type, new Vector3Int(i.x, i.y, i.z)); }
 
             UpdateVisualMesh();
             UpdateCollisionMesh();
-        }
-
-        public void SpawnDebrisParticles(int x, int y, int z) {
-            // Shake the camera
-            CameraEffects.Instance.Shake(destroyShakeAmount, destroyShakeDuration);
-
-            // Spawn debris
-            int r = Random.Range(debrisParticleCount.x, debrisParticleCount.y + 1);
-
-            for (int i = 0; i < r; i++) {
-                Instantiate(DebrisParticle, new Vector3(x, y, z), Quaternion.identity, transform).GetComponent<DebrisParticle>().Initialize(GetData(x, y, z));
-            }
         }
 
         /// <summary>
@@ -311,7 +286,7 @@ namespace App.Gameplay {
             indexList.Add(faceCount * 4);
             indexList.Add(faceCount * 4 + 1);
             indexList.Add(faceCount * 4 + 2);
-            indexList.Add(faceCount * 4); 
+            indexList.Add(faceCount * 4);
             indexList.Add(faceCount * 4 + 2);
             indexList.Add(faceCount * 4 + 3);
 
@@ -349,7 +324,7 @@ namespace App.Gameplay {
 
             meshCollider.sharedMesh = collisionMesh;
         }
-        
+
         /// <summary>
         /// Updates the visual component of the voxel mesh.
         /// </summary>
@@ -386,7 +361,7 @@ namespace App.Gameplay {
             // Our vert list could end up with more than that, so we gotta split up the meshes in those cases.
 
             // First clear the current mesh(es).
-            foreach(GameObject m in meshes) { Destroy(m); }
+            foreach (GameObject m in meshes) { Destroy(m); }
             meshes = new List<GameObject>();
 
             // Determine how many meshes need to be made.
@@ -446,10 +421,10 @@ namespace App.Gameplay {
         void March(int x, int y, int z) {
             // Construct the virtual cell that will provide this march's surface information.
             float[] cell = new float[8];
-            for(int i = 0; i < 8; i++) {
+            for (int i = 0; i < 8; i++) {
                 cell[i] = GetData(
-                    x + MarchingCubes.VertexOffset[i, 0], 
-                    y + MarchingCubes.VertexOffset[i, 1], 
+                    x + MarchingCubes.VertexOffset[i, 0],
+                    y + MarchingCubes.VertexOffset[i, 1],
                     z + MarchingCubes.VertexOffset[i, 2]
                     );
             }
@@ -488,8 +463,7 @@ namespace App.Gameplay {
 
                 int type = GetData(x, y, z);
 
-                for (int j = 0; j < 3; j++)
-                {
+                for (int j = 0; j < 3; j++) {
                     vert = MarchingCubes.TriangleConnectionTable[flagIndex, i * 3 + j];
 
                     indexList.Add(index + j);
@@ -520,7 +494,7 @@ namespace App.Gameplay {
                 textureResolution * (t % atlasDimensions.x) + (textureResolution / 2),
                 1 - textureResolution * Mathf.Floor(t / (float)atlasDimensions.y) - (textureResolution / 2)
             );
-            
+
             return r;
         }
 
