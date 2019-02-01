@@ -140,7 +140,7 @@ RectTransform:
   m_Children:
   - {fileID: 371107417}
   - {fileID: 899713079}
-  - {fileID: 197724730}
+  - {fileID: 510157474}
   m_Father: {fileID: 1884452792}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -149,47 +149,47 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1, y: -1}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &197724729
+--- !u!1 &133159522
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 197724730}
-  - component: {fileID: 197724732}
-  - component: {fileID: 197724731}
+  - component: {fileID: 133159523}
+  - component: {fileID: 133159525}
+  - component: {fileID: 133159524}
   m_Layer: 0
-  m_Name: Value Remaining
+  m_Name: Temp Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &197724730
+--- !u!224 &133159523
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 197724729}
+  m_GameObject: {fileID: 133159522}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 128526034}
-  m_RootOrder: 2
+  m_Father: {fileID: 510157474}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 1.421875, y: 328.8}
-  m_SizeDelta: {x: -43.152, y: 88.1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &197724731
+--- !u!114 &133159524
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 197724729}
+  m_GameObject: {fileID: 133159522}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
@@ -203,7 +203,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 'Value Remaining:'
+  m_text: New Rock
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -212,8 +212,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4285558896
+  m_fontColor: {r: 0.43921572, g: 0.43921572, b: 0.43921572, a: 1}
   m_enableVertexGradient: 0
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
@@ -230,14 +230,14 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 42
-  m_fontSizeBase: 42
+  m_fontSize: 36
+  m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
-  m_fontSizeMax: 42
+  m_fontSizeMax: 72
   m_fontStyle: 0
-  m_textAlignment: 513
+  m_textAlignment: 514
   m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -270,13 +270,13 @@ MonoBehaviour:
   m_pageToDisplay: 1
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
-    textComponent: {fileID: 197724731}
-    characterCount: 16
+    textComponent: {fileID: 133159524}
+    characterCount: 8
     spriteCount: 0
     spaceCount: 1
     wordCount: 2
     linkCount: 0
-    lineCount: 1
+    lineCount: 2
     pageCount: 1
     materialCount: 1
   m_havePropertiesChanged: 0
@@ -297,12 +297,12 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!222 &197724732
+--- !u!222 &133159525
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 197724729}
+  m_GameObject: {fileID: 133159522}
   m_CullTransparentMesh: 0
 --- !u!1 &222364525
 GameObject:
@@ -439,7 +439,7 @@ MonoBehaviour:
   Platform: 0
   voxelGrid: {fileID: 1579994443}
   uiRaycaster: {fileID: 1884452790}
-  touchInputDelay: 0.025
+  touchInputDelay: 0
   rotationSpeed: {x: 1, y: 1}
   rotationSmoothing: 10
   zoomDirectionThreshold: 0.75
@@ -495,8 +495,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 428564655}
   - {fileID: 1265594363}
-  playerInventoryItemArea: {fileID: 1330320723}
-  shopInventoryItemArea: {fileID: 1140096577}
+  playerInventoryItemArea: {fileID: 0}
+  shopInventoryItemArea: {fileID: 0}
   inventoryEquippedArea: {fileID: 759096865}
   ingameEquipmentArea: {fileID: 379403976}
   activeToolBorder: {fileID: 571675763}
@@ -506,16 +506,15 @@ MonoBehaviour:
   - {fileID: 1265594364}
   InventoryInfoboxFlavorText: {fileID: 1849882737}
   InventoryInfoboxNameText: {fileID: 1670264486}
-  shopCurrencyText: {fileID: 2024438580}
+  shopCurrencyText: {fileID: 0}
   debugText: {fileID: 408999643}
-  inventoryOpenImage: {fileID: 21300000, guid: e605c9cc6b89e3c45b942c2ee7b752fb, type: 3}
-  inventoryClosedImage: {fileID: 21300000, guid: e4c358c9e2f9f0c4692819dc727f5d8f,
-    type: 3}
-  inventoryImage: {fileID: 2057659255}
+  inventoryOpenImage: {fileID: 0}
+  inventoryClosedImage: {fileID: 0}
+  inventoryImage: {fileID: 0}
+  newRockButton: {fileID: 0}
   inventoryUIObject: {fileID: 224286082990802218, guid: ece63638652d1a24dbd405d2abfef245,
     type: 2}
-  shopUIObject: {fileID: 224038397117936636, guid: e7aa7bbe71a8d8c48a9c81401a18f7bb,
-    type: 2}
+  shopUIObject: {fileID: 0}
   equippedToolUIObject: {fileID: 224975189272168884, guid: 8af7b53e9a3876249b12bc5d60ec0e8a,
     type: 2}
   defaultInventoryPanelText: Tap an item to see its description.
@@ -531,12 +530,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerItems:
-  - {fileID: 11400000, guid: b4a5bda87bc268e4cb9778ede99d8288, type: 2}
   - {fileID: 11400000, guid: 6c80c244c1797d041b0fde4c42510b5a, type: 2}
+  - {fileID: 11400000, guid: b4a5bda87bc268e4cb9778ede99d8288, type: 2}
   equippedItems: []
   shopItems:
-  - {fileID: 11400000, guid: 65443f193394fe749aa5f78ca8730474, type: 2}
   - {fileID: 11400000, guid: 036db9c311caa5240affb3b0a18f4a22, type: 2}
+  - {fileID: 11400000, guid: 65443f193394fe749aa5f78ca8730474, type: 2}
 --- !u!114 &291856087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -555,6 +554,7 @@ MonoBehaviour:
   debrisParticleCount: {x: 2, y: 5}
   destroyShakeAmount: 0.25
   destroyShakeDuration: 0.1
+  rockGenMoveSmoothing: 5
 --- !u!1 &343430770
 GameObject:
   m_ObjectHideFlags: 0
@@ -1030,7 +1030,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 459.39844, y: 377.1}
+  m_AnchoredPosition: {x: 459.39844, y: 320}
   m_SizeDelta: {x: 876.7, y: 43.900024}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &408999643
@@ -1206,6 +1206,129 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!1 &510157473
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 510157474}
+  - component: {fileID: 510157477}
+  - component: {fileID: 510157476}
+  - component: {fileID: 510157475}
+  m_Layer: 0
+  m_Name: Next Rock Button
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &510157474
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 510157473}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.0000138, y: 1.0000138, z: 1.0000138}
+  m_Children:
+  - {fileID: 133159523}
+  m_Father: {fileID: 128526034}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -95.15625, y: -1214}
+  m_SizeDelta: {x: 150, y: 150}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &510157475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 510157473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 1, g: 1, b: 1, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 510157476}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 291856087}
+        m_MethodName: GetNewRock
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!114 &510157476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 510157473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &510157477
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 510157473}
+  m_CullTransparentMesh: 0
 --- !u!1 &527187463
 GameObject:
   m_ObjectHideFlags: 0
@@ -3018,7 +3141,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00009511035}
+  m_AnchoredPosition: {x: 0, y: 0.00007628148}
   m_SizeDelta: {x: -0.3, y: 0.000011702138}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1202409281
@@ -3434,7 +3557,7 @@ MonoBehaviour:
   Surface: 0
   dimensions: {x: 16, y: 16, z: 16}
   material: {fileID: 2100000, guid: 65ed0f6d0baa9834e866cd6ee785d86d, type: 2}
-  atlasDimensions: {x: 4, y: 4}
+  atlasDimensions: {x: 0, y: 0}
   textureResolution: 0.25
   maxVertsPerMesh: 60000
 --- !u!4 &1579994444
@@ -3483,9 +3606,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   voxelGrid: {fileID: 1579994443}
-  gemCount: 10
+  gemCount: 1
   range: 5
-  gemPrefab: {fileID: 1920451552321434, guid: 38c67dc38a8b35f459f5c77b11bf3419, type: 2}
+  gemPrefab: {fileID: 0}
   gemObjects:
   - {fileID: 11400000, guid: 817451f1c5353114d8fcfcf373a4be40, type: 2}
   - {fileID: 11400000, guid: 817451f1c5353114d8fcfcf373a4be40, type: 2}
