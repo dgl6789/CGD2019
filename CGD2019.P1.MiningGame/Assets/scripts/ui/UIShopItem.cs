@@ -22,6 +22,9 @@ namespace App.UI {
         /// Executes when an item UI object is tapped.
         /// </summary>
         public override void OnTapItem() {
+            UIManager.Instance.SetInventoryPanelText(item);
+            UIManager.Instance.OnItemTapped(this);
+
             if (isTappedOnce) {
                 // Buy the item, if possible.
                 if (InventoryManager.Instance.PlayerCurrency >= item.Value) {
@@ -30,11 +33,9 @@ namespace App.UI {
                     InventoryManager.Instance.RemoveItem(item, InventoryType.SHOP);
 
                     InventoryManager.Instance.AdjustCurrency(-item.Value);
+                    UIManager.Instance.ResetInventoryPanelText();
                 }
             } else isTappedOnce = true;
-
-            UIManager.Instance.OnItemTapped(this);
-            UIManager.Instance.SetInventoryPanelText(item);
         }
     }
 }

@@ -9,6 +9,7 @@ namespace App.UI
     public class UIInventoryItem : MonoBehaviour
     {
         protected InventoryItem item;
+        public InventoryItem Item { get { return item; } }
 
         protected bool isTappedOnce;
 
@@ -37,6 +38,10 @@ namespace App.UI
         /// with the currently equipped tool of the same type.
         /// </summary>
         public virtual void OnTapItem() {
+            // Set the inventory panel text
+            UIManager.Instance.SetInventoryPanelText(item);
+            UIManager.Instance.OnItemTapped(this);
+
             // Sell the item, if the shop is open and this is the second tap.
             if (UIManager.Instance.ModalIsOpen(ModalState.SHOP)) {
                 if (isTappedOnce) {
@@ -46,9 +51,9 @@ namespace App.UI
                     if(item is ToolItem) InventoryManager.Instance.AddItem(item, InventoryType.SHOP);
 
                     InventoryManager.Instance.AdjustCurrency(item.Value);
-                } else isTappedOnce = true;
 
-                UIManager.Instance.OnItemTapped(this);
+                    UIManager.Instance.ResetInventoryPanelText();
+                } else isTappedOnce = true;
             } else {
                 // Equip an item if it is a tool and the shop is not open.
                 if (item is ToolItem) {
@@ -57,8 +62,6 @@ namespace App.UI
                     InventoryManager.Instance.SetItemEquipped(i, true);
                 }
             }
-
-            UIManager.Instance.SetInventoryPanelText(item);
         }
     }
 }

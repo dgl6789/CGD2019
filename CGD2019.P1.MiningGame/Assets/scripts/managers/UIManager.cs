@@ -237,10 +237,12 @@ namespace App.UI {
             SetActiveToolBorder(InventoryManager.Instance.ActiveTool);
         }
 
+        /// <summary>
+        /// Indicate to all active shop ui items (and inventory ui items if both the shop and inventory modals are open).
+        /// </summary>
+        /// <param name="item">Item that was tapped.</param>
         public void OnItemTapped(UIInventoryItem item) {
-            /// TODO: indicate to all active shop ui items (and inventory ui items if both the shop and inventory modals are open)
-            /// to reset their isTappedOnce booleans, except for the item that was tapped.
-            /// 
+
             foreach(RectTransform r in shopInventoryItemArea.GetComponentsInChildren<RectTransform>()) {
                 UIInventoryItem i = r.GetComponent<UIInventoryItem>();
 
@@ -248,6 +250,16 @@ namespace App.UI {
                     i.UntapItem();
                 }
             }
+
+            foreach (RectTransform r in playerInventoryItemArea.GetComponentsInChildren<RectTransform>()) {
+                UIInventoryItem i = r.GetComponent<UIInventoryItem>();
+
+                if (r != playerInventoryItemArea && i != null && i != item) {
+                    i.UntapItem();
+                }
+            }
+            
+            InventoryInfoboxFlavorText.text += " Tap again to " + (InventoryManager.Instance.playerItems.Contains(item.Item) ? "sell." : "buy.");
         }
 
         /// <summary>
@@ -291,7 +303,7 @@ namespace App.UI {
         /// Set the inventory panel text to the default.
         /// </summary>
         public void ResetInventoryPanelText() {
-            InventoryInfoboxNameText.text = "???";
+            InventoryInfoboxNameText.text = "";
             InventoryInfoboxFlavorText.text = defaultInventoryPanelText;
         }
 
