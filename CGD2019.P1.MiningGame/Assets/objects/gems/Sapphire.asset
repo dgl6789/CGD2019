@@ -9,10 +9,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ac3b54af9e921044984dfcc2e0b9efa7, type: 3}
-  m_Name: Diamond
+  m_Name: Sapphire
   m_EditorClassIdentifier: 
   itemSprite: {fileID: 21300000, guid: 25482ec08296f404cb0615060327399b, type: 3}
-  itemName: Diamond
-  itemText: Woman's best friend. Sorry, you're in second place.
-  value: 600
-  modelName: gemModelDiamond
+  itemName: Sapphire
+  itemText: a variety of the mineral corundum, consisting of aluminium oxide (Al2O3)
+    with trace amounts of elements such as iron, titanium, chromium, copper, or magnesium.
+  value: 300
+  modelName: gemModelSapphire

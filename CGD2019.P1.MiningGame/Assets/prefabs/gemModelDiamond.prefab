@@ -9,46 +9,46 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1121469368447618}
+  m_RootGameObject: {fileID: 1920451552321434}
   m_IsPrefabAsset: 1
---- !u!1 &1121469368447618
+--- !u!1 &1920451552321434
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4179897228789926}
-  - component: {fileID: 33715726773229872}
-  - component: {fileID: 23977018391197640}
-  - component: {fileID: 54704954283589414}
-  - component: {fileID: 114426403056588366}
+  - component: {fileID: 4077155825358994}
+  - component: {fileID: 33208976878371058}
+  - component: {fileID: 23847180425510306}
+  - component: {fileID: 65453695399414018}
+  - component: {fileID: 114598385708986106}
   m_Layer: 0
-  m_Name: Debris Particle
-  m_TagString: Untagged
+  m_Name: gemModelDiamond
+  m_TagString: Mineral
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4179897228789926
+--- !u!4 &4077155825358994
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1121469368447618}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_GameObject: {fileID: 1920451552321434}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.4834082, y: 0.68003553, z: 0.050362203}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23977018391197640
+--- !u!23 &23847180425510306
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1121469368447618}
+  m_GameObject: {fileID: 1920451552321434}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -58,7 +58,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 692310f96f5cffc4b92a638cfe6f1337, type: 2}
+  - {fileID: 2100000, guid: 0bb5ec3b72bf457409035aa5307bca5c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -78,51 +78,33 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33715726773229872
+--- !u!33 &33208976878371058
 MeshFilter:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1121469368447618}
-  m_Mesh: {fileID: 4300000, guid: 90f9beb04ab79814d9997cb428a3f4ea, type: 3}
---- !u!54 &54704954283589414
-Rigidbody:
+  m_GameObject: {fileID: 1920451552321434}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &65453695399414018
+BoxCollider:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1121469368447618}
+  m_GameObject: {fileID: 1920451552321434}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!114 &114426403056588366
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114598385708986106
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1121469368447618}
+  m_GameObject: {fileID: 1920451552321434}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08789637c8e32f645b1674365642d2b9, type: 3}
+  m_Script: {fileID: 11500000, guid: 1e1b48bbd5d80584c9089ddaa5f9e87c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Meshes:
-  - {fileID: 4300000, guid: 90f9beb04ab79814d9997cb428a3f4ea, type: 3}
-  - {fileID: 4300000, guid: 63d21e4fe5d78db4ab7368d883cafbc1, type: 3}
-  Materials:
-  - {fileID: 0}
-  - {fileID: 2100000, guid: 692310f96f5cffc4b92a638cfe6f1337, type: 2}
-  - {fileID: 2100000, guid: ad048eb448dec3a418ad4af9c4d34ac8, type: 2}
-  - {fileID: 2100000, guid: 56d455ff1ca691f4e81357a3db7c9e73, type: 2}
-  startScale: {x: 1.5, y: 2.75}
-  shrinkRate: 0.95
-  sizeMinimum: 0.01
-  angularVelocity: {x: 0, y: 720}
-  velocityUpwardBias: 4
-  velocity: {x: -10, y: 10}
-  gravityScale: 27

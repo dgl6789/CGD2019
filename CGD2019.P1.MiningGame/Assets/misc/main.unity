@@ -3143,7 +3143,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000096232616}
+  m_AnchoredPosition: {x: 0, y: 0.00009805058}
   m_SizeDelta: {x: -0.3, y: 0.000011702138}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1202409281
@@ -3552,10 +3552,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 301e32ab9559fda4e8cc496347f0c6b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnRate: 0.9
+  spawnRate: 0.75
   xMin: 5
   yMin: 5
   zMin: 5
+  rockBounds: {x: 0, y: 0, z: 0}
   Surface: 0
   dimensions: {x: 16, y: 16, z: 16}
   material: {fileID: 2100000, guid: 65ed0f6d0baa9834e866cd6ee785d86d, type: 2}
@@ -3608,12 +3609,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   voxelGrid: {fileID: 1579994443}
-  gemCount: 1
-  range: 5
-  gemPrefab: {fileID: 1920451552321434, guid: 38c67dc38a8b35f459f5c77b11bf3419, type: 2}
+  totalRockValue: 0
+  range: 0
+  gemPrefabs:
+  - {fileID: 1920451552321434, guid: 0294ac40d9501de4691292fdcdf42a79, type: 2}
+  - {fileID: 1920451552321434, guid: 38c67dc38a8b35f459f5c77b11bf3419, type: 2}
+  - {fileID: 1920451552321434, guid: 736cfb2cb2d057a44a51635db0f85743, type: 2}
+  - {fileID: 1920451552321434, guid: d5c5fb51ed46af44e863429a15f52caa, type: 2}
+  - {fileID: 1920451552321434, guid: be4ef0f02fc1f6c418227e35d435516d, type: 2}
+  - {fileID: 1920451552321434, guid: 636ebb492c81c384da891f54dfcb026b, type: 2}
   gemObjects:
   - {fileID: 11400000, guid: 817451f1c5353114d8fcfcf373a4be40, type: 2}
-  - {fileID: 11400000, guid: 817451f1c5353114d8fcfcf373a4be40, type: 2}
+  - {fileID: 11400000, guid: 44ccd4cf4dd01a74b9ace232de422fc0, type: 2}
+  - {fileID: 11400000, guid: dd1d8d637ffe65a448e4ed965a00abdf, type: 2}
+  - {fileID: 11400000, guid: c3de7749ceedee04d85b0a909b63e71b, type: 2}
+  - {fileID: 11400000, guid: ae2b3f289d53f3d4d94039ac53c0e138, type: 2}
+  - {fileID: 11400000, guid: d756748ef8d6a4e489a87dd618f0589a, type: 2}
 --- !u!1 &1583354852
 GameObject:
   m_ObjectHideFlags: 0

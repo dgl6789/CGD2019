@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 65453695399414018}
   - component: {fileID: 114598385708986106}
   m_Layer: 0
-  m_Name: GemObject
+  m_Name: gemModelSapphire
   m_TagString: Mineral
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38,7 +38,7 @@ Transform:
   m_GameObject: {fileID: 1920451552321434}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.4834082, y: 0.68003553, z: 0.050362203}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -58,7 +58,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 2071bb5618a873f4db7464974dd9c097, type: 2}
+  - {fileID: 2100000, guid: 63a6a03dec95f0146aeb627183efdc71, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

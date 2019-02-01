@@ -13,9 +13,9 @@ namespace App
         public static Gemeration Instance;
 
         //gemeration values
-        public int gemCount = 1;
+        public int totalRockValue = 0;
         public int range = 0;
-        [SerializeField] GameObject gemPrefab;
+        [SerializeField] List<GameObject> gemPrefabs;
         [SerializeField] List<MineralItem> gemObjects;
 
         //gemerator position
@@ -31,53 +31,76 @@ namespace App
         //generate a number of gems
         public void GenerateGems()
         {
-            gemOrigin = FindOrigin();
+            ResetGemerationValues();
 
-            if (range <= 0)
+            do
             {
-                range = FindDefaultRange();
-            }
-
-            if (gemCount <= 0)
-                gemCount = 1;
-
-            //loop to generate gems
-            for (int i = 0; i < gemCount; i++)
-            {
-                //randomly choose a prefab
-                GemBehavior thisGem = Instantiate(gemPrefab, voxelGrid.transform).GetComponent<GemBehavior>();
+                //randomly choose a gem
+                MineralItem gemChosen = gemObjects[Random.Range(0, gemObjects.Count)];
                 
-                //generate random position and normalize it
-                Vector3 gemPosition = new Vector3(
-                    Random.Range(-1.0f, 1.0f),
-                    Random.Range(-1.0f, 1.0f),
-                    Random.Range(-1.0f, 1.0f)).normalized;
+                //check that this gem still fits within remaining value
+                if (totalRockValue >= gemChosen.Value)
+                {
+                    SpawnGem(gemChosen);
 
-                //place position within specified range of origin
-                float rangePercentage = Random.Range(0.0f, 1.0f) * range;
-                gemPosition = gemPosition * rangePercentage + gemOrigin;
+                    //subtract from total value
+                    totalRockValue -= gemChosen.Value;
+                }
+            } while (totalRockValue > 0);
+        }
 
-                //correct for floating gems
-                gemPosition = PullToRock(gemPosition);
+        //method to set up values for gemeration
+        void ResetGemerationValues()
+        {
+            totalRockValue = 1500;
 
-                //set the gem's position
-                thisGem.transform.position = gemPosition;
+            gemOrigin = new Vector3(voxelGrid.X / 2.0f, voxelGrid.Y / 2.0f, voxelGrid.Z / 2.0f);
 
-                // Set the gem's internal data
-                thisGem.Initialize(gemObjects[Random.Range(0, gemObjects.Count)]);
+            range = Mathf.RoundToInt((voxelGrid.XBounds + voxelGrid.YBounds + voxelGrid.ZBounds) / 3.0f);
+        }
+
+        //method to spawn a specific gem
+        void SpawnGem(MineralItem gemChosen)
+        { 
+            float valueMod = 1.0f - (gemChosen.Value / 1000.0f);
+
+            //instantiate gem object
+            GemBehavior thisGem = Instantiate(GetGemPrefab(gemChosen), voxelGrid.transform).GetComponent<GemBehavior>();
+
+            //generate random position and normalize it
+            Vector3 gemPosition = new Vector3(
+                Random.Range(-1.0f, 1.0f),
+                Random.Range(-1.0f, 1.0f),
+                Random.Range(-1.0f, 1.0f)).normalized;
+
+            //place position within specified range of origin
+            float rangePercentage = Random.Range(valueMod / 2.0f, valueMod) * range;
+            gemPosition = gemPosition * rangePercentage + gemOrigin;
+
+            //correct for floating gems
+            gemPosition = PullToRock(gemPosition);
+
+            //set the gem's position
+            thisGem.transform.position = gemPosition;
+
+            // Set the gem's internal data
+            thisGem.Initialize(gemChosen);
+        }
+
+        //method to get the appropraite model for a chosen gem
+        GameObject GetGemPrefab(MineralItem chosenGem)
+        {
+            //loop through gem prefabs looking for specified one
+            foreach(GameObject gem in gemPrefabs)
+            {
+                if (gem.name == chosenGem.ModelName)
+                {
+                    return gem;
+                }
             }
-        }
 
-        //method to find the center of the voxel grid
-        Vector3 FindOrigin()
-        {
-            return new Vector3(voxelGrid.X / 2.0f, voxelGrid.Y / 2.0f, voxelGrid.Z / 2.0f);
-        }
-
-        //method to find default range value using voxel grid dimensions
-        int FindDefaultRange()
-        {
-            return (int)((voxelGrid.X + voxelGrid.Y + voxelGrid.Z) / 3.0f);
+            //return the first prefab by default
+            return gemPrefabs[0];
         }
 
         //method to correct for floating gems
