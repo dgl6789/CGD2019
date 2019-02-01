@@ -486,7 +486,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DrawDebugText: 1
-  version: 0.0.2
+  version: 0.0.2 [Playtest 2]
   stateTransforms:
   - {fileID: 365390936}
   - {fileID: 0}
@@ -1023,17 +1023,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 408999641}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1884452792}
-  m_RootOrder: 5
+  m_Father: {fileID: 1597952014}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 459.39844, y: 30}
-  m_SizeDelta: {x: 876.7, y: 43.900024}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -70}
+  m_SizeDelta: {x: 876.69995, y: 43.900024}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &408999643
 MonoBehaviour:
@@ -1088,7 +1088,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_textAlignment: 257
+  m_textAlignment: 514
   m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -3909,7 +3909,8 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 408999642}
   m_Father: {fileID: 365390936}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4170,7 +4171,7 @@ Transform:
   m_LocalScale: {x: 2.8418787, y: 2.8418787, z: 2.8418787}
   m_Children: []
   m_Father: {fileID: 1884452792}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1670264484
 GameObject:
@@ -4877,7 +4878,6 @@ RectTransform:
   - {fileID: 128526034}
   - {fileID: 428564655}
   - {fileID: 1265594363}
-  - {fileID: 408999642}
   - {fileID: 1669008913}
   m_Father: {fileID: 0}
   m_RootOrder: 6
