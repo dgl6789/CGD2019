@@ -2,16 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
+using App.Util;
 
 namespace App.UI {
     public class UIEquippedTool : MonoBehaviour {
-        [SerializeField] ToolItem item;
+        protected ToolItem item;
         public ToolItem Item {
             get { return item; }
         }
-        
-        [SerializeField] Image itemImage;
 
         /// <summary>
         /// Initializes an inventory UI item. 
@@ -21,7 +19,7 @@ namespace App.UI {
             item = itemData;
 
             // set the ui's sprite.
-            itemImage.sprite = itemData.ItemSprite;
+            GetComponent<Image>().sprite = AssetManager.Instance.GetSpriteFromManifest(itemData.SpriteName);
         }
 
         /// <summary>

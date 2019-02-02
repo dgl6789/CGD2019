@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
+using App.Util;
 
 namespace App.UI
 {
@@ -22,7 +22,7 @@ namespace App.UI
             item = itemData;
 
             // set the ui's sprite.
-            GetComponent<Image>().sprite = itemData.ItemSprite;
+            GetComponent<Image>().sprite = AssetManager.Instance.GetSpriteFromManifest(itemData.SpriteName);
         }
 
         public void UntapItem() {

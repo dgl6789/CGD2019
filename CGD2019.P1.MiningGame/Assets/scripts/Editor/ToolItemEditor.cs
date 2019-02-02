@@ -9,7 +9,7 @@ public class ToolItemEditor : Editor {
     public SerializedProperty
         itemName,
         itemText,
-        itemSprite,
+        spriteName,
         itemValue,
         type, 
         inputType, 
@@ -21,7 +21,7 @@ public class ToolItemEditor : Editor {
         // Setup the SerializedProperties
         itemName = serializedObject.FindProperty("itemName");
         itemText = serializedObject.FindProperty("itemText");
-        itemSprite = serializedObject.FindProperty("itemSprite");
+        spriteName = serializedObject.FindProperty("spriteName");
         itemValue = serializedObject.FindProperty("value");
         type = serializedObject.FindProperty("type");
         inputType = serializedObject.FindProperty("inputType");
@@ -35,7 +35,7 @@ public class ToolItemEditor : Editor {
 
         EditorGUILayout.PropertyField(itemName);
         EditorGUILayout.PropertyField(itemText);
-        EditorGUILayout.PropertyField(itemSprite);
+        EditorGUILayout.PropertyField(spriteName);
         EditorGUILayout.PropertyField(itemValue);
 
         EditorGUILayout.Space();

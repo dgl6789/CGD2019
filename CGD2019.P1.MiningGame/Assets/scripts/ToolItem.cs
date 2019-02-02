@@ -33,5 +33,18 @@ namespace App
         public void Equip() {
             equipped = InventoryManager.Instance.SetItemEquipped(this, true);
         }
+
+        public void SetValues (string itemName, string itemText, int value, string spriteName, ToolType type, ToolInputType inputType, int power, float sustainedBreakCooldown, float breakRadius) {
+            this.spriteName = spriteName;
+            this.itemName = itemName;
+            this.itemText = itemText;
+            this.value = value;
+
+            this.type = type;
+            this.inputType = inputType;
+            this.power = power;
+            this.sustainedBreakCooldown = sustainedBreakCooldown;
+            this.breakRadius = breakRadius;
+        }
     }
 }

@@ -77,6 +77,7 @@ namespace App {
                     break;
                 case GameState.MINING:
                     /// TODO: Setup for mining state.
+                    UIManager.Instance.LoadInventoryToEquipmentBar();
                     UIManager.Instance.SetActiveToolBorder(InventoryManager.Instance.ActiveTool);
 
                     VoxelGrid.Instance.Generate();

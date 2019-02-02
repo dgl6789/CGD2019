@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bec6b44051ced14a95da64dd633cf5b, type: 3}
   m_Name: Basic Chisel
   m_EditorClassIdentifier: 
-  itemSprite: {fileID: 21300000, guid: f47683edc0821f848bddee64fed19582, type: 3}
+  spriteName: chisel_0
   itemName: Chisel
   itemText: Use this to collect exposed gems.
   value: 0

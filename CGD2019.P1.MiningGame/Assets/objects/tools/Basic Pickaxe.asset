@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bec6b44051ced14a95da64dd633cf5b, type: 3}
   m_Name: Basic Pickaxe
   m_EditorClassIdentifier: 
-  itemSprite: {fileID: 21300000, guid: 5109295be90bd3548838d80c0cc2c933, type: 3}
+  spriteName: pickaxe_0
   itemName: Basic Pickaxe
   itemText: Tap the rock to chip away at it. Eat your heart out, Markus Persson.
   value: 0

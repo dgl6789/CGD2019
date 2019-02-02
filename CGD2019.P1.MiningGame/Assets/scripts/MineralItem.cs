@@ -9,5 +9,14 @@ namespace App
     {
         [SerializeField] string modelName;
         public string ModelName { get { return modelName; } }
+
+        public void SetValues(string itemName, string itemText, int value, string spriteName, string modelName) {
+            this.spriteName = spriteName;
+            this.itemName = itemName;
+            this.itemText = itemText;
+            this.value = value;
+
+            this.modelName = modelName;
+        }
     }
 }
