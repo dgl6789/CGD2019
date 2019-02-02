@@ -166,50 +166,30 @@ namespace App.UI {
             // Remove existing inventory items
             foreach (RectTransform r in itemArea.GetComponentsInChildren<RectTransform>()) { if(r != itemArea) Destroy(r.gameObject); }
 
-            
 
-            int it = 0;
-
-            int numItemsPerRow = Mathf.FloorToInt(itemArea.rect.width / (uiItemObject.rect.width + 5));
-            int numRows = Mathf.CeilToInt(itemCount / (float)numItemsPerRow);
-            
-            // Adjust the size of the scrollable area to accomodate the inventory UI items
-            // itemArea.offsetMax = new Vector2(0, itemArea.rect.yMin + (5 + (numRows * (uiItemObject.rect.height + 5))));
-
-            // Inventory items
-            for(int y = 0; y < numRows; y++) {
-                for (int x = 0; x < numItemsPerRow; x++) {
-                    if (it >= itemCount) break;
-
+            if (inventory.Equals(InventoryType.PLAYER)) {
+                foreach (InventoryItem item in InventoryManager.Instance.playerItems) {
                     RectTransform i = Instantiate(uiItemObject, itemArea.transform);
 
-                    i.anchoredPosition = new Vector2(
-                        5 + (x * (i.rect.width + 5)) + i.rect.width / 2,
-                        -5 - (y * (i.rect.height + 5)) - i.rect.height / 2
-                    );
-
-                    if (inventory.Equals(InventoryType.PLAYER)) i.GetComponent<UIInventoryItem>().InitializeWithData(InventoryManager.Instance.playerItems[it]);
-                    else i.GetComponent<UIShopItem>().InitializeWithData(InventoryManager.Instance.shopItems[it]);
-
-                    it++;
+                    i.GetComponent<UIInventoryItem>().InitializeWithData(item);
                 }
 
-                if (it >= itemCount) break;
+            } else {
+                foreach (InventoryItem item in InventoryManager.Instance.shopItems) {
+                    RectTransform i = Instantiate(uiItemObject, itemArea.transform);
+
+                    i.GetComponent<UIInventoryItem>().InitializeWithData(item);
+                }
             }
 
             // Equipped Items (if necessary)
             if (inventory.Equals(InventoryType.PLAYER)) {
                 foreach (RectTransform r in inventoryEquippedArea.GetComponentsInChildren<RectTransform>()) { if (r != inventoryEquippedArea) Destroy(r.gameObject); }
 
-                for (int i = 0; i < InventoryManager.Instance.equippedItems.Count; i++) {
-                    RectTransform t = Instantiate(inventoryUIObject, inventoryEquippedArea.transform);
-
-                    t.anchoredPosition = new Vector2(
-                        5 + (i * (inventoryUIObject.rect.width + 5)) + inventoryUIObject.rect.width / 2,
-                        inventoryEquippedArea.rect.y
-                    );
-
-                    t.GetComponent<UIInventoryItem>().InitializeWithData(InventoryManager.Instance.equippedItems[i]);
+                // Load the equipped items to the bar
+                foreach (ToolItem i in InventoryManager.Instance.equippedItems) {
+                    RectTransform t = Instantiate(equippedToolUIObject, inventoryEquippedArea.transform);
+                    t.GetComponent<UIEquippedTool>().InitializeWithData(i);
                 }
             }
         }
@@ -222,15 +202,9 @@ namespace App.UI {
             foreach (RectTransform r in ingameEquipmentArea.GetComponentsInChildren<RectTransform>()) { if (r != ingameEquipmentArea) Destroy(r.gameObject); }
 
             // Load the equipped items to the bar
-            for (int i = 0; i < InventoryManager.Instance.equippedItems.Count; i++) {
+            foreach (ToolItem i in InventoryManager.Instance.equippedItems) {
                 RectTransform t = Instantiate(equippedToolUIObject, ingameEquipmentArea.transform);
-
-                t.anchoredPosition = new Vector2(
-                    5 + (i * (equippedToolUIObject.rect.width + 5)) + equippedToolUIObject.rect.width / 2,
-                    ingameEquipmentArea.rect.y
-                );
-
-                t.GetComponent<UIEquippedTool>().InitializeWithData(InventoryManager.Instance.equippedItems[i]);
+                t.GetComponent<UIEquippedTool>().InitializeWithData(i);
             }
 
             SetActiveToolBorder(InventoryManager.Instance.ActiveTool);
