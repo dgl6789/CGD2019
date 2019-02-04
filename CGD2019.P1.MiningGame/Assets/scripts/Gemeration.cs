@@ -21,6 +21,9 @@ namespace App
         //gemerator position
         Vector3 gemOrigin;
 
+        //list of created gems
+        [SerializeField] List<GemBehavior> allGems;
+
         void Awake()
         {
             // Singleton intitialization.
@@ -85,6 +88,9 @@ namespace App
 
             // Set the gem's internal data
             thisGem.Initialize(gemChosen);
+
+            //add gem to list
+            allGems.Add(thisGem);
         }
 
         //method to get the appropraite model for a chosen gem
@@ -144,15 +150,32 @@ namespace App
         }
 
         //method to determine if gem is embedded in rock
-        bool InRock(Vector3 gemPosition)
+        public bool InRock(Vector3 gemPosition)
         {
             //if origin is in grid then gem is embedded
-            if (voxelGrid.GetData((int)gemPosition.x, (int)gemPosition.y, (int)gemPosition.z) == 1)
+            if (voxelGrid.GetData((int)gemPosition.x, (int)gemPosition.y, (int)gemPosition.z) >= 1)
             {
                 return true;
             }
 
             return false;
+        }
+
+        //method to remove all gems
+        public void ClearGems()
+        {
+            foreach (GemBehavior gem in allGems)
+            {
+                Destroy(gem.gameObject);
+            }
+
+            allGems.Clear();
+        }
+
+        //method to remove a specific gem from the list
+        public void RemoveGem(GemBehavior thisGem)
+        {
+            allGems.Remove(thisGem);
         }
     }
 }

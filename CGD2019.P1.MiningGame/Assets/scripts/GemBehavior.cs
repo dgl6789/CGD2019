@@ -7,26 +7,12 @@ namespace App.Gameplay {
 
         [HideInInspector] bool debugIsFree = true;
 
-        GameState startingState;
-
         MineralItem itemData;
         
         public void Initialize(MineralItem itemData) {
             this.itemData = itemData;
-
-            startingState = StateManager.Instance.State;
-
-            // TODO: Set the gem's mesh to the mesh specified by itemData
         }
-
-        public void Update()
-        {
-            if (StateManager.Instance.State != startingState)
-            {
-                Destroy(gameObject);
-            }
-        }
-
+        
         //method to mine gem
         public void TryMine() {
             if (IsMineable()) {
@@ -34,6 +20,7 @@ namespace App.Gameplay {
                 InventoryManager.Instance.AddItem(itemData, InventoryType.PLAYER);
 
                 //delete gameobject
+                Gemeration.Instance.RemoveGem(this);
                 Destroy(gameObject);
             }
         }
