@@ -439,7 +439,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.22657841}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -11.850006, y: 1.8999939}
+  m_AnchoredPosition: {x: -11.850037, y: 1.8999939}
   m_SizeDelta: {x: -23.7, y: -28.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &225985070
@@ -490,6 +490,7 @@ GameObject:
   - component: {fileID: 291856087}
   - component: {fileID: 291856086}
   - component: {fileID: 291856088}
+  - component: {fileID: 291856089}
   m_Layer: 0
   m_Name: _Managers
   m_TagString: Untagged
@@ -579,6 +580,7 @@ MonoBehaviour:
   InventoryInfoboxFlavorText: {fileID: 1849882737}
   InventoryInfoboxNameText: {fileID: 1670264486}
   shopCurrencyText: {fileID: 2024438580}
+  ingameCurrencyText: {fileID: 330576166}
   debugText: {fileID: 408999643}
   inventoryOpenImage: {fileID: 21300000, guid: e605c9cc6b89e3c45b942c2ee7b752fb, type: 3}
   inventoryClosedImage: {fileID: 21300000, guid: e4c358c9e2f9f0c4692819dc727f5d8f,
@@ -631,7 +633,6 @@ MonoBehaviour:
   debrisParticleCount: {x: 2, y: 5}
   destroyShakeAmount: 0.25
   destroyShakeDuration: 0.1
-  rockGenMoveSmoothing: 5
 --- !u!114 &291856088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -655,6 +656,19 @@ MonoBehaviour:
   - Name: pickaxe_2
     Sprite: {fileID: 21300000, guid: df7e5ded2a2c77c43bfc0f3b055ca56f, type: 3}
   ModelManifest: []
+--- !u!114 &291856089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 291856081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eda486d08105b194c989f59c4dd188af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rockGenMoveSmoothing: 8
+  rockIntegrityFactor: 0
 --- !u!1 &330576164
 GameObject:
   m_ObjectHideFlags: 0
@@ -1537,7 +1551,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 291856087}
+      - m_Target: {fileID: 291856089}
         m_MethodName: GetNewRock
         m_Mode: 1
         m_Arguments:
@@ -3237,7 +3251,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 821424183}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.99999994
+  m_Size: 0.9999998
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3542,7 +3556,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.14990234, y: -0.000036276546}
+  m_AnchoredPosition: {x: 0.14990234, y: -0.000076293814}
   m_SizeDelta: {x: -0.3, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1140096578
@@ -3795,7 +3809,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 377700010}
   m_HandleRect: {fileID: 377700009}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3956,7 +3970,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.005004883, y: 0.0000015350397}
+  m_AnchoredPosition: {x: 0.005004883, y: -0.00001525784}
   m_SizeDelta: {x: -0.30999756, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1330320724
@@ -4255,6 +4269,7 @@ MonoBehaviour:
   yMin: 5
   zMin: 5
   rockBounds: {x: 0, y: 0, z: 0}
+  Volume: 0
   Surface: 0
   dimensions: {x: 16, y: 16, z: 16}
   material: {fileID: 2100000, guid: 65ed0f6d0baa9834e866cd6ee785d86d, type: 2}

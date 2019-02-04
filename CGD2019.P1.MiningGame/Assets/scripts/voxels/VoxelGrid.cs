@@ -26,6 +26,8 @@ namespace App.Gameplay {
         public float YBounds { get { return rockBounds.y; } }
         public float ZBounds { get { return rockBounds.z; } }
 
+        [HideInInspector] public int Volume;
+
         // Cutoff for the surface in marching cubes.
         [SerializeField] float Surface;
 
@@ -97,6 +99,8 @@ namespace App.Gameplay {
             uvList.Clear();
             indexList.Clear();
 
+            Volume = 0;
+
             // Populate the data layer.
             // This is where initial shape generation code will go
             shapedRock();
@@ -137,6 +141,7 @@ namespace App.Gameplay {
                     for (int z = 0; z < Z; z++) {
                         if (Mathf.Pow(x - X / 2f, 2) / Mathf.Pow(xBounds, 2) + Mathf.Pow(y - Y / 2f, 2) / Mathf.Pow(yBounds, 2) + Mathf.Pow(z - Z / 2f, 2) / Mathf.Pow(zBounds, 2) <= 1f) {
                             data[x, y, z] = Random.value < spawnRate ? new Voxel(VoxelType.ROCK, new Vector3Int(x, y, z)) : new Voxel(VoxelType.HARD_ROCK, new Vector3Int(x, y, z));
+                            Volume++;
                         } else data[x, y, z] = new Voxel(VoxelType.AIR, new Vector3Int(x, y, z));
                     }
                 }
@@ -177,7 +182,9 @@ namespace App.Gameplay {
         /// <param name="power">Power of the tool being used to attempt the destruction.</param>
         public void TryMultipleVoxelDestruction(Vector3Int[] voxelIndices, int power = 0) {
             foreach (Vector3Int i in voxelIndices) {
-                if (IndexIsValid(i.x, i.y, i.z)) data[i.x, i.y, i.z].TryDestroy(power);
+                if (IndexIsValid(i.x, i.y, i.z)) {
+                    if (data[i.x, i.y, i.z].TryDestroy(power)) Volume--;
+                }
             }
 
             UpdateVisualMesh();
@@ -416,7 +423,7 @@ namespace App.Gameplay {
                 meshObject.GetComponent<MeshFilter>().mesh = mesh;
 
                 // Align the visual mesh to the mesh collider
-                meshObject.transform.localPosition += new Vector3(-0.5f, -0.5f, -0.5f);
+                meshObject.transform.localPosition += new Vector3(0.5f, 0.5f, 0.5f);
 
                 meshes.Add(meshObject);
             }

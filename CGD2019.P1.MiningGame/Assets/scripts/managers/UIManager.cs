@@ -33,6 +33,8 @@ namespace App.UI {
         [SerializeField] TextMeshProUGUI InventoryInfoboxFlavorText;
         [SerializeField] TextMeshProUGUI InventoryInfoboxNameText;
         [SerializeField] TextMeshProUGUI shopCurrencyText;
+        [SerializeField] TextMeshProUGUI ingameCurrencyText;
+
         [SerializeField] TextMeshProUGUI debugText;
 
         [Header("Sprites")]
@@ -41,6 +43,7 @@ namespace App.UI {
 
         [Header("Images")]
         [SerializeField] Image inventoryImage;
+        [SerializeField] Image rockIntegrityBar;
 
         [Header("Buttons")]
         public Button newRockButton;
@@ -280,7 +283,15 @@ namespace App.UI {
         }
 
         public void SetCurrencyText() {
-            shopCurrencyText.text = string.Format("${0:n0}", InventoryManager.Instance.PlayerCurrency);
+            string currency = string.Format("${0:n0}", InventoryManager.Instance.PlayerCurrency);
+
+            shopCurrencyText.text = currency;
+            ingameCurrencyText.text = currency;
+        }
+
+        public void SetRockIntegrity(float integrity)
+        {
+            rockIntegrityBar.fillAmount = integrity;
         }
 
         public void WriteDebug(string text) {

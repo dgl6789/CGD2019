@@ -19,6 +19,9 @@ namespace App
         [SerializeField] int power;
         public int Power { get { return power; } }
 
+        [SerializeField] float precision;
+        public int Precision { get { return precision; } }
+
         [SerializeField] float sustainedBreakCooldown;
         public float SustainedBreakCooldown { get { return sustainedBreakCooldown; } }
 
