@@ -416,7 +416,7 @@ namespace App.Gameplay {
                 meshObject.GetComponent<MeshFilter>().mesh = mesh;
 
                 // Align the visual mesh to the mesh collider
-                meshObject.transform.localPosition += new Vector3(0.5f, 0.5f, 0.5f);
+                meshObject.transform.localPosition += new Vector3(-0.5f, -0.5f, -0.5f);
 
                 meshes.Add(meshObject);
             }
@@ -438,7 +438,7 @@ namespace App.Gameplay {
                 cell[i] = GetData(
                     x + MarchingCubes.VertexOffset[i, 0],
                     y + MarchingCubes.VertexOffset[i, 1],
-                    z + MarchingCubes.VertexOffset[i, 2]
+                    z + MarchingCubes.VertexOffset[i, 2] 
                     );
             }
 

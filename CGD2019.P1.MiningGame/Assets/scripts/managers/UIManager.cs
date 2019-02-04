@@ -160,7 +160,6 @@ namespace App.UI {
         /// </summary>
         public void LoadInventoryToInventoryModal(InventoryType inventory) {
             RectTransform itemArea = inventory.Equals(InventoryType.PLAYER) ? playerInventoryItemArea : shopInventoryItemArea;
-            int itemCount = inventory.Equals(InventoryType.PLAYER) ? InventoryManager.Instance.playerItems.Count : InventoryManager.Instance.shopItems.Count;
             RectTransform uiItemObject = inventory.Equals(InventoryType.PLAYER) ? inventoryUIObject : shopUIObject;
 
             // Remove existing inventory items
