@@ -264,8 +264,6 @@ namespace App.UI {
         /// </summary>
         /// <param name="item">Item to show text for.</param>
         public void SetInventoryPanelText(InventoryItem item) {
-            
-
             InventoryInfoboxFlavorText.text = item.ItemText;
             if (item is MineralItem) {
                 InventoryInfoboxNameText.text = item.ItemName + string.Format(" (${0:n0})", item.Value);

@@ -14,7 +14,10 @@ namespace App
 
         Camera cam;
 
+        // How much integrity per solid voxel does a rock have?
         [SerializeField] float baseIntegrityFactor;
+
+        // How much integrity should be lost per voxel destoryed?
         [SerializeField] float baseIntegrityLossFactor;
         float maxIntegrity;
         float currentIntegrity;
@@ -30,23 +33,60 @@ namespace App
             cam = Camera.main;
         }
 
+        /// <summary>
+        /// Set the rock's integrity.
+        /// </summary>
+        /// <param name="integrity">Integrity to set to.</param>
         void SetRockIntegrity(float integrity) {
             currentIntegrity = integrity;
 
             UIManager.Instance.SetRockIntegrity(Integrity);
         }
 
+        /// <summary>
+        /// Adjust the rock's integrity (additive).
+        /// </summary>
+        /// <param name="adj">Amount to add to the rock's integrity.</param>
         void AdjustRockIntegrity(float adj) {
             currentIntegrity += adj;
 
             UIManager.Instance.SetRockIntegrity(Integrity);
+
+            if(currentIntegrity <= 0) {
+                // The rock broke.
+                OnRockBreak();
+            }
         }
 
-        public void OnBreakVoxel(ToolItem tool)
-        {
-            AdjustRockIntegrity()
+        /// <summary>
+        /// Run when a voxel is broken.
+        /// </summary>
+        /// <param name="tool">Tool used to break the voxel.</param>
+        public void OnBreakVoxel(ToolItem tool) {
+            AdjustRockIntegrity(-tool.Precision * baseIntegrityLossFactor);
         }
 
+        /// <summary>
+        /// Perform functionality upon breaking the rock.
+        /// </summary>
+        public void OnRockBreak() {
+            VoxelGrid.Instance.DestroyAllVoxels();
+            VoxelGrid.Instance.DestroyAllGems();
+
+            FXManager.Instance.SpawnRockBreakParticles();
+        }
+
+        /// <summary>
+        /// Set the initial integrity of a rock.
+        /// </summary>
+        public void SetupNewRockIntegrity() {
+            maxIntegrity = Volume * baseIntegrityFactor;
+            SetRockIntegrity(maxIntegrity);
+        }
+
+        /// <summary>
+        /// Spawn a new rock for the player.
+        /// </summary>
         public void GetNewRock() { StartCoroutine(DoNewRockRoutine()); }
 
         /// <summary>
@@ -73,9 +113,6 @@ namespace App
 
             // Destroy the old rock and regenerate a new one.
             VoxelGrid.Instance.Generate();
-
-            maxIntegrity = Volume * baseIntegrityFactor;
-            SetRockIntegrity(maxIntegrity);
 
             // Move camera directly to left side of new rock.
             cam.transform.position = camInitPos - cam.transform.right * Mathf.Max(VoxelGrid.Instance.X, VoxelGrid.Instance.Y, VoxelGrid.Instance.Z) * 2f;

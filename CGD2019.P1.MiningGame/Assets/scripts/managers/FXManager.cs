@@ -41,6 +41,10 @@ namespace App {
             for (int i = 0; i < r; i++) Instantiate(DebrisParticle, position, Quaternion.identity, transform).GetComponent<DebrisParticle>().Initialize(type);
         }
 
+        public void SpawnRockBreakParticles() {
+
+        }
+
         /// <summary>
         /// Spawn the spark particles to indicate a rock that is too hard to be broken with the current tool.
         /// </summary>

@@ -108,6 +108,8 @@ namespace App.Gameplay {
             // Generate gems
             Gemeration.Instance.GenerateGems();
 
+            RockManager.Instance.SetupNewRockIntegrity();
+
             // Generate the initial visual mesh and collider
             UpdateVisualMesh();
             UpdateCollisionMesh();
@@ -182,13 +184,31 @@ namespace App.Gameplay {
         /// <param name="power">Power of the tool being used to attempt the destruction.</param>
         public void TryMultipleVoxelDestruction(Vector3Int[] voxelIndices, int power = 0) {
             foreach (Vector3Int i in voxelIndices) {
-                if (IndexIsValid(i.x, i.y, i.z)) {
-                    if (data[i.x, i.y, i.z].TryDestroy(power)) Volume--;
-                }
+                if (IndexIsValid(i.x, i.y, i.z)) data[i.x, i.y, i.z].TryDestroy(power);
             }
 
             UpdateVisualMesh();
             UpdateCollisionMesh();
+        }
+
+        public void DestroyAllVoxels() {
+            List<Vector3Int> indices = new List<Vector3Int>();
+
+            for(int x = 0; x < X; x++) {
+                for (int y = 0; y < Y; y++) {
+                    for (int z = 0; z < Z; z++) {
+                        indices.Add(new Vector3Int(x, y, z));
+                    }
+                }
+            }
+
+            SetMultipleVoxelTypesAtIndices(indices.ToArray(), VoxelType.AIR);
+        }
+
+        public void DestroyAllGems() {
+            foreach(Transform t in GetComponentsInChildren<Transform>()) {
+                if (t != transform && t.GetComponent<GemBehavior>() != null) Destroy(t.gameObject);
+            }
         }
 
         /// <summary>
