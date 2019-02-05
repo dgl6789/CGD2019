@@ -27,7 +27,7 @@ namespace App.Gameplay {
 
         //method to determine if the gem can be mined
         bool IsMineable() {
-            return debugIsFree;
+            return !Gemeration.Instance.InRock(transform.position);
         }
     }
 }

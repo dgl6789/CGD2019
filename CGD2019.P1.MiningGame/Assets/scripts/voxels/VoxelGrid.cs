@@ -101,9 +101,6 @@ namespace App.Gameplay {
             // This is where initial shape generation code will go
             shapedRock();
 
-            // Clear out old gems
-            Gemeration.Instance.ClearGems();
-
             // Generate gems
             Gemeration.Instance.GenerateGems();
 

@@ -14,7 +14,7 @@ namespace App
 
         //gemeration values
         public int totalRockValue = 0;
-        public int range = 0;
+        public int spawnRange = 0;
         [SerializeField] List<GameObject> gemPrefabs;
         [SerializeField] List<MineralItem> gemObjects;
 
@@ -36,8 +36,12 @@ namespace App
         {
             ResetGemerationValues();
 
+            Debug.Log("gem values are reset");
+
             do
             {
+                Debug.Log("in gem generation loop");
+
                 //randomly choose a gem
                 MineralItem gemChosen = gemObjects[Random.Range(0, gemObjects.Count)];
                 
@@ -55,11 +59,21 @@ namespace App
         //method to set up values for gemeration
         void ResetGemerationValues()
         {
-            totalRockValue = 1500;
+            Debug.Log("resetting gemeration values");
+
+            //clear out old gems
+            ClearGems();
+
+            Debug.Log("Setting rock value");
+
+            totalRockValue = 1250 + Mathf.RoundToInt(Random.Range(0.0f, 7.5f) * 100.0f);
+            //totalRockValue = 1500;
+
+            Debug.Log("Rock Value = " + totalRockValue);
 
             gemOrigin = new Vector3(voxelGrid.X / 2.0f, voxelGrid.Y / 2.0f, voxelGrid.Z / 2.0f);
 
-            range = Mathf.RoundToInt((voxelGrid.XBounds + voxelGrid.YBounds + voxelGrid.ZBounds) / 3.0f);
+            spawnRange = Mathf.RoundToInt((voxelGrid.XBounds + voxelGrid.YBounds + voxelGrid.ZBounds) / 3.0f);
         }
 
         //method to spawn a specific gem
@@ -77,7 +91,7 @@ namespace App
                 Random.Range(-1.0f, 1.0f)).normalized;
 
             //place position within specified range of origin
-            float rangePercentage = Random.Range(valueMod / 2.0f, valueMod) * range;
+            float rangePercentage = Random.Range(valueMod / 2.0f, valueMod) * spawnRange;
             gemPosition = gemPosition * rangePercentage + gemOrigin;
 
             //correct for floating gems
@@ -164,6 +178,11 @@ namespace App
         //method to remove all gems
         public void ClearGems()
         {
+            Debug.Log("clearing " + allGems.Count + " gems");
+
+            if (allGems.Count == 0)
+                return;
+
             foreach (GemBehavior gem in allGems)
             {
                 Destroy(gem.gameObject);
