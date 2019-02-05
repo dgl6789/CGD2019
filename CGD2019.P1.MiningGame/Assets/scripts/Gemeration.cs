@@ -36,40 +36,24 @@ namespace App
         {
             ResetGemerationValues();
 
-            Debug.Log("gem values are reset");
-
-            do
+            int rv = totalRockValue;
+            while (rv > 0)
             {
-                Debug.Log("in gem generation loop");
-
-                //randomly choose a gem
                 MineralItem gemChosen = gemObjects[Random.Range(0, gemObjects.Count)];
-                
-                //check that this gem still fits within remaining value
-                if (totalRockValue >= gemChosen.Value)
-                {
-                    SpawnGem(gemChosen);
 
-                    //subtract from total value
-                    totalRockValue -= gemChosen.Value;
-                }
-            } while (totalRockValue > 0);
+                SpawnGem(gemChosen);
+
+                rv -= gemChosen.Value;
+            }
         }
 
         //method to set up values for gemeration
         void ResetGemerationValues()
         {
-            Debug.Log("resetting gemeration values");
-
             //clear out old gems
             ClearGems();
 
-            Debug.Log("Setting rock value");
-
             totalRockValue = 1250 + Mathf.RoundToInt(Random.Range(0.0f, 7.5f) * 100.0f);
-            //totalRockValue = 1500;
-
-            Debug.Log("Rock Value = " + totalRockValue);
 
             gemOrigin = new Vector3(voxelGrid.X / 2.0f, voxelGrid.Y / 2.0f, voxelGrid.Z / 2.0f);
 
