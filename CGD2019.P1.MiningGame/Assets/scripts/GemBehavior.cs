@@ -7,11 +7,15 @@ namespace App.Gameplay {
 
         [HideInInspector] bool debugIsFree = true;
 
+        GameObject Camera;
+
         GameState startingState;
 
         MineralItem itemData;
         
         public void Initialize(MineralItem itemData) {
+            Camera = GameObject.FindGameObjectWithTag("MainCamera");
+
             this.itemData = itemData;
 
             startingState = StateManager.Instance.State;
@@ -30,9 +34,12 @@ namespace App.Gameplay {
         //method to mine gem
         public void TryMine() {
             if (IsMineable()) {
-                //add gem to inventory
-                InventoryManager.Instance.AddItem(itemData, InventoryType.PLAYER);
-
+                GameObject text = Instantiate<GameObject>(Resources.Load<GameObject>("GemText"),transform.position,Quaternion.Euler(Vector3.zero));
+                text.GetComponent<TextMesh>().text = itemData.Value.ToString();
+                text.transform.LookAt(Camera.transform,Camera.transform.up);
+                text.transform.localScale = new Vector3(-1, 1, 1);
+                //add currency to player
+                InventoryManager.Instance.AdjustCurrency(itemData.Value);
                 //delete gameobject
                 Destroy(gameObject);
             }
