@@ -44,7 +44,10 @@ namespace App.Gameplay {
         }
 
         void OnDestroyed() {
-            /// TODO: Place per-voxel destruction behavior here.
+            // Per-voxel destruction behavior.
+            VoxelGrid.Instance.Volume--;
+            RockManager.Instance.OnBreakVoxel(InventoryManager.Instance.ActiveTool);
+
             type = (int)VoxelType.AIR;
 
             FXManager.Instance.SpawnDebrisParticles(position, type);

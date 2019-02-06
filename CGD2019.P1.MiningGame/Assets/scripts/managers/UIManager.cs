@@ -33,6 +33,8 @@ namespace App.UI {
         [SerializeField] TextMeshProUGUI InventoryInfoboxFlavorText;
         [SerializeField] TextMeshProUGUI InventoryInfoboxNameText;
         [SerializeField] TextMeshProUGUI shopCurrencyText;
+        [SerializeField] TextMeshProUGUI ingameCurrencyText;
+
         [SerializeField] TextMeshProUGUI debugText;
 
         [Header("Sprites")]
@@ -41,6 +43,7 @@ namespace App.UI {
 
         [Header("Images")]
         [SerializeField] Image inventoryImage;
+        [SerializeField] Image rockIntegrityBar;
 
         [Header("Buttons")]
         public Button newRockButton;
@@ -160,7 +163,6 @@ namespace App.UI {
         /// </summary>
         public void LoadInventoryToInventoryModal(InventoryType inventory) {
             RectTransform itemArea = inventory.Equals(InventoryType.PLAYER) ? playerInventoryItemArea : shopInventoryItemArea;
-            int itemCount = inventory.Equals(InventoryType.PLAYER) ? InventoryManager.Instance.playerItems.Count : InventoryManager.Instance.shopItems.Count;
             RectTransform uiItemObject = inventory.Equals(InventoryType.PLAYER) ? inventoryUIObject : shopUIObject;
 
             // Remove existing inventory items
@@ -262,8 +264,6 @@ namespace App.UI {
         /// </summary>
         /// <param name="item">Item to show text for.</param>
         public void SetInventoryPanelText(InventoryItem item) {
-            
-
             InventoryInfoboxFlavorText.text = item.ItemText;
             if (item is MineralItem) {
                 InventoryInfoboxNameText.text = item.ItemName + string.Format(" (${0:n0})", item.Value);
@@ -281,7 +281,15 @@ namespace App.UI {
         }
 
         public void SetCurrencyText() {
-            shopCurrencyText.text = string.Format("${0:n0}", InventoryManager.Instance.PlayerCurrency);
+            string currency = string.Format("${0:n0}", InventoryManager.Instance.PlayerCurrency);
+
+            shopCurrencyText.text = currency;
+            ingameCurrencyText.text = currency;
+        }
+
+        public void SetRockIntegrity(float integrity)
+        {
+            rockIntegrityBar.fillAmount = integrity;
         }
 
         public void WriteDebug(string text) {

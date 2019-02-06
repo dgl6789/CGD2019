@@ -26,6 +26,8 @@ namespace App.Gameplay {
         public float YBounds { get { return rockBounds.y; } }
         public float ZBounds { get { return rockBounds.z; } }
 
+        [HideInInspector] public int Volume;
+
         // Cutoff for the surface in marching cubes.
         [SerializeField] float Surface;
 
@@ -97,12 +99,16 @@ namespace App.Gameplay {
             uvList.Clear();
             indexList.Clear();
 
+            Volume = 0;
+
             // Populate the data layer.
             // This is where initial shape generation code will go
             shapedRock();
 
             // Generate gems
             Gemeration.Instance.GenerateGems();
+
+            RockManager.Instance.SetupNewRockIntegrity();
 
             // Generate the initial visual mesh and collider
             UpdateVisualMesh();
@@ -137,6 +143,7 @@ namespace App.Gameplay {
                     for (int z = 0; z < Z; z++) {
                         if (Mathf.Pow(x - X / 2f, 2) / Mathf.Pow(xBounds, 2) + Mathf.Pow(y - Y / 2f, 2) / Mathf.Pow(yBounds, 2) + Mathf.Pow(z - Z / 2f, 2) / Mathf.Pow(zBounds, 2) <= 1f) {
                             data[x, y, z] = Random.value < spawnRate ? new Voxel(VoxelType.ROCK, new Vector3Int(x, y, z)) : new Voxel(VoxelType.HARD_ROCK, new Vector3Int(x, y, z));
+                            Volume++;
                         } else data[x, y, z] = new Voxel(VoxelType.AIR, new Vector3Int(x, y, z));
                     }
                 }
@@ -182,6 +189,26 @@ namespace App.Gameplay {
 
             UpdateVisualMesh();
             UpdateCollisionMesh();
+        }
+
+        public void DestroyAllVoxels() {
+            List<Vector3Int> indices = new List<Vector3Int>();
+
+            for(int x = 0; x < X; x++) {
+                for (int y = 0; y < Y; y++) {
+                    for (int z = 0; z < Z; z++) {
+                        indices.Add(new Vector3Int(x, y, z));
+                    }
+                }
+            }
+
+            SetMultipleVoxelTypesAtIndices(indices.ToArray(), VoxelType.AIR);
+        }
+
+        public void DestroyAllGems() {
+            foreach(Transform t in GetComponentsInChildren<Transform>()) {
+                if (t != transform && t.GetComponent<GemBehavior>() != null) Destroy(t.gameObject);
+            }
         }
 
         /// <summary>
@@ -335,6 +362,7 @@ namespace App.Gameplay {
             collisionMesh.RecalculateNormals();
             collisionMesh.RecalculateBounds();
 
+            meshCollider.sharedMesh = null;
             meshCollider.sharedMesh = collisionMesh;
         }
 
@@ -405,6 +433,7 @@ namespace App.Gameplay {
                 mesh.SetVertices(splitVerts);
                 mesh.SetUVs(0, splitUVs);
                 mesh.SetTriangles(splitIndices, 0);
+
                 mesh.RecalculateBounds();
                 mesh.RecalculateNormals();
 
@@ -438,8 +467,7 @@ namespace App.Gameplay {
                 cell[i] = GetData(
                     x + MarchingCubes.VertexOffset[i, 0],
                     y + MarchingCubes.VertexOffset[i, 1],
-                    z + MarchingCubes.VertexOffset[i, 2]
-                    );
+                    z + MarchingCubes.VertexOffset[i, 2]);
             }
 
             int flagIndex = 0;

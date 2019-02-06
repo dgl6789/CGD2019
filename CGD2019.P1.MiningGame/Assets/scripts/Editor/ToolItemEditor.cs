@@ -14,6 +14,7 @@ public class ToolItemEditor : Editor {
         type, 
         inputType, 
         power, 
+        precision,
         breakRadius, 
         sustainedBreakCooldown;
 
@@ -26,6 +27,7 @@ public class ToolItemEditor : Editor {
         type = serializedObject.FindProperty("type");
         inputType = serializedObject.FindProperty("inputType");
         power = serializedObject.FindProperty("power");
+        precision = serializedObject.FindProperty("precision");
         breakRadius = serializedObject.FindProperty("breakRadius");
         sustainedBreakCooldown = serializedObject.FindProperty("sustainedBreakCooldown");
     }
@@ -51,10 +53,12 @@ public class ToolItemEditor : Editor {
             case ToolType.POINT:
                 EditorGUILayout.PropertyField(inputType);
                 EditorGUILayout.PropertyField(power, new GUIContent("Power"));
+                EditorGUILayout.PropertyField(precision, new GUIContent("Precision"));
                 break;
             case ToolType.AREA:
                 EditorGUILayout.PropertyField(inputType);
                 EditorGUILayout.PropertyField(power, new GUIContent("Power"));
+                EditorGUILayout.PropertyField(precision, new GUIContent("Precision"));
                 EditorGUILayout.PropertyField(breakRadius, new GUIContent("Break Radius"));
                 break;
             case ToolType.CHISEL:
