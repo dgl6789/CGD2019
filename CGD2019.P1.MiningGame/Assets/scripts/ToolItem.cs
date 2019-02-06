@@ -19,6 +19,9 @@ namespace App
         [SerializeField] int power;
         public int Power { get { return power; } }
 
+        [SerializeField] float precision;
+        public float Precision { get { return precision; } }
+
         [SerializeField] float sustainedBreakCooldown;
         public float SustainedBreakCooldown { get { return sustainedBreakCooldown; } }
 
@@ -34,7 +37,7 @@ namespace App
             equipped = InventoryManager.Instance.SetItemEquipped(this, true);
         }
 
-        public void SetValues (string itemName, string itemText, int value, string spriteName, ToolType type, ToolInputType inputType, int power, float sustainedBreakCooldown, float breakRadius) {
+        public void SetValues (string itemName, string itemText, int value, string spriteName, ToolType type, ToolInputType inputType, int power, float precision, float sustainedBreakCooldown, float breakRadius) {
             this.spriteName = spriteName;
             this.itemName = itemName;
             this.itemText = itemText;
@@ -43,6 +46,7 @@ namespace App
             this.type = type;
             this.inputType = inputType;
             this.power = power;
+            this.precision = precision;
             this.sustainedBreakCooldown = sustainedBreakCooldown;
             this.breakRadius = breakRadius;
         }

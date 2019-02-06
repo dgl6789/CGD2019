@@ -239,6 +239,7 @@ namespace App
         ToolType toolType;
         ToolInputType inputType;
         int power;
+        float precision;
         float sustainedBreakCooldown;
         float breakRadius;
 
@@ -264,6 +265,7 @@ namespace App
                     toolType = t.Type;
                     inputType = t.InputType;
                     power = t.Power;
+                    precision = t.Precision;
                     sustainedBreakCooldown = t.SustainedBreakCooldown;
                     breakRadius = t.BreakRadius;
                     break;
@@ -293,7 +295,7 @@ namespace App
 
         public ToolItem GetToolData() {
             ToolItem i = ScriptableObject.CreateInstance<ToolItem>();
-            i.SetValues(itemName, itemText, value, spriteName, toolType, inputType, power, sustainedBreakCooldown, breakRadius);
+            i.SetValues(itemName, itemText, value, spriteName, toolType, inputType, power, precision, sustainedBreakCooldown, breakRadius);
 
             return i;
         }

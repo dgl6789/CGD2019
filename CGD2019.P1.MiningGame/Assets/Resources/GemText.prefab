@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4714699588739954}
   - component: {fileID: 23592634575196980}
   - component: {fileID: 102643612504483102}
+  - component: {fileID: 114417545185101102}
   m_Layer: 0
   m_Name: GemText
   m_TagString: Untagged
@@ -97,3 +98,15 @@ TextMesh:
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
+--- !u!114 &114417545185101102
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1129504854323390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3db29cb982de1874abce46b002b7a2c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timer: 90

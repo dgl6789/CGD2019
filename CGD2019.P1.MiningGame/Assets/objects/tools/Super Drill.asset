@@ -18,5 +18,6 @@ MonoBehaviour:
   type: 0
   inputType: 1
   power: 2
+  precision: 1
   sustainedBreakCooldown: 0.1
   breakRadius: 0

@@ -10,13 +10,14 @@ namespace App {
         public static FXManager Instance;
         
         [SerializeField] GameObject DebrisParticle;
+        [SerializeField] GameObject DebrisBreakParticle;
         [SerializeField] GameObject SparksParticle;
 
         [SerializeField] Vector2Int debrisParticleCount;
+        [SerializeField] Vector2Int breakDebrisParticleCount;
+        [SerializeField] float breakDebrisSpawnRadius;
         [SerializeField] float destroyShakeAmount;
         [SerializeField] float destroyShakeDuration;
-        
-        [SerializeField] float rockGenMoveSmoothing;
 
         Camera cam;
 
@@ -43,6 +44,22 @@ namespace App {
             for (int i = 0; i < r; i++) Instantiate(DebrisParticle, position, Quaternion.identity, transform).GetComponent<DebrisParticle>().Initialize(type);
         }
 
+        public void SpawnRockBreakParticles() {
+            // Spawn a number of rock hunks.
+            int r = Random.Range(breakDebrisParticleCount.x, breakDebrisParticleCount.y + 1);
+            for (int i = 0; i < r; i++)
+            {
+                Vector3 rockCenter = VoxelGrid.Instance.Center;
+
+                Vector3 position = new Vector3(
+                    rockCenter.x + Random.Range(-breakDebrisSpawnRadius, breakDebrisSpawnRadius),
+                    rockCenter.y + Random.Range(-breakDebrisSpawnRadius, breakDebrisSpawnRadius),
+                    rockCenter.z + Random.Range(-breakDebrisSpawnRadius, breakDebrisSpawnRadius));
+
+                Instantiate(DebrisBreakParticle, position, Quaternion.identity, transform).GetComponent<DebrisParticle>().Initialize(0);
+            }
+        }
+
         /// <summary>
         /// Spawn the spark particles to indicate a rock that is too hard to be broken with the current tool.
         /// </summary>
@@ -66,10 +83,12 @@ namespace App {
         /// <param name="amount">Amount to shake. Higher = more vigorous.</param>
         /// <param name="duration">Amount of time to shake for.</param>
         /// <returns>N/A.</returns>
-        IEnumerator DoCameraShake(float amount, float duration) {
+        IEnumerator DoCameraShake(float amount, float duration)
+        {
             float initialDuration = duration;
 
-            while (duration > 0) {
+            while (duration > 0)
+            {
                 duration -= Time.deltaTime;
 
                 float durationFactor = duration / initialDuration;
@@ -80,48 +99,6 @@ namespace App {
 
                 yield return null;
             }
-        }
-
-        public void GetNewRock() { StartCoroutine(DoNewRockRoutine()); }
-
-        /// <summary>
-        /// Spawn a new rock for the player.
-        /// </summary>
-        /// <returns>N/A.</returns>
-        public IEnumerator DoNewRockRoutine() {
-            // Lock input and new rock button.
-            InputManager.Instance.LockInput();
-            UIManager.Instance.SetButtonEnabled(UIManager.Instance.newRockButton, false);
-
-            // Save initial cam position
-            Vector3 camInitPos = cam.transform.position;
-
-            // Lerp move camera off to right side.
-            Vector3 desiredCamPos = cam.transform.right * Mathf.Max(VoxelGrid.Instance.X, VoxelGrid.Instance.Y, VoxelGrid.Instance.Z) * 2f;
-
-            while (Vector3.Distance(desiredCamPos, cam.transform.position) > 0.05f) {
-                cam.transform.position = Vector3.Lerp(cam.transform.position, desiredCamPos, Time.deltaTime * rockGenMoveSmoothing);
-                yield return null;
-            }
-
-            // Destroy the old rock and regenerate a new one.
-            VoxelGrid.Instance.Generate();
-
-            // Move camera directly to left side of new rock.
-            cam.transform.position = camInitPos - cam.transform.right * Mathf.Max(VoxelGrid.Instance.X, VoxelGrid.Instance.Y, VoxelGrid.Instance.Z) * 2f;
-
-            // Lerp move camera to original position.
-            desiredCamPos = camInitPos;
-
-            while (Vector3.Distance(desiredCamPos, cam.transform.position) > 0.05f) {
-                cam.transform.position = Vector3.Lerp(cam.transform.position, desiredCamPos, Time.deltaTime * rockGenMoveSmoothing);
-                yield return null;
-            }
-
-            // Unlock input.
-            InputManager.Instance.LockInput(false);
-            UIManager.Instance.SetButtonEnabled(UIManager.Instance.newRockButton, true);
-            yield return null;
         }
     }
 }
