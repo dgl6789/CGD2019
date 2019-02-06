@@ -59,11 +59,13 @@ namespace App
         }
 
         /// <summary>
-        /// Adjust the rock's integrity by multiplying its base integrity by a value.
+        /// Adjust the rock's integrity by multiplying its base integrity by a value and adding that to the current value.
         /// </summary>
         /// <param name="adj">Amount (0 - 1) to multiply the base integrity by.</param>
         public void AdjustRockIntegrityPercentage(float adj) {
-            currentIntegrity = maxIntegrity * Mathf.Clamp01(adj);
+            currentIntegrity += maxIntegrity * Mathf.Clamp01(adj);
+
+            UIManager.Instance.SetRockIntegrity(Integrity);
 
             if (currentIntegrity <= 0) {
                 // The rock broke.

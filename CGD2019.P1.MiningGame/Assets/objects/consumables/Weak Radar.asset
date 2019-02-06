@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6875852ae6b6e349b42bca7c4ed52cb, type: 3}
   m_Name: Weak Radar
   m_EditorClassIdentifier: 
-  spriteName: chisel_0
+  spriteName: gem_0
   itemName: Weak Radar
   itemText: Use this to get a better idea of where gems are in a rock.
   value: 500

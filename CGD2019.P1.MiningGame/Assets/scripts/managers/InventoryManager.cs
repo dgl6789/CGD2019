@@ -113,10 +113,16 @@ namespace App
             switch (i.Type)
             {
                 case ConsumableType.RADAR:
+                    Gameplay.VoxelGrid.Instance.AdjustTransparency(i.Strength);
+                    consumableDuration = i.Duration;
+                    activeConsumable = i;
                     break;
                 case ConsumableType.REPAIR:
+                    RockManager.Instance.AdjustRockIntegrityPercentage(i.Strength);
                     break;
             }
+
+            RemoveItem(item, InventoryType.PLAYER);
         }
 
         public void AddItem(InventoryItem item, InventoryType inventory) {

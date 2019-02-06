@@ -34,7 +34,9 @@ namespace App.Gameplay {
         [SerializeField] Vector3Int dimensions;
 
         // Rock material and texture atlas
-        [SerializeField] Material material;
+        [SerializeField] private Material activeMaterial;
+        [SerializeField] Material opaqueMaterial;
+        [SerializeField] Material transparentMaterial;
         [SerializeField] Vector2Int atlasDimensions;
         [SerializeField] float textureResolution = 0.25f;
 
@@ -77,6 +79,9 @@ namespace App.Gameplay {
             vertexList = new List<Vector3>();
             uvList = new List<Vector2>();
             indexList = new List<int>();
+
+            //set default material
+            activeMaterial = opaqueMaterial;
 
             // Initialize the components of the mesh collider
             meshCollider = GetComponent<MeshCollider>();
@@ -241,6 +246,27 @@ namespace App.Gameplay {
         /// <param name="z">Z position to check.</param>
         /// <returns>Whether the coordinates are valid.</returns>
         public bool IndexIsValid(int x, int y, int z) { return !(x >= X || x < 0 || y >= Y || y < 0 || z >= Z || z < 0); }
+
+        /// <summary>
+        /// Changes transparency of the rock, swapping textures between opaque and transparent if needbe
+        /// </summary>
+        /// <param name="percentage">percentage of opacity. If at 1, make opaque</param>
+        public void AdjustTransparency(float percentage = 1.0f)
+        {
+            if (percentage == 1.0f)
+            {
+                activeMaterial = opaqueMaterial;
+            }
+            else
+            {
+                var col = transparentMaterial.color;
+                col.a = percentage;
+
+                Debug.Log("Transparency set to " + transparentMaterial.color.a);
+
+                activeMaterial = transparentMaterial;
+            }
+        }
 
         #region Geometry & Collider Generation
 
@@ -441,7 +467,7 @@ namespace App.Gameplay {
                 meshObject.transform.parent = transform;
                 meshObject.AddComponent<MeshFilter>();
                 meshObject.AddComponent<MeshRenderer>();
-                meshObject.GetComponent<Renderer>().material = material;
+                meshObject.GetComponent<Renderer>().material = activeMaterial;
                 meshObject.GetComponent<MeshFilter>().mesh = mesh;
 
                 // Align the visual mesh to the mesh collider
