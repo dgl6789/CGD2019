@@ -3246,7 +3246,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.1484375, y: 0.000089966336}
+  m_AnchoredPosition: {x: 0.1484375, y: 0.000091554066}
   m_SizeDelta: {x: -0.3, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1140096578
@@ -3942,7 +3942,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   voxelGrid: {fileID: 1579994443}
   totalRockValue: 0
-  range: 0
+  spawnRange: 0
   gemPrefabs:
   - {fileID: 1920451552321434, guid: 0294ac40d9501de4691292fdcdf42a79, type: 2}
   - {fileID: 1920451552321434, guid: 38c67dc38a8b35f459f5c77b11bf3419, type: 2}

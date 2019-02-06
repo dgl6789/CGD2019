@@ -162,8 +162,6 @@ namespace App
         //method to remove all gems
         public void ClearGems()
         {
-            Debug.Log("clearing " + allGems.Count + " gems");
-
             if (allGems.Count == 0)
                 return;
 
