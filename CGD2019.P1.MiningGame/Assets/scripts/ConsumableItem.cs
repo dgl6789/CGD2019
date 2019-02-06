@@ -18,17 +18,6 @@ namespace App
         [SerializeField] int duration;
         public int Duration { get { return duration; } }
 
-        bool equipped;
-        public bool Equipped
-        {
-            get { return equipped; }
-        }
-
-        public void Equip()
-        {
-            equipped = InventoryManager.Instance.SetItemEquipped(this, true);
-        }
-
         public void SetValues(string itemName, string itemText, int value, string spriteName, ConsumableType type, float strength, int duration)
         {
             this.spriteName = spriteName;

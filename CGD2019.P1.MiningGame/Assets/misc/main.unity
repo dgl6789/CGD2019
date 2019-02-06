@@ -508,11 +508,13 @@ MonoBehaviour:
   InventoryInfoboxFlavorText: {fileID: 1849882737}
   InventoryInfoboxNameText: {fileID: 1670264486}
   shopCurrencyText: {fileID: 2024438580}
+  ingameCurrencyText: {fileID: 0}
   debugText: {fileID: 408999643}
   inventoryOpenImage: {fileID: 21300000, guid: e605c9cc6b89e3c45b942c2ee7b752fb, type: 3}
   inventoryClosedImage: {fileID: 21300000, guid: e4c358c9e2f9f0c4692819dc727f5d8f,
     type: 3}
   inventoryImage: {fileID: 2057659255}
+  rockIntegrityBar: {fileID: 0}
   newRockButton: {fileID: 510157475}
   inventoryUIObject: {fileID: 224286082990802218, guid: ece63638652d1a24dbd405d2abfef245,
     type: 2}
@@ -540,6 +542,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 036db9c311caa5240affb3b0a18f4a22, type: 2}
   - {fileID: 11400000, guid: 65443f193394fe749aa5f78ca8730474, type: 2}
   - {fileID: 11400000, guid: bcca250c416adde49b0d8573d85ec1e3, type: 2}
+  consumableDuration: 0
   loadSaveDataOnStart: 1
   folderName: GeoCrush
   fileExtension: .gcdat
@@ -556,12 +559,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DebrisParticle: {fileID: 1121469368447618, guid: 4befb8165e2381b4b83b5ef61462ad16,
     type: 2}
+  DebrisBreakParticle: {fileID: 0}
   SparksParticle: {fileID: 1149619283450436, guid: 6d88de7c9f4a41442a9418092131cb5f,
     type: 2}
   debrisParticleCount: {x: 2, y: 5}
+  breakDebrisParticleCount: {x: 0, y: 0}
+  breakDebrisSpawnRadius: 0
   destroyShakeAmount: 0.25
   destroyShakeDuration: 0.1
-  rockGenMoveSmoothing: 5
 --- !u!114 &291856088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2942,7 +2947,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 821424183}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.99999994
+  m_Size: 0.9999999
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3247,7 +3252,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.15002441, y: 0.00005912021}
+  m_AnchoredPosition: {x: 0.15002441, y: -0.00010681153}
   m_SizeDelta: {x: -0.3, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1140096578
@@ -3591,7 +3596,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.005004883, y: 0.000030517578}
+  m_AnchoredPosition: {x: 0.005004883, y: -0.000030517578}
   m_SizeDelta: {x: -0.30999756, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1330320724
@@ -3890,6 +3895,7 @@ MonoBehaviour:
   yMin: 5
   zMin: 5
   rockBounds: {x: 0, y: 0, z: 0}
+  Volume: 0
   Surface: 0
   dimensions: {x: 16, y: 16, z: 16}
   material: {fileID: 2100000, guid: 65ed0f6d0baa9834e866cd6ee785d86d, type: 2}
@@ -4142,7 +4148,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 197.4
+  m_fontSize: 197.5
   m_fontSizeBase: 52.99
   m_fontWeight: 400
   m_enableAutoSizing: 1

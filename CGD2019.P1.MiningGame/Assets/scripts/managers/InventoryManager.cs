@@ -23,6 +23,18 @@ namespace App
 
         public List<InventoryItem> shopItems;
 
+        ConsumableItem activeConsumable;
+        public ConsumableItem ActiveConsumable
+        {
+            get { return activeConsumable; }
+            set
+            {
+                if (playerItems.Contains(value)) activeConsumable = value;
+                consumableDuration = value.Duration;
+            }
+        }
+        [SerializeField] int consumableDuration;
+
         [Header("Save/Load")]
         [SerializeField] bool loadSaveDataOnStart;
 
@@ -90,6 +102,21 @@ namespace App
             UIManager.Instance.LoadInventoryToInventoryModal(InventoryType.PLAYER);
 
             return value;
+        }
+
+        public void UseConsumable(InventoryItem item)
+        {
+            if (!playerItems.Contains(item) || !(item is ConsumableItem)) return;
+
+            ConsumableItem i = item as ConsumableItem;
+
+            switch (i.Type)
+            {
+                case ConsumableType.RADAR:
+                    break;
+                case ConsumableType.REPAIR:
+                    break;
+            }
         }
 
         public void AddItem(InventoryItem item, InventoryType inventory) {
