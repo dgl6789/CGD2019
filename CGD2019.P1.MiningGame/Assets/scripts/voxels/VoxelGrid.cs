@@ -362,6 +362,7 @@ namespace App.Gameplay {
             collisionMesh.RecalculateNormals();
             collisionMesh.RecalculateBounds();
 
+            meshCollider.sharedMesh = null;
             meshCollider.sharedMesh = collisionMesh;
         }
 
@@ -432,6 +433,7 @@ namespace App.Gameplay {
                 mesh.SetVertices(splitVerts);
                 mesh.SetUVs(0, splitUVs);
                 mesh.SetTriangles(splitIndices, 0);
+
                 mesh.RecalculateBounds();
                 mesh.RecalculateNormals();
 
@@ -465,8 +467,7 @@ namespace App.Gameplay {
                 cell[i] = GetData(
                     x + MarchingCubes.VertexOffset[i, 0],
                     y + MarchingCubes.VertexOffset[i, 1],
-                    z + MarchingCubes.VertexOffset[i, 2] 
-                    );
+                    z + MarchingCubes.VertexOffset[i, 2]);
             }
 
             int flagIndex = 0;

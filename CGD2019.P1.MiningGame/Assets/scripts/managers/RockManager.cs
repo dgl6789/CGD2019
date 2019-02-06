@@ -59,6 +59,19 @@ namespace App
         }
 
         /// <summary>
+        /// Adjust the rock's integrity by multiplying its base integrity by a value.
+        /// </summary>
+        /// <param name="adj">Amount (0 - 1) to multiply the base integrity by.</param>
+        public void AdjustRockIntegrityPercentage(float adj) {
+            currentIntegrity = maxIntegrity * Mathf.Clamp01(adj);
+
+            if (currentIntegrity <= 0) {
+                // The rock broke.
+                OnRockBreak();
+            }
+        }
+
+        /// <summary>
         /// Run when a voxel is broken.
         /// </summary>
         /// <param name="tool">Tool used to break the voxel.</param>

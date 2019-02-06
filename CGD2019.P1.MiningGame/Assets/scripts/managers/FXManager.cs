@@ -10,9 +10,12 @@ namespace App {
         public static FXManager Instance;
         
         [SerializeField] GameObject DebrisParticle;
+        [SerializeField] GameObject DebrisBreakParticle;
         [SerializeField] GameObject SparksParticle;
 
         [SerializeField] Vector2Int debrisParticleCount;
+        [SerializeField] Vector2Int breakDebrisParticleCount;
+        [SerializeField] float breakDebrisSpawnRadius;
         [SerializeField] float destroyShakeAmount;
         [SerializeField] float destroyShakeDuration;
 
@@ -42,7 +45,19 @@ namespace App {
         }
 
         public void SpawnRockBreakParticles() {
+            // Spawn a number of rock hunks.
+            int r = Random.Range(breakDebrisParticleCount.x, breakDebrisParticleCount.y + 1);
+            for (int i = 0; i < r; i++)
+            {
+                Vector3 rockCenter = VoxelGrid.Instance.Center;
 
+                Vector3 position = new Vector3(
+                    rockCenter.x + Random.Range(-breakDebrisSpawnRadius, breakDebrisSpawnRadius),
+                    rockCenter.y + Random.Range(-breakDebrisSpawnRadius, breakDebrisSpawnRadius),
+                    rockCenter.z + Random.Range(-breakDebrisSpawnRadius, breakDebrisSpawnRadius));
+
+                Instantiate(DebrisBreakParticle, position, Quaternion.identity, transform).GetComponent<DebrisParticle>().Initialize(0);
+            }
         }
 
         /// <summary>
