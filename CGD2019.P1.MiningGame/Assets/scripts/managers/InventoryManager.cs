@@ -138,6 +138,7 @@ namespace App
             foreach(SaveItem i in data.PlayerInventory) {
                 if (i.InventoryItemType.Equals(ItemType.TOOL)) playerItems.Add(i.GetToolData());
                 else if (i.InventoryItemType.Equals(ItemType.MINERAL)) playerItems.Add(i.GetMineralData());
+                else if (i.InventoryItemType.Equals(ItemType.CONSUMABLE)) playerItems.Add(i.GetConsumableData());
                 else playerItems.Add(i.GetInventoryItem());
             }
 
@@ -146,6 +147,7 @@ namespace App
             foreach (SaveItem i in data.ShopInventory) {
                 if (i.InventoryItemType.Equals(ItemType.TOOL)) shopItems.Add(i.GetToolData());
                 else if (i.InventoryItemType.Equals(ItemType.MINERAL)) shopItems.Add(i.GetMineralData());
+                else if (i.InventoryItemType.Equals(ItemType.CONSUMABLE)) shopItems.Add(i.GetConsumableData());
                 else shopItems.Add(i.GetInventoryItem());
             }
 
@@ -217,7 +219,7 @@ namespace App
         }
     }
 
-    public enum ItemType { TOOL, MINERAL, OTHER }
+    public enum ItemType { TOOL, MINERAL, CONSUMABLE, OTHER }
 
     /// <summary>
     /// Item saved into the SaveData.
@@ -240,9 +242,14 @@ namespace App
         float sustainedBreakCooldown;
         float breakRadius;
 
+        ConsumableType consumableType;
+        float strength;
+        int duration;
+
         public SaveItem(InventoryItem item) {
             if (item is ToolItem) type = ItemType.TOOL;
             else if (item is MineralItem) type = ItemType.MINERAL;
+            else if (item is ConsumableItem) type = ItemType.CONSUMABLE;
             else type = ItemType.OTHER;
 
             itemName = item.ItemName;
@@ -266,6 +273,14 @@ namespace App
 
                     modelName = m.ModelName;
                     break;
+
+                case ItemType.CONSUMABLE:
+                    ConsumableItem c = item as ConsumableItem;
+
+                    consumableType = c.Type;
+                    strength = c.Strength;
+                    duration = c.Duration;
+                    break;
             }
         }
 
@@ -283,9 +298,18 @@ namespace App
             return i;
         }
 
-        public MineralItem GetMineralData() {
+        public MineralItem GetMineralData()
+        {
             MineralItem i = ScriptableObject.CreateInstance<MineralItem>();
             i.SetValues(itemName, itemText, value, spriteName, modelName);
+
+            return i;
+        }
+
+        public ConsumableItem GetConsumableData()
+        {
+            ConsumableItem i = ScriptableObject.CreateInstance<ConsumableItem>();
+            i.SetValues(itemName, itemText, value, spriteName, consumableType, strength, duration);
 
             return i;
         }

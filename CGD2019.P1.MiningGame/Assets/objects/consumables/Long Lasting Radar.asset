@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6875852ae6b6e349b42bca7c4ed52cb, type: 3}
+  m_Name: Long Lasting Radar
+  m_EditorClassIdentifier: 
+  spriteName: radar_1
+  itemName: Long Lasting Radar
+  itemText: Peer inside a rock for almost as long as you need!
+  value: 1500
+  type: 0
+  strength: 0.25
+  duration: 1000
