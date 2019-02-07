@@ -12,6 +12,7 @@ namespace App {
         [SerializeField] GameObject DebrisParticle;
         [SerializeField] GameObject DebrisBreakParticle;
         [SerializeField] GameObject SparksParticle;
+        [SerializeField] GameObject FloatingText;
 
         [SerializeField] Vector2Int debrisParticleCount;
         [SerializeField] Vector2Int breakDebrisParticleCount;
@@ -75,6 +76,12 @@ namespace App {
         /// <param name="duration">Amount of time to shake for.</param>
         public void CameraShake(float amount, float duration) {
             StartCoroutine(DoCameraShake(amount, duration));
+        }
+
+        public void SpawnFloatingText(Vector3 position, MineralItem item) {
+            TextFade text = Instantiate(FloatingText, position, Quaternion.identity).GetComponent<TextFade>();
+
+            text.Initialize(item);
         }
 
         /// <summary>
