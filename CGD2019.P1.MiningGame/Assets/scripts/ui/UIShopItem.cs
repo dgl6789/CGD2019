@@ -30,7 +30,9 @@ namespace App.UI {
                 if (InventoryManager.Instance.PlayerCurrency >= item.Value) {
                     // This should auto-update the inventories.
                     InventoryManager.Instance.AddItem(item, InventoryType.PLAYER);
-                    InventoryManager.Instance.RemoveItem(item, InventoryType.SHOP);
+
+                    if (item is ToolItem)
+                        InventoryManager.Instance.RemoveItem(item, InventoryType.SHOP);
 
                     InventoryManager.Instance.AdjustCurrency(-item.Value);
                     UIManager.Instance.ResetInventoryPanelText();

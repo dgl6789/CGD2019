@@ -23,6 +23,18 @@ namespace App
 
         public List<InventoryItem> shopItems;
 
+        ConsumableItem activeConsumable;
+        public ConsumableItem ActiveConsumable
+        {
+            get { return activeConsumable; }
+            set
+            {
+                if (playerItems.Contains(value)) activeConsumable = value;
+                consumableDuration = value.Duration;
+            }
+        }
+        [SerializeField] int consumableDuration;
+
         [Header("Save/Load")]
         [SerializeField] bool loadSaveDataOnStart;
 
@@ -53,6 +65,23 @@ namespace App
             equippedItems = new List<ToolItem>();
 
             if(loadSaveDataOnStart) LoadInventories();
+        }
+
+        private void Update()
+        {
+            //only decrement consumable duration if mining
+            if (StateManager.Instance.State == GameState.MINING)
+            {
+                //decrement consumable duration, and any effects when they run out
+                if (consumableDuration > 0)
+                {
+                    consumableDuration--;
+                }
+                else
+                {
+                    EndConsumable();
+                }
+            }
         }
 
         /// <summary>
@@ -90,6 +119,46 @@ namespace App
             UIManager.Instance.LoadInventoryToInventoryModal(InventoryType.PLAYER);
 
             return value;
+        }
+
+        /// <summary>
+        /// Ends the effects of the current consumable item
+        /// </summary>
+        public void EndConsumable()
+        {
+            consumableDuration = 0;
+
+            switch(activeConsumable.Type)
+            {
+                case ConsumableType.RADAR: //makes rock opaque when radar is over
+                    Gameplay.VoxelGrid.Instance.AdjustTransparency();
+                    break;
+            }
+        }
+        
+        /// <summary>
+        /// Uses a consumable
+        /// </summary>
+        /// <param name="item">consumable to use</param>
+        public void UseConsumable(InventoryItem item)
+        {
+            if (!playerItems.Contains(item) || !(item is ConsumableItem) || consumableDuration > 0) return;
+
+            ConsumableItem i = item as ConsumableItem;
+
+            switch (i.Type)
+            {
+                case ConsumableType.RADAR:
+                    Gameplay.VoxelGrid.Instance.AdjustTransparency(i.Strength);
+                    consumableDuration = i.Duration;
+                    activeConsumable = i;
+                    break;
+                case ConsumableType.REPAIR:
+                    RockManager.Instance.AdjustRockIntegrityPercentage(i.Strength);
+                    break;
+            }
+
+            RemoveItem(item, InventoryType.PLAYER);
         }
 
         public void AddItem(InventoryItem item, InventoryType inventory) {
@@ -138,6 +207,7 @@ namespace App
             foreach(SaveItem i in data.PlayerInventory) {
                 if (i.InventoryItemType.Equals(ItemType.TOOL)) playerItems.Add(i.GetToolData());
                 else if (i.InventoryItemType.Equals(ItemType.MINERAL)) playerItems.Add(i.GetMineralData());
+                else if (i.InventoryItemType.Equals(ItemType.CONSUMABLE)) playerItems.Add(i.GetConsumableData());
                 else playerItems.Add(i.GetInventoryItem());
             }
 
@@ -146,6 +216,7 @@ namespace App
             foreach (SaveItem i in data.ShopInventory) {
                 if (i.InventoryItemType.Equals(ItemType.TOOL)) shopItems.Add(i.GetToolData());
                 else if (i.InventoryItemType.Equals(ItemType.MINERAL)) shopItems.Add(i.GetMineralData());
+                else if (i.InventoryItemType.Equals(ItemType.CONSUMABLE)) shopItems.Add(i.GetConsumableData());
                 else shopItems.Add(i.GetInventoryItem());
             }
 
@@ -217,7 +288,7 @@ namespace App
         }
     }
 
-    public enum ItemType { TOOL, MINERAL, OTHER }
+    public enum ItemType { TOOL, MINERAL, CONSUMABLE, OTHER }
 
     /// <summary>
     /// Item saved into the SaveData.
@@ -242,9 +313,14 @@ namespace App
         float sustainedBreakCooldown;
         float breakRadius;
 
+        ConsumableType consumableType;
+        float strength;
+        int duration;
+
         public SaveItem(InventoryItem item) {
             if (item is ToolItem) type = ItemType.TOOL;
             else if (item is MineralItem) type = ItemType.MINERAL;
+            else if (item is ConsumableItem) type = ItemType.CONSUMABLE;
             else type = ItemType.OTHER;
 
             itemName = item.ItemName;
@@ -272,6 +348,14 @@ namespace App
                     colorG = m.Color.g;
                     colorB = m.Color.b;
                     break;
+
+                case ItemType.CONSUMABLE:
+                    ConsumableItem c = item as ConsumableItem;
+
+                    consumableType = c.Type;
+                    strength = c.Strength;
+                    duration = c.Duration;
+                    break;
             }
         }
 
@@ -289,9 +373,18 @@ namespace App
             return i;
         }
 
-        public MineralItem GetMineralData() {
+        public MineralItem GetMineralData()
+        {
             MineralItem i = ScriptableObject.CreateInstance<MineralItem>();
             i.SetValues(itemName, itemText, value, spriteName, modelName, new Color(colorR, colorG, colorB, 1.0f));
+
+            return i;
+        }
+
+        public ConsumableItem GetConsumableData()
+        {
+            ConsumableItem i = ScriptableObject.CreateInstance<ConsumableItem>();
+            i.SetValues(itemName, itemText, value, spriteName, consumableType, strength, duration);
 
             return i;
         }

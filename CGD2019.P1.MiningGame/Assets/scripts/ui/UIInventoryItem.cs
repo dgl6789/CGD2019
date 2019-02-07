@@ -36,6 +36,8 @@ namespace App.UI
         /// 
         /// Tools will load their information and swap equip states 
         /// with the currently equipped tool of the same type.
+        /// 
+        /// Consumables will be consumed and have their immediate effect.
         /// </summary>
         public virtual void OnTapItem() {
             // Set the inventory panel text
@@ -60,6 +62,12 @@ namespace App.UI
                     ToolItem i = item as ToolItem;
 
                     InventoryManager.Instance.SetItemEquipped(i, true);
+                }
+                else if (item is ConsumableItem && StateManager.Instance.State == GameState.MINING) //use a consumable item if in game
+                {
+                    ConsumableItem i = item as ConsumableItem;
+
+                    InventoryManager.Instance.UseConsumable(i);
                 }
             }
         }
