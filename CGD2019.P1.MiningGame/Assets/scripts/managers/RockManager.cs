@@ -14,6 +14,7 @@ namespace App
         public float hardRockMult;
 
         [SerializeField] float rockGenMoveSmoothing;
+        bool gettingNewRock = false;
 
         Camera cam;
 
@@ -57,7 +58,7 @@ namespace App
 
             if(currentIntegrity <= 0) {
                 // The rock broke.
-                OnRockBreak();
+                StartCoroutine(OnRockBreak());
             }
         }
 
@@ -70,7 +71,7 @@ namespace App
 
             if (currentIntegrity <= 0) {
                 // The rock broke.
-                OnRockBreak();
+                StartCoroutine(OnRockBreak());
             }
         }
 
@@ -97,11 +98,15 @@ namespace App
         /// <summary>
         /// Perform functionality upon breaking the rock.
         /// </summary>
-        public void OnRockBreak() {
+        public IEnumerator OnRockBreak() {
             VoxelGrid.Instance.DestroyAllVoxels();
             VoxelGrid.Instance.DestroyAllGems();
 
             FXManager.Instance.SpawnRockBreakParticles();
+
+            yield return new WaitForSeconds(2f);
+
+            if (!gettingNewRock) { StartCoroutine(DoNewRockRoutine()); };
         }
 
         /// <summary>
@@ -123,6 +128,8 @@ namespace App
         /// <returns>N/A.</returns>
         public IEnumerator DoNewRockRoutine()
         {
+            gettingNewRock = true;
+
             // Lock input and new rock button.
             InputManager.Instance.LockInput();
             UIManager.Instance.SetButtonEnabled(UIManager.Instance.newRockButton, false);
@@ -158,6 +165,8 @@ namespace App
             InputManager.Instance.LockInput(false);
             UIManager.Instance.SetButtonEnabled(UIManager.Instance.newRockButton, true);
             yield return null;
+
+            gettingNewRock = false;
         }
     }
 }

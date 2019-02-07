@@ -15,4 +15,5 @@ MonoBehaviour:
   itemName: Diamond
   itemText: Woman's best friend. Sorry, you're in second place.
   value: 600
-  modelName: gemModelDiamond
+  modelName: gem_2
+  color: {r: 0.78653437, g: 0.9528302, b: 0.933266, a: 1}

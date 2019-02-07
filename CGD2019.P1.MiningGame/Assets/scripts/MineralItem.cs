@@ -10,13 +10,17 @@ namespace App
         [SerializeField] string modelName;
         public string ModelName { get { return modelName; } }
 
-        public void SetValues(string itemName, string itemText, int value, string spriteName, string modelName) {
+        [SerializeField] Color color;
+        public Color Color { get { return color; } }
+
+        public void SetValues(string itemName, string itemText, int value, string spriteName, string modelName, Color color) {
             this.spriteName = spriteName;
             this.itemName = itemName;
             this.itemText = itemText;
             this.value = value;
 
             this.modelName = modelName;
+            this.color = color;
         }
     }
 }

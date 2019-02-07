@@ -15,4 +15,5 @@ MonoBehaviour:
   itemName: Ruby
   itemText: Red rocks rock TED talks' socks, but balk at Bach's frocks.
   value: 300
-  modelName: gemModelRuby
+  modelName: gem_0
+  color: {r: 1, g: 0, b: 0.2657566, a: 1}

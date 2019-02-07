@@ -15,4 +15,5 @@ MonoBehaviour:
   itemName: Shale
   itemText: Basically some useless rocks. Why did we even put this in the game?
   value: 1
-  modelName: gemObjectShale
+  modelName: gem_2
+  color: {r: 0.343, g: 0.343, b: 0.343, a: 1}
