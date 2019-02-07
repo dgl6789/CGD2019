@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bec6b44051ced14a95da64dd633cf5b, type: 3}
   m_Name: Wide Bit Drill
   m_EditorClassIdentifier: 
-  spriteName: pickaxe_2
+  spriteName: pickaxe_3
   itemName: Wide Bit Drill
   itemText: Tap and hold to destroy massive swaths of rock.
   value: 7500

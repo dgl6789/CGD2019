@@ -38,21 +38,17 @@ namespace App
                 //randomly choose a gem
                 MineralItem gemChosen = gemObjects[Random.Range(0, gemObjects.Count)];
                 
-                //check that this gem still fits within remaining value
-                if (totalRockValue >= gemChosen.Value)
-                {
-                    SpawnGem(gemChosen);
+                SpawnGem(gemChosen);
 
-                    //subtract from total value
-                    totalRockValue -= gemChosen.Value;
-                }
+                //subtract from total value
+                totalRockValue -= gemChosen.Value;
             } while (totalRockValue > 0);
         }
 
         //method to set up values for gemeration
         void ResetGemerationValues()
         {
-            totalRockValue = 1500;
+            totalRockValue = 1000 + Random.Range(250, 750);
 
             gemOrigin = new Vector3(voxelGrid.X / 2.0f, voxelGrid.Y / 2.0f, voxelGrid.Z / 2.0f);
 
@@ -129,7 +125,7 @@ namespace App
         }
 
         //method to determine if gem is embedded in rock
-        bool InRock(Vector3 gemPosition)
+        public bool InRock(Vector3 gemPosition)
         {
             //if origin is in grid then gem is embedded
             if (voxelGrid.GetData((int)gemPosition.x, (int)gemPosition.y, (int)gemPosition.z) == 1)

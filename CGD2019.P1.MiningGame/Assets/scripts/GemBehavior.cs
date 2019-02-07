@@ -43,7 +43,6 @@ namespace App.Gameplay {
                 //add currency to player
                 InventoryManager.Instance.AdjustCurrency(itemData.Value);
                 //delete gameobject
-                Gemeration.Instance.RemoveGem(this);
                 Destroy(gameObject);
             }
         }
