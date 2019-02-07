@@ -15,6 +15,7 @@ namespace App
 
         [SerializeField] float rockGenMoveSmoothing;
         bool gettingNewRock = false;
+        float desiredIntegrityBarLength;
 
         Camera cam;
 
@@ -56,7 +57,7 @@ namespace App
 
             UIManager.Instance.SetRockIntegrity(Integrity);
 
-            if(currentIntegrity <= 0) {
+            if (currentIntegrity <= 0) {
                 // The rock broke.
                 StartCoroutine(OnRockBreak());
             }

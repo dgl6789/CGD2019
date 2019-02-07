@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: dd14c2d197b93534b90e05084544bed2
+guid: 6739c0cd58b461c4ba682ef02dda3aa6
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -8,10 +8,12 @@ TrueTypeFontImporter:
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
-  fontName: QUARTZO demo
+  fontName: Titillium Web
   fontNames:
-  - QUARTZO demo
-  fallbackFontReferences: []
+  - Titillium Web
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: f954a6a113299b648853d02065c6372f, type: 3}
+  - {fileID: 12800000, guid: af7a74f1d26795b4aa0a2c3609e2ac78, type: 3}
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1
