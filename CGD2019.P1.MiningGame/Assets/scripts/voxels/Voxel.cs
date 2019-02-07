@@ -46,7 +46,7 @@ namespace App.Gameplay {
         void OnDestroyed() {
             // Per-voxel destruction behavior.
             VoxelGrid.Instance.Volume--;
-            RockManager.Instance.OnBreakVoxel(InventoryManager.Instance.ActiveTool);
+            RockManager.Instance.OnBreakVoxel(InventoryManager.Instance.ActiveTool, (VoxelType)type);
 
             type = (int)VoxelType.AIR;
 
