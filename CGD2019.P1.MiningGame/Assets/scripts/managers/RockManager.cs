@@ -10,6 +10,9 @@ namespace App
     {
         public static RockManager Instance;
 
+        [Range(1f,2f)]
+        public float hardRockMult;
+
         [SerializeField] float rockGenMoveSmoothing;
 
         Camera cam;
@@ -75,8 +78,20 @@ namespace App
         /// Run when a voxel is broken.
         /// </summary>
         /// <param name="tool">Tool used to break the voxel.</param>
-        public void OnBreakVoxel(ToolItem tool) {
-            AdjustRockIntegrity(-tool.Precision * baseIntegrityLossFactor);
+        public void OnBreakVoxel(ToolItem tool, VoxelType type) {
+            float mult = 1;
+            switch (type)
+            {
+                case VoxelType.ROCK:
+                    mult = 2-hardRockMult;
+                    break;
+                case VoxelType.HARD_ROCK:
+                    mult = hardRockMult;
+                    break;
+                default:
+                    break;
+            }
+            AdjustRockIntegrity(-tool.Precision * baseIntegrityLossFactor * mult);
         }
 
         /// <summary>
