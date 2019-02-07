@@ -10,8 +10,6 @@ namespace App.Gameplay {
 
         GameObject Camera;
 
-        GameState startingState;
-
         MineralItem itemData;
 
         MaterialPropertyBlock materialProps;
@@ -22,8 +20,6 @@ namespace App.Gameplay {
             Camera = GameObject.FindGameObjectWithTag("MainCamera");
 
             this.itemData = itemData;
-
-            startingState = StateManager.Instance.State;
 
             // Assign the gem's mesh and give it a random rotation.
             GetComponent<MeshFilter>().mesh = AssetManager.Instance.GetModelFromManifest(itemData.ModelName);
@@ -36,14 +32,6 @@ namespace App.Gameplay {
             materialProps.SetColor("_Color", itemData.Color);
             _renderer.SetPropertyBlock(materialProps);
 
-        }
-
-        public void Update()
-        {
-            if (StateManager.Instance.State != startingState)
-            {
-                Destroy(gameObject);
-            }
         }
 
         //method to mine gem
