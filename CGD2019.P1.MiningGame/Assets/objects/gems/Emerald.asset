@@ -15,4 +15,5 @@ MonoBehaviour:
   itemName: Emerald
   itemText: Also the best Pokemon game. Objectively.
   value: 400
-  modelName: gemModelEmerald
+  modelName: gem_1
+  color: {r: 0.20116438, g: 0.97900003, b: 0.444725, a: 1}

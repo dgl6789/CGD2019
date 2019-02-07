@@ -15,4 +15,5 @@ MonoBehaviour:
   itemName: Citrine
   itemText: A yellowish quartz. Pretty valuable, I guess.
   value: 200
-  modelName: gemModelCitrine
+  modelName: gem_0
+  color: {r: 1, g: 0.87350816, b: 0.13679248, a: 1}

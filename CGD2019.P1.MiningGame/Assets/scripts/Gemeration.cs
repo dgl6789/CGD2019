@@ -15,7 +15,7 @@ namespace App
         //gemeration values
         public int totalRockValue = 0;
         public int range = 0;
-        [SerializeField] List<GameObject> gemPrefabs;
+        [SerializeField] GameObject gemPrefab;
         [SerializeField] List<MineralItem> gemObjects;
 
         //gemerator position
@@ -65,7 +65,7 @@ namespace App
             float valueMod = 1.0f - (gemChosen.Value / 1000.0f);
 
             //instantiate gem object
-            GemBehavior thisGem = Instantiate(GetGemPrefab(gemChosen), voxelGrid.transform).GetComponent<GemBehavior>();
+            GemBehavior thisGem = Instantiate(gemPrefab, voxelGrid.transform).GetComponent<GemBehavior>();
 
             //generate random position and normalize it
             Vector3 gemPosition = new Vector3(
@@ -84,23 +84,8 @@ namespace App
             thisGem.transform.position = gemPosition;
 
             // Set the gem's internal data
+            thisGem.name = "Gem (" + gemChosen.ItemName + ")";
             thisGem.Initialize(gemChosen);
-        }
-
-        //method to get the appropraite model for a chosen gem
-        GameObject GetGemPrefab(MineralItem chosenGem)
-        {
-            //loop through gem prefabs looking for specified one
-            foreach(GameObject gem in gemPrefabs)
-            {
-                if (gem.name == chosenGem.ModelName)
-                {
-                    return gem;
-                }
-            }
-
-            //return the first prefab by default
-            return gemPrefabs[0];
         }
 
         //method to correct for floating gems

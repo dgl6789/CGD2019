@@ -233,6 +233,7 @@ namespace App
         string spriteName;
 
         string modelName;
+        float colorR, colorG, colorB;
 
         ToolType toolType;
         ToolInputType inputType;
@@ -267,6 +268,9 @@ namespace App
                     MineralItem m = item as MineralItem;
 
                     modelName = m.ModelName;
+                    colorR = m.Color.r;
+                    colorG = m.Color.g;
+                    colorB = m.Color.b;
                     break;
             }
         }
@@ -287,7 +291,7 @@ namespace App
 
         public MineralItem GetMineralData() {
             MineralItem i = ScriptableObject.CreateInstance<MineralItem>();
-            i.SetValues(itemName, itemText, value, spriteName, modelName);
+            i.SetValues(itemName, itemText, value, spriteName, modelName, new Color(colorR, colorG, colorB, 1.0f));
 
             return i;
         }

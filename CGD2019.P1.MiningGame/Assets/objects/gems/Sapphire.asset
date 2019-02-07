@@ -16,4 +16,5 @@ MonoBehaviour:
   itemText: a variety of the mineral corundum, consisting of aluminium oxide (Al2O3)
     with trace amounts of elements such as iron, titanium, chromium, copper, or magnesium.
   value: 300
-  modelName: gemModelSapphire
+  modelName: gem_0
+  color: {r: 0.18752226, g: 0.33429822, b: 0.8113208, a: 1}

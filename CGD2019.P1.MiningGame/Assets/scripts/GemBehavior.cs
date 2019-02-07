@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using App.Util;
 
 namespace App.Gameplay {
     public class GemBehavior : MonoBehaviour {
@@ -12,15 +13,29 @@ namespace App.Gameplay {
         GameState startingState;
 
         MineralItem itemData;
+
+        MaterialPropertyBlock materialProps;
+        Renderer _renderer;
         
         public void Initialize(MineralItem itemData) {
+            _renderer = GetComponent<Renderer>();
             Camera = GameObject.FindGameObjectWithTag("MainCamera");
 
             this.itemData = itemData;
 
             startingState = StateManager.Instance.State;
 
-            // TODO: Set the gem's mesh to the mesh specified by itemData
+            // Assign the gem's mesh and give it a random rotation.
+            GetComponent<MeshFilter>().mesh = AssetManager.Instance.GetModelFromManifest(itemData.ModelName);
+
+            transform.localRotation = Quaternion.Euler(Random.insideUnitSphere * 360f);
+
+            // Set the gem's material tint.
+            materialProps = new MaterialPropertyBlock();
+            _renderer.GetPropertyBlock(materialProps);
+            materialProps.SetColor("_Color", itemData.Color);
+            _renderer.SetPropertyBlock(materialProps);
+
         }
 
         public void Update()

@@ -15,4 +15,5 @@ MonoBehaviour:
   itemName: Green Rock
   itemText: All the green of an emerald, none of the value.
   value: 50
-  modelName: gemModelGreenRock
+  modelName: gem_1
+  color: {r: 0.36739054, g: 0.6037736, b: 0.42731318, a: 1}
