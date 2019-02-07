@@ -77,7 +77,7 @@ namespace App
                 {
                     consumableDuration--;
                 }
-                else
+                else if (activeConsumable != null)
                 {
                     EndConsumable();
                 }
@@ -134,6 +134,8 @@ namespace App
                     Gameplay.VoxelGrid.Instance.AdjustTransparency();
                     break;
             }
+
+            activeConsumable = null;
         }
         
         /// <summary>
@@ -142,13 +144,15 @@ namespace App
         /// <param name="item">consumable to use</param>
         public void UseConsumable(InventoryItem item)
         {
-            if (!playerItems.Contains(item) || !(item is ConsumableItem) || consumableDuration > 0) return;
+            if (!playerItems.Contains(item) || !(item is ConsumableItem)) return;
 
             ConsumableItem i = item as ConsumableItem;
 
             switch (i.Type)
             {
                 case ConsumableType.RADAR:
+                    if (consumableDuration > 0) return; //can only have one consumable with a duration active at once
+
                     Gameplay.VoxelGrid.Instance.AdjustTransparency(i.Strength);
                     consumableDuration = i.Duration;
                     activeConsumable = i;
