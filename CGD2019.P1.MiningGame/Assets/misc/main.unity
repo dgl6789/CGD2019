@@ -613,7 +613,7 @@ MonoBehaviour:
   shopItems:
   - {fileID: 11400000, guid: 036db9c311caa5240affb3b0a18f4a22, type: 2}
   - {fileID: 11400000, guid: 65443f193394fe749aa5f78ca8730474, type: 2}
-  loadSaveDataOnStart: 0
+  loadSaveDataOnStart: 1
   folderName: GeoCrush
   fileExtension: .gcdat
 --- !u!114 &291856087
@@ -678,6 +678,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eda486d08105b194c989f59c4dd188af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hardRockMult: 0
   rockGenMoveSmoothing: 8
   baseIntegrityFactor: 0.01
   baseIntegrityLossFactor: 0.1
@@ -3982,7 +3983,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.0078125, y: -0.000033462642}
+  m_AnchoredPosition: {x: 0.0078125, y: -0.000028868602}
   m_SizeDelta: {x: -0.30999756, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1330320724
