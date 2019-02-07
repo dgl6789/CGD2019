@@ -5,13 +5,9 @@ using App.Util;
 
 namespace App.Gameplay {
     public class GemBehavior : MonoBehaviour {
-
-        [HideInInspector] bool debugIsFree = true;
-
         GameObject Camera;
 
         GameState startingState;
-
         MineralItem itemData;
 
         MaterialPropertyBlock materialProps;
@@ -35,17 +31,8 @@ namespace App.Gameplay {
             _renderer.GetPropertyBlock(materialProps);
             materialProps.SetColor("_Color", itemData.Color);
             _renderer.SetPropertyBlock(materialProps);
-
         }
-
-        public void Update()
-        {
-            if (StateManager.Instance.State != startingState)
-            {
-                Destroy(gameObject);
-            }
-        }
-
+        
         //method to mine gem
         public void TryMine() {
             if (IsMineable()) {
@@ -56,13 +43,14 @@ namespace App.Gameplay {
                 //add currency to player
                 InventoryManager.Instance.AdjustCurrency(itemData.Value);
                 //delete gameobject
+                Gemeration.Instance.RemoveGem(this);
                 Destroy(gameObject);
             }
         }
 
         //method to determine if the gem can be mined
         bool IsMineable() {
-            return debugIsFree;
+            return !Gemeration.Instance.InRock(transform.position);
         }
     }
 }
