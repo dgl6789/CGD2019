@@ -699,7 +699,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cc7e2542ced5e274b8bb8df7322abdb7, type: 2}
   - {fileID: 11400000, guid: fbe534d8e25b44e4ab45376926b22c54, type: 2}
   consumableDuration: 0
-  loadSaveDataOnStart: 1
+  loadSaveDataOnStart: 0
   folderName: GeoCrush
   fileExtension: .gcdat
 --- !u!114 &291856087
@@ -748,6 +748,12 @@ MonoBehaviour:
     Sprite: {fileID: 21300000, guid: 5d3c08097b54bce4dbb19c0780dc3e0b, type: 3}
   - Name: pickaxe_2
     Sprite: {fileID: 21300000, guid: df7e5ded2a2c77c43bfc0f3b055ca56f, type: 3}
+  - Name: pickaxe_3
+    Sprite: {fileID: 21300000, guid: 2533a805ff6ca384d9b1a8a3e5cc4feb, type: 3}
+  - Name: rockRepair
+    Sprite: {fileID: 21300000, guid: e1118dd130cc6de43b16e6ad80b17261, type: 3}
+  - Name: radar
+    Sprite: {fileID: 21300000, guid: a166321a8336ca64f9f17627b71c7d0f, type: 3}
   ModelManifest:
   - Name: gem_0
     Model: {fileID: 4300000, guid: b52927c58b5b32f40b1d83c0275c6160, type: 3}
@@ -3313,7 +3319,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -51.30005, y: -65.9142}
+  m_AnchoredPosition: {x: -51.30078, y: -65.9142}
   m_SizeDelta: {x: 40.5, y: 348.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1090393486
@@ -3355,7 +3361,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 821424183}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9999999
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3662,7 +3668,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.1484375, y: -0.00006385595}
+  m_AnchoredPosition: {x: 0.1484375, y: 0}
   m_SizeDelta: {x: -0.3, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1140096578
@@ -3916,7 +3922,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 377700009}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4076,7 +4082,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.0078125, y: -0.000030517578}
+  m_AnchoredPosition: {x: 0.0078125, y: 0.0000037602817}
   m_SizeDelta: {x: -0.30999756, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1330320724
@@ -4625,7 +4631,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 197.5
+  m_fontSize: 197.15
   m_fontSizeBase: 52.99
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -5466,7 +5472,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 36.6
+  m_fontSize: 38.55
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

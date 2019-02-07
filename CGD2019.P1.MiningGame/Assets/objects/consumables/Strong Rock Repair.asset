@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6875852ae6b6e349b42bca7c4ed52cb, type: 3}
   m_Name: Strong Rock Repair
   m_EditorClassIdentifier: 
-  spriteName: gem_0
+  spriteName: rockRepair
   itemName: Strong Rock Repair
   itemText: Use this to patch up a rock for more than a second.
   value: 750

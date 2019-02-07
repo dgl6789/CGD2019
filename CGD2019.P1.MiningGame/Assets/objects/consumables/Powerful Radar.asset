@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6875852ae6b6e349b42bca7c4ed52cb, type: 3}
   m_Name: Powerful Radar
   m_EditorClassIdentifier: 
-  spriteName: gem_0
+  spriteName: radar
   itemName: Powerful Radar
   itemText: Scour away the rock's secrets. It can hide nothing from you.
   value: 2500
