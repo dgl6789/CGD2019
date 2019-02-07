@@ -67,6 +67,23 @@ namespace App
             if(loadSaveDataOnStart) LoadInventories();
         }
 
+        private void Update()
+        {
+            //only decrement consumable duration if mining
+            if (StateManager.Instance.State == GameState.MINING)
+            {
+                //decrement consumable duration, and any effects when they run out
+                if (consumableDuration > 0)
+                {
+                    consumableDuration--;
+                }
+                else
+                {
+                    EndConsumable();
+                }
+            }
+        }
+
         /// <summary>
         /// Equip an item.
         /// </summary>
@@ -104,9 +121,28 @@ namespace App
             return value;
         }
 
+        /// <summary>
+        /// Ends the effects of the current consumable item
+        /// </summary>
+        public void EndConsumable()
+        {
+            consumableDuration = 0;
+
+            switch(activeConsumable.Type)
+            {
+                case ConsumableType.RADAR: //makes rock opaque when radar is over
+                    Gameplay.VoxelGrid.Instance.AdjustTransparency();
+                    break;
+            }
+        }
+        
+        /// <summary>
+        /// Uses a consumable
+        /// </summary>
+        /// <param name="item">consumable to use</param>
         public void UseConsumable(InventoryItem item)
         {
-            if (!playerItems.Contains(item) || !(item is ConsumableItem)) return;
+            if (!playerItems.Contains(item) || !(item is ConsumableItem) || consumableDuration > 0) return;
 
             ConsumableItem i = item as ConsumableItem;
 

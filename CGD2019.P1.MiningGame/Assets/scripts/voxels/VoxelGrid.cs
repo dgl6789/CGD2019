@@ -113,7 +113,11 @@ namespace App.Gameplay {
             // Generate gems
             Gemeration.Instance.GenerateGems();
 
+            // Set up rock integrity
             RockManager.Instance.SetupNewRockIntegrity();
+
+            // Reset material to opaque
+            AdjustTransparency();
 
             // Generate the initial visual mesh and collider
             UpdateVisualMesh();
@@ -260,12 +264,15 @@ namespace App.Gameplay {
             else
             {
                 var col = transparentMaterial.color;
-                col.a = percentage;
+                col.a = 1.0f - percentage;
+                transparentMaterial.color = col;
 
                 Debug.Log("Transparency set to " + transparentMaterial.color.a);
 
                 activeMaterial = transparentMaterial;
             }
+
+            UpdateVisualMesh();
         }
 
         #region Geometry & Collider Generation

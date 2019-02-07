@@ -613,6 +613,12 @@ MonoBehaviour:
   shopItems:
   - {fileID: 11400000, guid: 036db9c311caa5240affb3b0a18f4a22, type: 2}
   - {fileID: 11400000, guid: 65443f193394fe749aa5f78ca8730474, type: 2}
+  - {fileID: 11400000, guid: bcca250c416adde49b0d8573d85ec1e3, type: 2}
+  - {fileID: 11400000, guid: a4f5a29fa68151f46b0dd383003eda1b, type: 2}
+  - {fileID: 11400000, guid: 1180fa753b87a5b4c93b7d2cda0763fd, type: 2}
+  - {fileID: 11400000, guid: cc7e2542ced5e274b8bb8df7322abdb7, type: 2}
+  - {fileID: 11400000, guid: fbe534d8e25b44e4ab45376926b22c54, type: 2}
+  consumableDuration: 0
   loadSaveDataOnStart: 1
   folderName: GeoCrush
   fileExtension: .gcdat
@@ -3257,7 +3263,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 821424183}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9999998
+  m_Size: 0.9999997
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3562,7 +3568,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.1484375, y: -0.000002042876}
+  m_AnchoredPosition: {x: 0.1484375, y: -0.0000111701365}
   m_SizeDelta: {x: -0.3, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1140096578
@@ -3816,7 +3822,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 377700009}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99999994
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3976,7 +3982,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00390625, y: 0.0000005105784}
+  m_AnchoredPosition: {x: 0.00390625, y: -0.000030517578}
   m_SizeDelta: {x: -0.30999756, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1330320724
@@ -4278,7 +4284,9 @@ MonoBehaviour:
   Volume: 0
   Surface: 0
   dimensions: {x: 16, y: 16, z: 16}
-  material: {fileID: 2100000, guid: 65ed0f6d0baa9834e866cd6ee785d86d, type: 2}
+  activeMaterial: {fileID: 0}
+  opaqueMaterial: {fileID: 2100000, guid: 65ed0f6d0baa9834e866cd6ee785d86d, type: 2}
+  transparentMaterial: {fileID: 2100000, guid: 8286cce13b59d2e4f9d5d4180392036d, type: 2}
   atlasDimensions: {x: 4, y: 4}
   textureResolution: 0.25
   maxVertsPerMesh: 60000
@@ -4528,7 +4536,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 197.6
+  m_fontSize: 197.5
   m_fontSizeBase: 52.99
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -5366,7 +5374,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 36.65
+  m_fontSize: 36.6
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

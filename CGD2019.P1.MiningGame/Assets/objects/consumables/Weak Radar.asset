@@ -16,5 +16,5 @@ MonoBehaviour:
   itemText: Use this to get a better idea of where gems are in a rock.
   value: 500
   type: 0
-  strength: 0.25
-  duration: 100
+  strength: 0.1
+  duration: 200

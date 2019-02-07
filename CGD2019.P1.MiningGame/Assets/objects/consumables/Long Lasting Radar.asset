@@ -11,10 +11,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6875852ae6b6e349b42bca7c4ed52cb, type: 3}
   m_Name: Long Lasting Radar
   m_EditorClassIdentifier: 
-  spriteName: radar_1
+  spriteName: gem_0
   itemName: Long Lasting Radar
   itemText: Peer inside a rock for almost as long as you need!
   value: 1500
   type: 0
-  strength: 0.25
+  strength: 0.2
   duration: 1000

@@ -63,7 +63,7 @@ namespace App.UI
 
                     InventoryManager.Instance.SetItemEquipped(i, true);
                 }
-                else if (item is ConsumableItem) //use a consumable item if in game
+                else if (item is ConsumableItem && StateManager.Instance.State == GameState.MINING) //use a consumable item if in game
                 {
                     ConsumableItem i = item as ConsumableItem;
 
