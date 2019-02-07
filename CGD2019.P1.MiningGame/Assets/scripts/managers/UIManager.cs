@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using App;
+using System.Collections;
 
 namespace App.UI {
     public enum ModalState { NONE, INVENTORY, SHOP, OPTIONS /* If a modal is added, put a state for it here and assign its animator and transform in the inspector */}
@@ -55,6 +55,8 @@ namespace App.UI {
 
         [Header("Miscellaneous")]
         [SerializeField] string defaultInventoryPanelText;
+        [SerializeField] float integrityFillBarSmoothing;
+        [HideInInspector] float desiredIntegrityBarFillAmount;
 
         // Use this for initialization
         void Awake()
@@ -68,6 +70,10 @@ namespace App.UI {
             debugText.gameObject.SetActive(DrawDebugText);
 
             WriteDebug("Version: " + version);
+        }
+
+        private void Update() {
+            rockIntegrityBar.fillAmount = Mathf.Lerp(rockIntegrityBar.fillAmount, desiredIntegrityBarFillAmount, integrityFillBarSmoothing * Time.deltaTime);
         }
 
         /// <summary>
@@ -287,9 +293,8 @@ namespace App.UI {
             ingameCurrencyText.text = currency;
         }
 
-        public void SetRockIntegrity(float integrity)
-        {
-            rockIntegrityBar.fillAmount = integrity;
+        public void SetRockIntegrity(float integrity) {
+            desiredIntegrityBarFillAmount = integrity;
         }
 
         public void WriteDebug(string text) {

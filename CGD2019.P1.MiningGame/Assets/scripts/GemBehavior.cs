@@ -7,7 +7,6 @@ namespace App.Gameplay {
     public class GemBehavior : MonoBehaviour {
         GameObject Camera;
 
-        GameState startingState;
         MineralItem itemData;
 
         MaterialPropertyBlock materialProps;
@@ -18,8 +17,6 @@ namespace App.Gameplay {
             Camera = GameObject.FindGameObjectWithTag("MainCamera");
 
             this.itemData = itemData;
-
-            startingState = StateManager.Instance.State;
 
             // Assign the gem's mesh and give it a random rotation.
             GetComponent<MeshFilter>().mesh = AssetManager.Instance.GetModelFromManifest(itemData.ModelName);
@@ -36,10 +33,8 @@ namespace App.Gameplay {
         //method to mine gem
         public void TryMine() {
             if (IsMineable()) {
-                GameObject text = Instantiate<GameObject>(Resources.Load<GameObject>("GemText"),transform.position,Quaternion.Euler(Vector3.zero));
-                text.GetComponent<TextMesh>().text = itemData.Value.ToString();
-                text.transform.LookAt(Camera.transform,Camera.transform.up);
-                text.transform.localScale = new Vector3(-1, 1, 1);
+                FXManager.Instance.SpawnFloatingText(transform.position, itemData);
+
                 //add currency to player
                 InventoryManager.Instance.AdjustCurrency(itemData.Value);
                 //delete gameobject
