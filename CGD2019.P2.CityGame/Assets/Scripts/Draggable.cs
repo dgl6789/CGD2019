@@ -39,6 +39,5 @@ public class Draggable : MonoBehaviour {
             renderer.color = Color.white;
         }
         transform.localScale = originalLscale;
-
     }
 }
