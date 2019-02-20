@@ -11,7 +11,10 @@ namespace App
 
         //civilians
         List<CivilianMovement> civilianList = new List<CivilianMovement>();
-
+        public List<CivilianMovement> CivilianList
+        {
+            get { return civilianList; }
+        }
         //trig lookup tables
         float[] sinLookup = new float[360];
         float[] cosLookup = new float[360];
