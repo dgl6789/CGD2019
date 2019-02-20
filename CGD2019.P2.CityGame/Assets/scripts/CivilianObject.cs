@@ -13,11 +13,15 @@ namespace App
         [SerializeField] float flockingWeight;
         public float FlockingWeight { get { return flockingWeight; } }
 
-        public void SetValues(string spriteName, string mobileName, int speed, string civilianName, float flockingWeight)
+        [SerializeField] float neighborRange;
+        public float NeighborRange { get { return neighborRange; } }
+
+        public void SetValues(string spriteName, string mobileName, int speed, string civilianName, float flockingWeight, float neighborRange)
         {
             base.SetValues(spriteName, mobileName, speed);
 
             this.flockingWeight = flockingWeight;
+            this.neighborRange = neighborRange;
         }
     }
 }
