@@ -18,7 +18,7 @@ namespace App
         Vector3 averageFlockPosition;
 
         //waypoints
-        GameObject nextWaypoint;
+        public GameObject nextWaypoint;
 
         //movement values
         Vector3 position;
@@ -69,9 +69,21 @@ namespace App
             //update position based on movement forces
             UpdatePosition();
 
+            //check waypoint
+            UpdateWaypoint();
+
             //delete if out of bounds
             if (OutOfBounds())
                 CivilianManager.Instance.RemoveCivilian(this);
+        }
+
+        //method to switch to the next waypoint
+        void UpdateWaypoint()
+        {
+            if (WithinDist(nextWaypoint.transform.position, 2.0f))
+            {
+                nextWaypoint = nextWaypoint.GetComponent<WayPoint>().nextWaypoint;
+            }
         }
 
         //method to calculate steering forces
@@ -83,7 +95,7 @@ namespace App
             {
                 Vector3 neighborPos = neighbor.position; //should be neighbor.position?
 
-                ApplyForce(Align(neighborPos, neighbor.direction));
+                //ApplyForce(Align(neighborPos, neighbor.direction));
                 ApplyForce(Separation(neighborPos));
             }
 
@@ -187,10 +199,10 @@ namespace App
             {
                 Vector3 separationForce = 2f * Flee(targetPos);
 
-                if (WithinDist(targetPos, 1.0f))
-                {
-                    separationForce *= 4f;
-                }
+                //if (WithinDist(targetPos, 1.0f))
+                //{
+                //    separationForce *= 4f;
+                //}
 
                 return separationForce;
             }

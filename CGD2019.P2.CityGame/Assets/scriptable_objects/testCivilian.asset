@@ -11,10 +11,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6696a80a2d977c48a93ba797056c8e3, type: 3}
   m_Name: testCivilian
   m_EditorClassIdentifier: 
-  spriteName: 
-  mobileName: 
-  speed: 0
-  worldBounds: {x: 0, y: 0, z: 0}
-  civilianName: 
-  flockingWeight: 0
-  neighborRange: 0
+  spriteName: ignore
+  mobileName: ignore
+  speed: 1
+  worldBounds: {x: 20, y: 20, z: 0}
+  civilianName: Blorg
+  flockingWeight: 1
+  neighborRange: 3

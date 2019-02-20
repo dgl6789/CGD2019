@@ -9,6 +9,9 @@ namespace App
         //instance
         public static CivilianManager Instance;
 
+        //waypoints for debug
+        public GameObject debugWaypoint;
+
         //civilian objects
         public List<CivilianObject> civilianObjectList;
         public GameObject civilianPrefab;
@@ -48,6 +51,8 @@ namespace App
 
             CivilianObject civObj = civilianObjectList[Random.Range(0, civilianObjectList.Count)];
             civ.CivilianData = civObj;
+
+            civ.nextWaypoint = debugWaypoint;
 
             civilianList.Add(civ);
         }
