@@ -16,9 +16,9 @@ namespace App
         [SerializeField] float neighborRange;
         public float NeighborRange { get { return neighborRange; } }
 
-        public void SetValues(string spriteName, string mobileName, int speed, string civilianName, float flockingWeight, float neighborRange)
+        public void SetValues(string spriteName, string mobileName, int speed, Vector3 worldBounds, string civilianName, float flockingWeight, float neighborRange)
         {
-            base.SetValues(spriteName, mobileName, speed);
+            base.SetValues(spriteName, mobileName, speed, worldBounds);
 
             this.flockingWeight = flockingWeight;
             this.neighborRange = neighborRange;
