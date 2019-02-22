@@ -12,6 +12,8 @@ namespace App
         //waypoints for debug
         public GameObject debugWaypoint;
 
+        [SerializeField] Transform civilianParent;
+
         //civilian objects
         public List<CivilianObject> civilianObjectList;
         public GameObject civilianPrefab;
@@ -37,7 +39,7 @@ namespace App
         }
 
         // Update is called once per frame
-        void Update()
+        public void DoUpdateStep()
         {
             if (Random.Range(0, 100) == 0) //Debug.Log("1/100");
                 SpawnCivilian();
@@ -46,9 +48,8 @@ namespace App
         //method to spawn a single civilian
         public void SpawnCivilian()
         {
-            Debug.Log("Spawning a civilian");
 
-            CivilianMovement civ = Instantiate(civilianPrefab, gameObject.transform).GetComponent<CivilianMovement>();
+            CivilianMovement civ = Instantiate(civilianPrefab, civilianParent).GetComponent<CivilianMovement>();
             Vector3 pos = new Vector3(10, 10, 0);
             civ.transform.position = pos;
 

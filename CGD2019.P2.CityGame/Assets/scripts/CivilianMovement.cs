@@ -30,8 +30,7 @@ namespace App
         float maxSpeed;
         float maxForce;
 
-        //world bounds
-        Vector3 worldBounds = new Vector3(50, 50);
+        Bounds worldBounds;
 
         //neighbors
         List<CivilianMovement> neighborList = new List<CivilianMovement>();
@@ -56,6 +55,8 @@ namespace App
             collisionRadius = 0.5f;
 
             wanderAngle = Random.Range(0, 360);
+
+            worldBounds = OrthographicBounds();
         }
 
         // Update is called once per frame
@@ -69,8 +70,9 @@ namespace App
             //update position based on movement forces
             UpdatePosition();
 
-            //check waypoint
-            UpdateWaypoint();
+            //check waypoint if it exists
+            if (nextWaypoint) UpdateWaypoint();
+            else CivilianManager.Instance.RemoveCivilian(this);
 
             //delete if out of bounds
             if (OutOfBounds())
@@ -139,7 +141,7 @@ namespace App
         //method to check if the civilian is out of the world
         bool OutOfBounds()
         {
-            return (position.x > worldBounds.x || position.x < 0 || position.y > worldBounds.y || position.y < 0);
+            return (position.x > worldBounds.max.x || position.x < worldBounds.min.x || position.y > worldBounds.max.y || position.y < worldBounds.min.y);
         }
 
         //method to apply a force to the acceleration
@@ -260,6 +262,15 @@ namespace App
             float distY = (position.y - targetPos.y) * (position.y - targetPos.y);
 
             return distX + distY;
+        }
+
+        public static Bounds OrthographicBounds() {
+            float screenAspect = (float)Screen.width / (float)Screen.height;
+            float cameraHeight = Camera.main.orthographicSize * 2;
+            Bounds bounds = new Bounds(
+                Camera.main.transform.position,
+                new Vector3(cameraHeight * screenAspect, cameraHeight, 0));
+            return bounds;
         }
     }
 }
