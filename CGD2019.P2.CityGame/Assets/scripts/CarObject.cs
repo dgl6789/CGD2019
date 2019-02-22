@@ -7,9 +7,9 @@ namespace App
     [CreateAssetMenu(fileName = "Car", menuName = "Mobiles/Car", order = 1)]
     public class CarObject : MobileObject
     {
-        public void SetValues(string spriteName, string mobileName, int speed)
+        public void SetValues(string spriteName, string mobileName, int speed, Vector3 worldBounds)
         {
-            base.SetValues(spriteName, mobileName, speed);
+            base.SetValues(spriteName, mobileName, speed, worldBounds);
         }
     }
 }

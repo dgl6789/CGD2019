@@ -6,11 +6,18 @@ namespace App
 {
     public class CivilianManager : MonoBehaviour
     {
-
+        //instance
         public static CivilianManager Instance;
 
+        //waypoints for debug
+        public GameObject debugWaypoint;
+
+        //civilian objects
+        public List<CivilianObject> civilianObjectList;
+        public GameObject civilianPrefab;
+
         //civilians
-        List<CivilianMovement> civilianList = new List<CivilianMovement>();
+        [SerializeField] List<CivilianMovement> civilianList = new List<CivilianMovement>();
         public List<CivilianMovement> CivilianList
         {
             get { return civilianList; }
@@ -25,23 +32,43 @@ namespace App
         {
             if (Instance == null) Instance = this;
             else Destroy(this);
-        }
 
-        private void Start()
-        {
             CalcLookupTables();
         }
 
         // Update is called once per frame
         void Update()
         {
-
+            if (Random.Range(0, 100) == 0) //Debug.Log("1/100");
+                SpawnCivilian();
         }
 
         //method to spawn a single civilian
         public void SpawnCivilian()
         {
+            Debug.Log("Spawning a civilian");
 
+            CivilianMovement civ = Instantiate(civilianPrefab, gameObject.transform).GetComponent<CivilianMovement>();
+            Vector3 pos = new Vector3(10, 10, 0);
+            civ.transform.position = pos;
+
+            CivilianObject civObj = civilianObjectList[Random.Range(0, civilianObjectList.Count)];
+            civ.CivilianData = civObj;
+
+            civ.nextWaypoint = debugWaypoint;
+
+            civilianList.Add(civ);
+        }
+
+        //method to remove a civilian
+        public void RemoveCivilian(CivilianMovement thisCivilian, bool replace = true)
+        {
+            civilianList.Remove(thisCivilian);
+
+            Destroy(thisCivilian.gameObject);
+
+            if (replace)
+                SpawnCivilian();
         }
 
         //method to find each civilian's neighbor
@@ -55,13 +82,9 @@ namespace App
                 //don't check against self
                 if (civilian == thisCivilian)
                     continue;
-
-                //get distance between civilians and the neighbor range of this one
-                float dist = thisCivilian.CalcDistSqr(civilian.transform.position);
-                float range = thisCivilian.CivilianData.NeighborRange;
-    
-                //check that they are within range
-                if (dist <= range * range)
+                    
+                //add to list if in range
+                if (thisCivilian.WithinDist(civilian.Position, thisCivilian.CivilianData.NeighborRange))
                 {
                     neighbors.Add(civilian);
                 }
