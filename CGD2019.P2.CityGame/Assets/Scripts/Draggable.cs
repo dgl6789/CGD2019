@@ -26,8 +26,19 @@ public class Draggable : MonoBehaviour {
         }
         if (dragging)
         {
-            transform.position = lastPos + (Input.mousePosition - lastMousePos)*.015f;
-            lastPos = transform.position;
+            if (Application.platform == RuntimePlatform.WindowsPlayer)
+            {
+                transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
+                lastPos = transform.position;
+            }
+            else if (Application.platform == RuntimePlatform.Android)
+            {
+                if (Input.touchCount > 0)
+                {
+                    transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, 0));
+                    lastPos = transform.position;
+                }
+            }
         }
         else
         {
