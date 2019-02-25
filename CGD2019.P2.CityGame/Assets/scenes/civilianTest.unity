@@ -567,6 +567,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugWaypoint: {fileID: 659437952}
+  civilianParent: {fileID: 0}
   civilianObjectList:
   - {fileID: 11400000, guid: 7042b86003b7b62449fdcfe79ec2a128, type: 2}
   civilianPrefab: {fileID: 1934070605476302, guid: edbb03e97a0b9ee49b1836e6873742f2,
