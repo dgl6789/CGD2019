@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212357008917109324}
   - component: {fileID: 114031397112907908}
   - component: {fileID: 114808645843995274}
+  - component: {fileID: 114299368484820002}
   m_Layer: 0
   m_Name: testSprite
   m_TagString: Untagged
@@ -54,6 +55,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextWaypoint: {fileID: 0}
+--- !u!114 &114299368484820002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1934070605476302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0aa0902827abc0049ac4ac43860e88c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dragging: 0
+  renderer: {fileID: 0}
 --- !u!114 &114808645843995274
 MonoBehaviour:
   m_ObjectHideFlags: 1
