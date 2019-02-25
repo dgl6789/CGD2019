@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 114031397112907908}
   - component: {fileID: 114808645843995274}
   - component: {fileID: 114299368484820002}
+  - component: {fileID: 61877875342061182}
   m_Layer: 0
   m_Name: testSprite
   m_TagString: Untagged
@@ -43,6 +44,31 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &61877875342061182
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1934070605476302}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 0.32, y: 0.32}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 1}
+  m_EdgeRadius: 0
 --- !u!114 &114031397112907908
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -66,7 +92,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aa0902827abc0049ac4ac43860e88c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dragging: 0
   renderer: {fileID: 0}
 --- !u!114 &114808645843995274
 MonoBehaviour:
