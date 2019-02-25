@@ -567,6 +567,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugWaypoint: {fileID: 659437952}
+  civilianParent: {fileID: 0}
   civilianObjectList:
   - {fileID: 11400000, guid: 7042b86003b7b62449fdcfe79ec2a128, type: 2}
   civilianPrefab: {fileID: 1934070605476302, guid: edbb03e97a0b9ee49b1836e6873742f2,
@@ -1394,7 +1395,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -999
-  m_Sprite: {fileID: 21300000, guid: dbac6171bfee7f34cbbc455c986e2b02, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1b7dedb6df1db794f9ff5370c85e50b0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
