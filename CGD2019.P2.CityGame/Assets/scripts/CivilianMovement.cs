@@ -18,7 +18,8 @@ namespace App
         Vector3 averageFlockPosition;
 
         //waypoints
-        public GameObject nextWaypoint;
+        public WayPoint nextWaypoint;
+        public WayPoint prevWaypoint;
 
         //movement values
         Vector3 position;
@@ -84,6 +85,8 @@ namespace App
         {
             if (WithinDist(nextWaypoint.transform.position, 2.0f))
             {
+                prevWaypoint = nextWaypoint;
+
                 nextWaypoint = nextWaypoint.GetComponent<WayPoint>().nextWaypoint;
             }
         }
@@ -136,6 +139,46 @@ namespace App
             //reset values
             direction = velocity.normalized;
             acceleration = Vector3.zero;
+        }
+
+        //method to scan nearby area
+        void ScanNearby()
+        {
+            RaycastHit2D[] results = Physics2D.CircleCastAll(
+                new Vector2(position.x, position.y),
+                civilianData.NeighborRange,
+                Vector2.zero);
+
+            WayPoint nearestWaypoint = null;
+            float nearestDistSqr = float.PositiveInfinity;
+
+            for(int i = 0; i < results.Length; i++)
+            {
+                GameObject thisHit = results[i].collider.gameObject;
+
+                CivilianMovement thisCiv = thisHit.GetComponent<CivilianMovement>();
+                WayPoint thisWaypoint = thisHit.GetComponent<WayPoint>();
+
+                if (thisCiv != null)
+                {
+                    neighborList.Add(thisCiv);
+                } 
+                else if (thisWaypoint != null && thisWaypoint != prevWaypoint)
+                {
+                    float thisDistSqr = CalcDistSqr(thisWaypoint.transform.position);
+
+                    if (thisDistSqr < nearestDistSqr)
+                    {
+                        nearestWaypoint = thisWaypoint;
+                        nearestDistSqr = thisDistSqr;
+                    }
+                }
+            }
+
+            if (nearestWaypoint != null)
+            {
+                nextWaypoint = nearestWaypoint;
+            }
         }
 
         //method to check if the civilian is out of the world
@@ -199,7 +242,7 @@ namespace App
         {
             if (WithinDist(targetPos, 2.0f))
             {
-                Vector3 separationForce = 2f * Flee(targetPos);
+                Vector3 separationForce = Flee(targetPos);
 
                 //if (WithinDist(targetPos, 1.0f))
                 //{
