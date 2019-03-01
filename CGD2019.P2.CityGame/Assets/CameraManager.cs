@@ -224,9 +224,9 @@ namespace App
             float h = cam.orthographicSize;
             float w = cam.aspect * h;
 
-            cameraBounds = new Vector2(world.sprite.bounds.extents.x - w, world.sprite.bounds.extents.y - h);
-
-            Debug.Log(cameraBounds + " " + w + " " + h);
+            cameraBounds = new Vector2(
+                world.sprite.bounds.extents.x * world.transform.localScale.x - w,
+                world.sprite.bounds.extents.y * world.transform.localScale.y - h);
         }
         #endregion
 
