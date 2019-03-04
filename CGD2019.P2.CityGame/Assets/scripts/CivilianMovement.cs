@@ -18,7 +18,7 @@ namespace App
         Vector3 averageFlockPosition;
 
         //waypoints
-        public GameObject nextWaypoint;
+        public Transform nextWaypoint;
 
         //movement values
         Vector3 position;
@@ -82,9 +82,9 @@ namespace App
         //method to switch to the next waypoint
         void UpdateWaypoint()
         {
-            if (WithinDist(nextWaypoint.transform.position, 2.0f))
+            if (WithinDist(nextWaypoint.position, 2.0f))
             {
-                nextWaypoint = nextWaypoint.GetComponent<WayPoint>().nextWaypoint;
+                nextWaypoint = nextWaypoint.GetComponent<WayPoint>().GetNextWaypoint();
             }
         }
 
@@ -104,7 +104,7 @@ namespace App
             ApplyForce(Cohesion() * civilianData.FlockingWeight);
 
             if (nextWaypoint != null)
-                ApplyForce(Seek(nextWaypoint.transform.position));
+                ApplyForce(Seek(nextWaypoint.position));
             else
                 ApplyForce(Wander());
         }

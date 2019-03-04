@@ -6,18 +6,8 @@ namespace App
 {
     public class WayPoint : MonoBehaviour
     {
-        public GameObject nextWaypoint;
+        public Transform[] adjacentWaypoints;
 
-        // Use this for initialization
-        void Start()
-        {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
+        public Transform GetNextWaypoint() { return adjacentWaypoints[Random.Range(0, adjacentWaypoints.Length)]; }
     }
 }
