@@ -10,7 +10,7 @@ namespace App
         public static CivilianManager Instance;
 
         //waypoints for debug
-        public GameObject debugWaypoint;
+        public WayPoint debugWaypoint;
 
         [SerializeField] Transform civilianParent;
 

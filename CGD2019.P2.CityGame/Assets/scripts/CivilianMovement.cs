@@ -63,7 +63,8 @@ namespace App
         // Update is called once per frame
         void Update() {
             //look for neighbors
-            neighborList = CivilianManager.Instance.FindNeighbors(this);
+            //neighborList = CivilianManager.Instance.FindNeighbors(this);
+            ScanNearby();
 
             //determine which way to move
             CalculateSteeringForces();
@@ -73,7 +74,7 @@ namespace App
 
             //check waypoint if it exists
             if (nextWaypoint) UpdateWaypoint();
-            else CivilianManager.Instance.RemoveCivilian(this);
+            //else CivilianManager.Instance.RemoveCivilian(this);
 
             //delete if out of bounds
             if (OutOfBounds())
@@ -100,7 +101,7 @@ namespace App
             {
                 Vector3 neighborPos = neighbor.position; //should be neighbor.position?
 
-                //ApplyForce(Align(neighborPos, neighbor.direction));
+                ApplyForce(Align(neighborPos, neighbor.direction));
                 ApplyForce(Separation(neighborPos));
             }
 
@@ -144,6 +145,8 @@ namespace App
         //method to scan nearby area
         void ScanNearby()
         {
+            neighborList.Clear();
+
             RaycastHit2D[] results = Physics2D.CircleCastAll(
                 new Vector2(position.x, position.y),
                 civilianData.NeighborRange,

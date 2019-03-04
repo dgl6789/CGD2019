@@ -6,7 +6,7 @@ namespace App
 {
     public class WayPoint : MonoBehaviour
     {
-        public GameObject nextWaypoint;
+        public WayPoint nextWaypoint;
 
         // Use this for initialization
         void Start()
