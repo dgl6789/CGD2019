@@ -18,7 +18,7 @@ namespace App
         Vector3 averageFlockPosition;
 
         //waypoints
-        public Transform nextWaypoint;
+        public WayPoint nextWaypoint;
 
         //movement values
         Vector3 position;
@@ -72,7 +72,6 @@ namespace App
 
             //check waypoint if it exists
             if (nextWaypoint) UpdateWaypoint();
-            else CivilianManager.Instance.RemoveCivilian(this);
 
             //delete if out of bounds
             if (OutOfBounds())
@@ -82,9 +81,9 @@ namespace App
         //method to switch to the next waypoint
         void UpdateWaypoint()
         {
-            if (WithinDist(nextWaypoint.position, 2.0f))
+            if (WithinDist(nextWaypoint.transform.position, 2.0f))
             {
-                nextWaypoint = nextWaypoint.GetComponent<WayPoint>().GetNextWaypoint();
+                nextWaypoint = nextWaypoint.GetNextWaypoint();
             }
         }
 
@@ -104,7 +103,7 @@ namespace App
             ApplyForce(Cohesion() * civilianData.FlockingWeight);
 
             if (nextWaypoint != null)
-                ApplyForce(Seek(nextWaypoint.position));
+                ApplyForce(Seek(nextWaypoint.transform.position));
             else
                 ApplyForce(Wander());
         }
@@ -141,7 +140,7 @@ namespace App
         //method to check if the civilian is out of the world
         bool OutOfBounds()
         {
-            return (position.x > worldBounds.max.x || position.x < worldBounds.min.x || position.y > worldBounds.max.y || position.y < worldBounds.min.y);
+            return (position.x > worldBounds.max.x || position.x < worldBounds.min.x || position.y > worldBounds.max.y || position.y < worldBounds.min.y) && CivilianManager.Instance.spawnPoints.Contains(nextWaypoint);
         }
 
         //method to apply a force to the acceleration
@@ -266,7 +265,7 @@ namespace App
 
         public static Bounds OrthographicBounds() {
             float screenAspect = (float)Screen.width / (float)Screen.height;
-            float cameraHeight = Camera.main.orthographicSize * 2;
+            float cameraHeight = CameraManager.Instance.zoomBounds.y * 2;
             Bounds bounds = new Bounds(
                 Camera.main.transform.position,
                 new Vector3(cameraHeight * screenAspect, cameraHeight, 0));

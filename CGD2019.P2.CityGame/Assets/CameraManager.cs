@@ -33,7 +33,7 @@ namespace App
         [SerializeField] float zoomDirectionThreshold;
 
         [SerializeField] Vector2 zoomSpeed;
-        [SerializeField] Vector2 zoomBounds;
+        public Vector2 zoomBounds;
         [SerializeField] float touchSensitivity;
         [SerializeField] float zoomSmoothing;
 

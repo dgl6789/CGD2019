@@ -8,6 +8,6 @@ namespace App
     {
         public Transform[] adjacentWaypoints;
 
-        public Transform GetNextWaypoint() { return adjacentWaypoints[Random.Range(0, adjacentWaypoints.Length)]; }
+        public WayPoint GetNextWaypoint() { return adjacentWaypoints[Random.Range(0, adjacentWaypoints.Length)].GetComponent<WayPoint>(); }
     }
 }

@@ -10,7 +10,7 @@ namespace App
         public static CivilianManager Instance;
 
         //waypoints for debug
-        public Transform debugWaypoint;
+        public List<WayPoint> spawnPoints;
 
         [SerializeField] Transform civilianParent;
 
@@ -48,15 +48,17 @@ namespace App
         //method to spawn a single civilian
         public void SpawnCivilian()
         {
-
             CivilianMovement civ = Instantiate(civilianPrefab, civilianParent).GetComponent<CivilianMovement>();
-            Vector3 pos = new Vector3(10, 10, 0);
-            civ.transform.position = pos;
+
+
+            WayPoint startPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
+
+            civ.transform.position = startPoint.transform.position;
 
             CivilianObject civObj = civilianObjectList[Random.Range(0, civilianObjectList.Count)];
             civ.CivilianData = civObj;
 
-            civ.nextWaypoint = debugWaypoint;
+            civ.nextWaypoint = startPoint.GetNextWaypoint();
 
             civilianList.Add(civ);
         }
