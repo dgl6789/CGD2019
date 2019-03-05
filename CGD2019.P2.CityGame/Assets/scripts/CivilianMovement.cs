@@ -8,16 +8,12 @@ namespace App
 {
     public class CivilianMovement : MonoBehaviour {
 
-        //data
-        CivilianObject civilianData;
-        public CivilianObject CivilianData
-        {
-            get { return civilianData; }
-            set { civilianData = value; }
-        }
+        //flocking
+        float flockingWeight;
         Vector3 averageFlockPosition;
 
         //waypoints
+        private bool checkWaypoint = true;
         public WayPoint nextWaypoint;
 
         //movement values
@@ -26,13 +22,14 @@ namespace App
         Vector3 velocity;
         Vector3 acceleration;
         Vector3 direction;
-        
+        float speed;
         float maxSpeed;
         float maxForce;
 
         Bounds worldBounds;
 
         //neighbors
+        float neighborRange;
         List<CivilianMovement> neighborList = new List<CivilianMovement>();
 
         //wandering
@@ -49,10 +46,12 @@ namespace App
             direction = Vector3.zero;
             acceleration = Vector3.zero;
 
+            speed = 1;
             maxSpeed = 10;
             maxForce = 10;
-
-            collisionRadius = 0.5f;
+            
+            flockingWeight = 0.75f;
+            neighborRange = 2.0f;
 
             wanderAngle = Random.Range(0, 360);
 
@@ -62,7 +61,6 @@ namespace App
         // Update is called once per frame
         void Update() {
             //look for neighbors
-            //neighborList = CivilianManager.Instance.FindNeighbors(this);
             ScanNearby();
 
             //determine which way to move
@@ -82,9 +80,14 @@ namespace App
         //method to switch to the next waypoint
         void UpdateWaypoint()
         {
-            if (WithinDist(nextWaypoint.transform.position, 2.0f))
+            if (WithinDist(nextWaypoint.transform.position, neighborRange))
             {
                 nextWaypoint = nextWaypoint.GetNextWaypoint();
+                //Debug.Log("Next waypoint is " + nextWaypoint);
+            }
+            else
+            {
+                //Debug.Log("not swapping waypoints");
             }
         }
 
@@ -95,16 +98,22 @@ namespace App
 
             foreach (CivilianMovement neighbor in neighborList)
             {
-                Vector3 neighborPos = neighbor.position; //should be neighbor.position?
+                Vector3 neighborPos = neighbor.position;
 
                 ApplyForce(Align(neighborPos, neighbor.direction));
                 ApplyForce(Separation(neighborPos));
             }
 
-            ApplyForce(Cohesion() * civilianData.FlockingWeight);
+            ApplyForce(Cohesion() * flockingWeight);
 
             if (nextWaypoint != null)
-                ApplyForce(Seek(nextWaypoint.transform.position));
+            {
+                Vector3 wpForce = Seek(nextWaypoint.transform.position);
+
+                ApplyForce(wpForce);
+
+                //Debug.Log("Waypoint force: " + wpForce);
+            }
             else
                 ApplyForce(Wander());
         }
@@ -145,7 +154,7 @@ namespace App
 
             RaycastHit2D[] results = Physics2D.CircleCastAll(
                 new Vector2(position.x, position.y),
-                civilianData.NeighborRange,
+                neighborRange,
                 Vector2.zero);
 
             WayPoint nearestWaypoint = null;
@@ -162,7 +171,7 @@ namespace App
                 {
                     neighborList.Add(thisCiv);
                 } 
-                else if (thisWaypoint != null && thisWaypoint != prevWaypoint)
+                else if (thisWaypoint != null)// && thisWaypoint != prevWaypoint)
                 {
                     float thisDistSqr = CalcDistSqr(thisWaypoint.transform.position);
 
@@ -189,7 +198,7 @@ namespace App
         //method to apply a force to the acceleration
         void ApplyForce(Vector3 force)
         {
-            acceleration += force * civilianData.Speed;
+            acceleration += force * speed;
         }
 
         //method to determine seeking forces towards a position
@@ -219,7 +228,7 @@ namespace App
         //method to align direction with neighbors
         Vector3 Align(Vector3 targetPos, Vector3 targetDir)
         {
-            if (WithinDist(targetPos, CivilianData.NeighborRange))
+            if (WithinDist(targetPos, neighborRange))
             {
                 Vector3 alignmentForce = Seek(targetPos + targetDir);
 
@@ -237,9 +246,10 @@ namespace App
             return cohesionForce;
         }
 
+        //method to keep civilians from hitting each other
         Vector3 Separation(Vector3 targetPos)
         {
-            if (WithinDist(targetPos, 2.0f))
+            if (WithinDist(targetPos, neighborRange))
             {
                 Vector3 separationForce = Flee(targetPos);
 
@@ -254,6 +264,7 @@ namespace App
             return Vector3.zero;
         }
 
+        //method for wandering behavior for when seeking is unable to happen
         Vector3 Wander()
         {
             Vector3 centerPoint = position + direction;
@@ -281,23 +292,27 @@ namespace App
             return wanderForce;
         }
 
+        //method to find the average position of the flock
         void FindAvgPosition()
         {
             averageFlockPosition = Vector3.zero;
 
             foreach(CivilianMovement neighbor in neighborList)
             {
-                averageFlockPosition = averageFlockPosition + neighbor.position; //should be neighbor.position?
+                averageFlockPosition = averageFlockPosition + neighbor.position;
             }
 
             averageFlockPosition /= neighborList.Count;
         }
 
+        //method to determine whether a specific position is within a given range
         public bool WithinDist(Vector3 targetPos, float range)
         {
             return (CalcDistSqr(targetPos) < range * range);
         }
 
+        //method to calculate the distance squared between this and a target position
+        //distance squared to reduce math calls
         float CalcDistSqr(Vector3 targetPos)
         {
             float distX = (position.x - targetPos.x) * (position.x - targetPos.x);
@@ -306,6 +321,7 @@ namespace App
             return distX + distY;
         }
 
+        //method to determine bounds of screen
         public static Bounds OrthographicBounds() {
             float screenAspect = (float)Screen.width / (float)Screen.height;
             float cameraHeight = CameraManager.Instance.zoomBounds.y * 2;

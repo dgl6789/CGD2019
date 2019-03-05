@@ -155,7 +155,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4822700933837052, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -164,7 +164,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1616045089379912, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_Name
-      value: Waypoint (2)
+      value: Waypoint L1
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -283,7 +283,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4822700933837052, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_RootOrder
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -292,7 +292,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1616045089379912, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_Name
-      value: Waypoint (6)
+      value: Waypoint B1
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -307,6 +307,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4822700933837052, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
     type: 2}
   m_PrefabInternal: {fileID: 58208254}
+--- !u!114 &79732299 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+    type: 2}
+  m_PrefabInternal: {fileID: 962074522}
+  m_Script: {fileID: 11500000, guid: 0e80989bd17dc4a408a24f25f38e827f, type: 3}
 --- !u!1001 &84576547
 Prefab:
   m_ObjectHideFlags: 0
@@ -349,7 +355,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4822700933837052, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -358,7 +364,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1616045089379912, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_Name
-      value: Waypoint (1)
+      value: Waypoint CT1
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -430,7 +436,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4822700933837052, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_RootOrder
-      value: 17
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -439,7 +445,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1616045089379912, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_Name
-      value: Waypoint (17)
+      value: Waypoint T2
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -496,7 +502,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4822700933837052, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_RootOrder
-      value: 4
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -505,7 +511,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1616045089379912, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_Name
-      value: Waypoint (4)
+      value: Waypoint CT2
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -577,7 +583,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4822700933837052, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_RootOrder
-      value: 16
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -586,7 +592,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1616045089379912, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_Name
-      value: Waypoint (16)
+      value: Waypoint T3
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -643,7 +649,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4822700933837052, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_RootOrder
-      value: 15
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -652,7 +658,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1616045089379912, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_Name
-      value: Waypoint (15)
+      value: Waypoint T4
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -935,7 +941,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4822700933837052, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_RootOrder
-      value: 13
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -944,7 +950,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1616045089379912, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_Name
-      value: Waypoint (13)
+      value: Waypoint R2
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -1156,7 +1162,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4822700933837052, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_RootOrder
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -1165,7 +1171,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1616045089379912, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_Name
-      value: Waypoint (10)
+      value: Waypoint CT4
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -1224,10 +1230,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eb3ef28a125dae47a2a584923f3166e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugWaypoint: {fileID: 659437952}
+  spawnPoints:
+  - {fileID: 79732299}
+  - {fileID: 1796322577}
+  - {fileID: 1879737782}
+  - {fileID: 849878902}
+  - {fileID: 1692091114}
+  - {fileID: 554518379}
+  - {fileID: 1151315939}
+  - {fileID: 1468517077}
+  - {fileID: 1971720868}
+  - {fileID: 986445710}
+  - {fileID: 1638814888}
+  - {fileID: 1351501222}
   civilianParent: {fileID: 1840806010}
-  civilianObjectList:
-  - {fileID: 11400000, guid: 7042b86003b7b62449fdcfe79ec2a128, type: 2}
+  civObj: {fileID: 11400000, guid: 7042b86003b7b62449fdcfe79ec2a128, type: 2}
   civilianPrefab: {fileID: 1934070605476302, guid: edbb03e97a0b9ee49b1836e6873742f2,
     type: 2}
   civilianList: []
@@ -1362,7 +1379,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4822700933837052, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_RootOrder
-      value: 14
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -1371,7 +1388,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1616045089379912, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_Name
-      value: Waypoint (14)
+      value: Waypoint R1
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -1386,6 +1403,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4822700933837052, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
     type: 2}
   m_PrefabInternal: {fileID: 546241317}
+--- !u!114 &554518379 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+    type: 2}
+  m_PrefabInternal: {fileID: 546241317}
+  m_Script: {fileID: 11500000, guid: 0e80989bd17dc4a408a24f25f38e827f, type: 3}
 --- !u!1 &620701888
 GameObject:
   m_ObjectHideFlags: 0
@@ -1551,7 +1574,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4822700933837052, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_RootOrder
-      value: 19
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -1560,7 +1583,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1616045089379912, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_Name
-      value: Waypoint (19)
+      value: Waypoint B3
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -1575,11 +1598,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4822700933837052, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
     type: 2}
   m_PrefabInternal: {fileID: 647235844}
---- !u!1 &659437952 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1616045089379912, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
-    type: 2}
-  m_PrefabInternal: {fileID: 962074522}
 --- !u!4 &659437955 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4822700933837052, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
@@ -1627,7 +1645,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4822700933837052, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_RootOrder
-      value: 18
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -1636,7 +1654,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1616045089379912, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_Name
-      value: Waypoint (18)
+      value: Waypoint B2
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -1848,7 +1866,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4822700933837052, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_RootOrder
-      value: 20
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -1857,7 +1875,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1616045089379912, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_Name
-      value: Waypoint (20)
+      value: Waypoint B4
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -1900,6 +1918,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &849878902 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+    type: 2}
+  m_PrefabInternal: {fileID: 58208254}
+  m_Script: {fileID: 11500000, guid: 0e80989bd17dc4a408a24f25f38e827f, type: 3}
 --- !u!1 &891857120
 GameObject:
   m_ObjectHideFlags: 0
@@ -2037,7 +2061,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4822700933837052, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_RootOrder
-      value: 9
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -2046,7 +2070,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1616045089379912, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_Name
-      value: Waypoint (9)
+      value: Waypoint CB3
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -2130,9 +2154,19 @@ Prefab:
       propertyPath: adjacentWaypoints.Array.data[0]
       value: 
       objectReference: {fileID: 84576548}
+    - target: {fileID: 1616045089379912, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
+      propertyPath: m_Name
+      value: Waypoint T1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
   m_IsPrefabAsset: 0
+--- !u!114 &986445710 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+    type: 2}
+  m_PrefabInternal: {fileID: 670131777}
+  m_Script: {fileID: 11500000, guid: 0e80989bd17dc4a408a24f25f38e827f, type: 3}
 --- !u!1001 &1115474960
 Prefab:
   m_ObjectHideFlags: 0
@@ -2175,7 +2209,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4822700933837052, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -2184,7 +2218,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1616045089379912, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_Name
-      value: Waypoint (3)
+      value: Waypoint CB1
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -2214,6 +2248,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4822700933837052, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
     type: 2}
   m_PrefabInternal: {fileID: 1115474960}
+--- !u!114 &1151315939 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+    type: 2}
+  m_PrefabInternal: {fileID: 216094614}
+  m_Script: {fileID: 11500000, guid: 0e80989bd17dc4a408a24f25f38e827f, type: 3}
 --- !u!1 &1174549157
 GameObject:
   m_ObjectHideFlags: 0
@@ -2641,7 +2681,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4822700933837052, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_RootOrder
-      value: 12
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -2650,7 +2690,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1616045089379912, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_Name
-      value: Waypoint (12)
+      value: Waypoint CB4
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -2680,6 +2720,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4822700933837052, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
     type: 2}
   m_PrefabInternal: {fileID: 1300537911}
+--- !u!114 &1351501222 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+    type: 2}
+  m_PrefabInternal: {fileID: 803494062}
+  m_Script: {fileID: 11500000, guid: 0e80989bd17dc4a408a24f25f38e827f, type: 3}
 --- !u!1001 &1355264250
 Prefab:
   m_ObjectHideFlags: 0
@@ -2722,7 +2768,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4822700933837052, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -2731,7 +2777,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1616045089379912, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_Name
-      value: Waypoint (8)
+      value: Waypoint CT3
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -2761,6 +2807,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4822700933837052, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
     type: 2}
   m_PrefabInternal: {fileID: 1355264250}
+--- !u!114 &1468517077 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+    type: 2}
+  m_PrefabInternal: {fileID: 171680764}
+  m_Script: {fileID: 11500000, guid: 0e80989bd17dc4a408a24f25f38e827f, type: 3}
 --- !u!1 &1559610115
 GameObject:
   m_ObjectHideFlags: 0
@@ -2838,6 +2890,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1638814888 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+    type: 2}
+  m_PrefabInternal: {fileID: 647235844}
+  m_Script: {fileID: 11500000, guid: 0e80989bd17dc4a408a24f25f38e827f, type: 3}
 --- !u!1001 &1663359909
 Prefab:
   m_ObjectHideFlags: 0
@@ -2880,7 +2938,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4822700933837052, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_RootOrder
-      value: 7
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -2889,7 +2947,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1616045089379912, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_Name
-      value: Waypoint (7)
+      value: Waypoint CB2
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -2947,6 +3005,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1692091114 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+    type: 2}
+  m_PrefabInternal: {fileID: 444057286}
+  m_Script: {fileID: 11500000, guid: 0e80989bd17dc4a408a24f25f38e827f, type: 3}
 --- !u!1 &1719438429
 GameObject:
   m_ObjectHideFlags: 0
@@ -2973,25 +3037,25 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 659437955}
-  - {fileID: 84576548}
-  - {fileID: 3738751}
-  - {fileID: 1115474961}
-  - {fileID: 130078399}
-  - {fileID: 1793977210}
-  - {fileID: 58208255}
-  - {fileID: 1663359910}
-  - {fileID: 1355264251}
-  - {fileID: 951724225}
-  - {fileID: 476028028}
-  - {fileID: 1300537912}
-  - {fileID: 444057287}
-  - {fileID: 546241318}
-  - {fileID: 216094615}
-  - {fileID: 171680765}
   - {fileID: 118991513}
+  - {fileID: 171680765}
+  - {fileID: 216094615}
+  - {fileID: 58208255}
   - {fileID: 670131778}
   - {fileID: 647235845}
   - {fileID: 803494063}
+  - {fileID: 3738751}
+  - {fileID: 1793977210}
+  - {fileID: 546241318}
+  - {fileID: 444057287}
+  - {fileID: 84576548}
+  - {fileID: 130078399}
+  - {fileID: 1355264251}
+  - {fileID: 476028028}
+  - {fileID: 1115474961}
+  - {fileID: 1663359910}
+  - {fileID: 951724225}
+  - {fileID: 1300537912}
   m_Father: {fileID: 1219873347}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3037,7 +3101,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4822700933837052, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_RootOrder
-      value: 5
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -3046,7 +3110,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1616045089379912, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_Name
-      value: Waypoint (5)
+      value: Waypoint L2
       objectReference: {fileID: 0}
     - target: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
         type: 2}
@@ -3061,6 +3125,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4822700933837052, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
     type: 2}
   m_PrefabInternal: {fileID: 1793977209}
+--- !u!114 &1796322577 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+    type: 2}
+  m_PrefabInternal: {fileID: 3738750}
+  m_Script: {fileID: 11500000, guid: 0e80989bd17dc4a408a24f25f38e827f, type: 3}
 --- !u!1 &1816209933
 GameObject:
   m_ObjectHideFlags: 0
@@ -3124,6 +3194,18 @@ Transform:
   m_Father: {fileID: 1219873347}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1879737782 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+    type: 2}
+  m_PrefabInternal: {fileID: 1793977209}
+  m_Script: {fileID: 11500000, guid: 0e80989bd17dc4a408a24f25f38e827f, type: 3}
+--- !u!114 &1971720868 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114651975157004090, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+    type: 2}
+  m_PrefabInternal: {fileID: 118991512}
+  m_Script: {fileID: 11500000, guid: 0e80989bd17dc4a408a24f25f38e827f, type: 3}
 --- !u!1 &1977399998
 GameObject:
   m_ObjectHideFlags: 0
