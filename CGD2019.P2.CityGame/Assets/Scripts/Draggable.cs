@@ -54,6 +54,7 @@ public class Draggable : MonoBehaviour {
         {
             if (draggables.Contains(this))
             {
+                //this.GetComponent<App.CivilianMovement>().nextWaypoint = null;
                 draggables.Remove(this);
             }
             lastPos = transform.position;

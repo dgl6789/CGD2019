@@ -56,8 +56,7 @@ namespace App
             civ.transform.position = startPoint.transform.position;
 
             civ.nextWaypoint = startPoint.GetNextWaypoint();
-
-            Debug.Log("Starting at " + startPoint + " and moving to " + civ.nextWaypoint);
+            civ.prevWaypoint = civ.nextWaypoint;
 
             civilianList.Add(civ);
         }

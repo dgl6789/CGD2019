@@ -15,6 +15,7 @@ namespace App
         //waypoints
         private bool checkWaypoint = true;
         public WayPoint nextWaypoint;
+        public WayPoint prevWaypoint;
 
         //movement values
         Vector3 position;
@@ -81,14 +82,7 @@ namespace App
         void UpdateWaypoint()
         {
             if (WithinDist(nextWaypoint.transform.position, neighborRange))
-            {
                 nextWaypoint = nextWaypoint.GetNextWaypoint();
-                //Debug.Log("Next waypoint is " + nextWaypoint);
-            }
-            else
-            {
-                //Debug.Log("not swapping waypoints");
-            }
         }
 
         //method to calculate steering forces
@@ -107,13 +101,7 @@ namespace App
             ApplyForce(Cohesion() * flockingWeight);
 
             if (nextWaypoint != null)
-            {
-                Vector3 wpForce = Seek(nextWaypoint.transform.position);
-
-                ApplyForce(wpForce);
-
-                //Debug.Log("Waypoint force: " + wpForce);
-            }
+                ApplyForce(Seek(nextWaypoint.transform.position));
             else
                 ApplyForce(Wander());
         }
@@ -150,41 +138,55 @@ namespace App
         //method to scan nearby area
         void ScanNearby()
         {
+            //empty neigbor list to prevent overlap
             neighborList.Clear();
 
+            //scan nearby area for rigidbodies
             RaycastHit2D[] results = Physics2D.CircleCastAll(
                 new Vector2(position.x, position.y),
                 neighborRange,
                 Vector2.zero);
 
+            //values for finding nearest waypoints
             WayPoint nearestWaypoint = null;
             float nearestDistSqr = float.PositiveInfinity;
 
+            //loop through nearby rigidbodies
             for(int i = 0; i < results.Length; i++)
             {
+                //this specific rigidbody
                 GameObject thisHit = results[i].collider.gameObject;
 
+                //find relevant components
                 CivilianMovement thisCiv = thisHit.GetComponent<CivilianMovement>();
                 WayPoint thisWaypoint = thisHit.GetComponent<WayPoint>();
 
                 if (thisCiv != null)
                 {
+                    //if this is a civilian, add it to the neighbor list
                     neighborList.Add(thisCiv);
-                } 
-                else if (thisWaypoint != null)// && thisWaypoint != prevWaypoint)
+                }
+                else if (thisWaypoint != null && thisWaypoint != prevWaypoint && nextWaypoint == null)
                 {
+                    //if this is a waypoint and NOT the previous waypoint, check if it's the nearest
+
+                    //find distance to waypoint
                     float thisDistSqr = CalcDistSqr(thisWaypoint.transform.position);
 
+                    //check if it's closer than the previous one
                     if (thisDistSqr < nearestDistSqr)
                     {
+                        //make this one the closest
                         nearestWaypoint = thisWaypoint;
                         nearestDistSqr = thisDistSqr;
                     }
                 }
             }
 
-            if (nearestWaypoint != null)
+            //if a closer waypoint was found, go to that one
+            if (nearestWaypoint != null && nextWaypoint == null)
             {
+                prevWaypoint = nextWaypoint;
                 nextWaypoint = nearestWaypoint;
             }
         }
