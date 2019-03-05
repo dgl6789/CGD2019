@@ -16,5 +16,5 @@ MonoBehaviour:
   speed: 1
   worldBounds: {x: 20, y: 20, z: 0}
   civilianName: Blorg
-  flockingWeight: 1
-  neighborRange: 3
+  flockingWeight: 0.75
+  neighborRange: 2
