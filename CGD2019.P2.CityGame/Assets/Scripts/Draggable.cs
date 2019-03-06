@@ -25,36 +25,34 @@ public class Draggable : MonoBehaviour {
     {
         if (Input.GetButtonDown("LeftMouse") && dragable == null)
         {
-            
-                if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
+            if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
+            {
+
+                if (((transform.position + new Vector3(0, 0, -10)) - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0))).magnitude < 1)
+                {
+                    transform.localScale = originalLscale * 1.4f;
+                    dragable = this;
+                }
+
+
+                lastPos = transform.position;
+            }
+            else if (Application.platform == RuntimePlatform.Android)
+            {
+
+
+                if (((transform.position + new Vector3(0, 0, -10)) - Camera.main.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, 0))).magnitude < 1)
                 {
 
-                    if (((transform.position + new Vector3(0, 0, -10)) - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0))).magnitude < 1)
-                    {
-                        transform.localScale = originalLscale * 1.4f;
-                        dragable = this;
-                    }
+                    dragable = this;
+                    transform.localScale = originalLscale * 1.4f;
 
-
-                    lastPos = transform.position;
-                }
-                else if (Application.platform == RuntimePlatform.Android)
-                {
-
-
-                    if (((transform.position + new Vector3(0, 0, -10)) - Camera.main.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, 0))).magnitude < 1)
-                    {
-
-                        dragable = this;
-                        transform.localScale = originalLscale * 1.4f;
-
-
-                    }
-
-                    lastPos = transform.position;
 
                 }
-            
+
+                lastPos = transform.position;
+
+            }
         }
         if (dragable == this||dragging == true)
         {
@@ -66,8 +64,8 @@ public class Draggable : MonoBehaviour {
             }
             else if (Application.platform == RuntimePlatform.Android)
             {
-                    transform.position = new Vector3(0, 0, 10) + Camera.main.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, 0));
-                    lastPos = transform.position;
+                transform.position = new Vector3(0, 0, 10) + Camera.main.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, 0));
+                lastPos = transform.position;
             }
             if (!Input.GetButton("LeftMouse"))
             {
@@ -79,8 +77,6 @@ public class Draggable : MonoBehaviour {
         {
             transform.localScale = originalLscale;
         }
-        
-
     }
     private void OnMouseOver()
     {

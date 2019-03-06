@@ -45,13 +45,10 @@ public class SpawnEvents : MonoBehaviour {
                 }
             }
         }
-            if (time - lastGenTime > 1 && App.CivilianManager.Instance.CivilianList.Count < desiredPeoplenum)
-            {
-                App.CivilianManager.Instance.SpawnCivilian();
-                lastGenTime = time;
-            }
-            
-        
-       
-	}
+        if (time - lastGenTime > 1 && App.CivilianManager.Instance.CivilianList.Count < desiredPeoplenum)
+        {
+            App.CivilianManager.Instance.SpawnCivilian();
+            lastGenTime = time;
+        }
+    }
 }
