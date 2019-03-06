@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SpawnEvents : MonoBehaviour {
     float lastGenTime;
+    [Range(0, 10)]
+    public float populationSlope;
     public float bedTime;
     public float wakeTime;
     public List<float> peakHours;
@@ -29,24 +31,27 @@ public class SpawnEvents : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
         time += (Time.fixedDeltaTime / 2.5f)%240;//temporary time implementation 10 minute days
+        RenderSettings.ambientLight = new Color(255, 255, 255, (time / 240f));
+        float desiredPeoplenum = minCivillians;
         if (time > wakeTime&&time<bedTime)
         {
-            float desiredPeoplenum = 0;
+            
             foreach (var peaktime in peakHours)
             {
-                float tempNum = maxCivillians - Mathf.Abs(peaktime - time);
+                float tempNum = maxCivillians - Mathf.Abs(peaktime - time)/(1/populationSlope);
                 if (tempNum > desiredPeoplenum)
                 {
                     desiredPeoplenum = tempNum; 
                 }
             }
+        }
             if (time - lastGenTime > 1 && App.CivilianManager.Instance.CivilianList.Count < desiredPeoplenum)
             {
                 App.CivilianManager.Instance.SpawnCivilian();
                 lastGenTime = time;
             }
             
-        }
+        
        
 	}
 }

@@ -5,7 +5,8 @@ using UnityEngine;
 /// put on any object to make it draggable
 /// </summary>
 public class Draggable : MonoBehaviour {
-    public static List<Draggable> draggables;
+    RaycastHit2D touch;
+    public static Draggable dragable;
     Vector3 lastPos;
     Vector3 lastMousePos;
     bool dragging = false;
@@ -15,26 +16,69 @@ public class Draggable : MonoBehaviour {
     int delta = 1;
 	// Use this for initialization
 	void Start () {
-        if (draggables == null)
-        {
-            draggables = new List<Draggable>();
-        }
         lastPos = transform.position;
         lastMousePos = Input.mousePosition;
         originalLscale = transform.localScale;
 	}
     private void FixedUpdate()
     {
-        
-        if (Input.GetButtonUp("LeftMouse")&&dragging)
+        if (Input.GetButton("LeftMouse") && dragable == null)
         {
-            dragging = false;
-            if (draggables.Contains(this))
+            if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
             {
-                draggables.Remove(this);
+                if (GetComponent<BoxCollider2D>().bounds.Contains(Camera.main.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, 0))))
+                {
+                    if (touch.transform.tag == "citizen")
+                    {
+                        
+                            
+                            //transform.position = Input.mousePosition;
+                            transform.localScale = originalLscale * 1.4f;
+                            dragable = this;
+                        
+                    }
+                }
+                else
+                {
+                    if (touch.transform.tag == "citizen")
+                    {
+                        touch.transform.GetComponent<App.CivilianMovement>().nextWaypoint = null;
+                    }
+                    dragable = null;
+                    transform.localScale = originalLscale;
+                }
+                
+                lastPos = transform.position;
             }
+            else if (Application.platform == RuntimePlatform.Android)
+            {
+
+                if (GetComponent<BoxCollider2D>().bounds.Contains(Camera.main.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, 0))))
+                {
+                    if (touch.transform.tag == "citizen")
+                    {
+
+                            dragable = this;
+                            transform.localScale = originalLscale * 1.4f;
+                          
+                    }
+                }
+                else
+                {
+                    if (touch.transform.tag == "citizen")
+                    {
+                        touch.transform.GetComponent<App.CivilianMovement>().nextWaypoint = null;
+                    }
+                    dragging = false;
+                    transform.localScale = originalLscale;
+                }
+
+                lastPos = transform.position;
+                
+            }
+            
         }
-        if (dragging)
+        if (dragable!=null)
         {
             if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
             {
@@ -49,31 +93,19 @@ public class Draggable : MonoBehaviour {
                     lastPos = transform.position;
                 }
             }
-        }
-        else
-        {
-            if (draggables.Contains(this))
+            if (!Input.GetButton("LeftMouse"))
             {
-                draggables.Remove(this);
+                dragable = null;
+                transform.localScale = originalLscale;
             }
-            lastPos = transform.position;
-            if (renderer != null)
-            {
-                renderer.color = Color.white;
-            }
-            transform.localScale = originalLscale;
         }
-        if (phase > 99 || phase < 1)
-        {
-            delta *= -1;
-        }
-        phase += delta;
-        lastMousePos = Input.mousePosition;
+        
+
     }
     private void OnMouseOver()
     {
        
-            if (renderer != null&&draggables.Count == 0||draggables.Contains(this))
+            /*if (renderer != null&&draggables.Count == 0||draggables.Contains(this))
             {
                 renderer.color = Color.blue;
             }
@@ -92,7 +124,7 @@ public class Draggable : MonoBehaviour {
             else
             {
                 dragging = false;
-            }
+            }*/
         
     }
     private void OnMouseExit()
