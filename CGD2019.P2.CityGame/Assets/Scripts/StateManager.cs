@@ -28,6 +28,7 @@ namespace App {
             switch(State) {
                 case GameState.INGAME:
                     CivilianManager.Instance.DoUpdateStep();
+                    CarManager.Instance.DoUpdateStep();
                     break;
 
                 case GameState.MENU:
