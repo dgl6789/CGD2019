@@ -162,7 +162,7 @@ namespace App
                 {
                     neighborList.Add(thisCiv);
                 } 
-                else if (thisWaypoint != null && thisWaypoint != prevWaypoint)
+                else if (thisWaypoint != null)
                 {
                     float thisDistSqr = CalcDistSqr(thisWaypoint.transform.position);
 
