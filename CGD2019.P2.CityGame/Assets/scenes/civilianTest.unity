@@ -1170,6 +1170,7 @@ GameObject:
   - component: {fileID: 476313349}
   - component: {fileID: 476313347}
   - component: {fileID: 476313350}
+  - component: {fileID: 476313351}
   m_Layer: 0
   m_Name: managers
   m_TagString: Untagged
@@ -1261,6 +1262,28 @@ MonoBehaviour:
   touchSensitivity: 1
   zoomSmoothing: 6
   desiredTransform: {fileID: 1668953644}
+--- !u!114 &476313351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 476313346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 308e0f367871d1343a41db13b0864d8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  populationSlope: 0.61
+  bedTime: 240
+  wakeTime: 0
+  peakHours:
+  - 10
+  - 20
+  - 30
+  maxCivillians: 100
+  minCivillians: 11.8
+  maxBadEvents: 0
+  maxGoodEvents: 0
 --- !u!1 &484372190
 GameObject:
   m_ObjectHideFlags: 0
