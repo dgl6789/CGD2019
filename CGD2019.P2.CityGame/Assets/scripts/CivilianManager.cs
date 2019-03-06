@@ -17,7 +17,8 @@ namespace App
         public SpriteRenderer worldRenderer;
 
         //civilian objects
-        public List<CivilianObject> civilianObjectList;
+        public CivilianObject civObj;
+        //public List<CivilianObject> civilianObjectList;
         public GameObject civilianPrefab;
 
         //civilians
@@ -52,15 +53,12 @@ namespace App
         {
             CivilianMovement civ = Instantiate(civilianPrefab, civilianParent).GetComponent<CivilianMovement>();
 
-
             WayPoint startPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
 
             civ.transform.position = startPoint.transform.position;
 
-            CivilianObject civObj = civilianObjectList[Random.Range(0, civilianObjectList.Count)];
-            civ.CivilianData = civObj;
-
             civ.nextWaypoint = startPoint.GetNextWaypoint();
+            civ.prevWaypoint = civ.nextWaypoint;
 
             civilianList.Add(civ);
         }
@@ -76,28 +74,7 @@ namespace App
                 SpawnCivilian();
         }
 
-        //method to find each civilian's neighbor
-        public List<CivilianMovement> FindNeighbors(CivilianMovement thisCivilian)
-        {
-            List<CivilianMovement> neighbors = new List<CivilianMovement>();
-
-            //check each civilian
-            foreach (CivilianMovement civilian in civilianList)
-            {
-                //don't check against self
-                if (civilian == thisCivilian)
-                    continue;
-                    
-                //add to list if in range
-                if (thisCivilian.WithinDist(civilian.Position, thisCivilian.CivilianData.NeighborRange))
-                {
-                    neighbors.Add(civilian);
-                }
-            }
-
-            return neighbors;
-        }
-
+        //method to calculate sin and cosines to reduce math later
         void CalcLookupTables()
         {
             for (int i = 0; i < 360; i++)

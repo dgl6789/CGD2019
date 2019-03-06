@@ -16,88 +16,68 @@ public class Draggable : MonoBehaviour {
     int delta = 1;
 	// Use this for initialization
 	void Start () {
+        dragable = null;
         lastPos = transform.position;
         lastMousePos = Input.mousePosition;
         originalLscale = transform.localScale;
 	}
-    private void FixedUpdate()
+    private void Update()
     {
-        if (Input.GetButton("LeftMouse") && dragable == null)
+        if (Input.GetButtonDown("LeftMouse") && dragable == null)
         {
-            if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
-            {
-                if (GetComponent<BoxCollider2D>().bounds.Contains(Camera.main.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, 0))))
-                {
-                    if (touch.transform.tag == "citizen")
-                    {
-                        
-                            
-                            //transform.position = Input.mousePosition;
-                            transform.localScale = originalLscale * 1.4f;
-                            dragable = this;
-                        
-                    }
-                }
-                else
-                {
-                    if (touch.transform.tag == "citizen")
-                    {
-                        touch.transform.GetComponent<App.CivilianMovement>().nextWaypoint = null;
-                    }
-                    dragable = null;
-                    transform.localScale = originalLscale;
-                }
-                
-                lastPos = transform.position;
-            }
-            else if (Application.platform == RuntimePlatform.Android)
-            {
-
-                if (GetComponent<BoxCollider2D>().bounds.Contains(Camera.main.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, 0))))
-                {
-                    if (touch.transform.tag == "citizen")
-                    {
-
-                            dragable = this;
-                            transform.localScale = originalLscale * 1.4f;
-                          
-                    }
-                }
-                else
-                {
-                    if (touch.transform.tag == "citizen")
-                    {
-                        touch.transform.GetComponent<App.CivilianMovement>().nextWaypoint = null;
-                    }
-                    dragging = false;
-                    transform.localScale = originalLscale;
-                }
-
-                lastPos = transform.position;
-                
-            }
             
-        }
-        if (dragable!=null)
-        {
-            if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
-            {
-                transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
-                lastPos = transform.position;
-            }
-            else if (Application.platform == RuntimePlatform.Android)
-            {
-                if (Input.touchCount > 0)
+                if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
                 {
-                    transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, 0));
+
+                    if (((transform.position + new Vector3(0, 0, -10)) - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0))).magnitude < 1)
+                    {
+                        transform.localScale = originalLscale * 1.4f;
+                        dragable = this;
+                    }
+
+
                     lastPos = transform.position;
                 }
+                else if (Application.platform == RuntimePlatform.Android)
+                {
+
+
+                    if (((transform.position + new Vector3(0, 0, -10)) - Camera.main.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, 0))).magnitude < 1)
+                    {
+
+                        dragable = this;
+                        transform.localScale = originalLscale * 1.4f;
+
+
+                    }
+
+                    lastPos = transform.position;
+
+                }
+            
+        }
+        if (dragable == this||dragging == true)
+        {
+            dragging = true;
+            if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
+            {
+                transform.position = new Vector3(0, 0, 10) + Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
+                lastPos = transform.position;
+            }
+            else if (Application.platform == RuntimePlatform.Android)
+            {
+                    transform.position = new Vector3(0, 0, 10) + Camera.main.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, 0));
+                    lastPos = transform.position;
             }
             if (!Input.GetButton("LeftMouse"))
             {
                 dragable = null;
-                transform.localScale = originalLscale;
+                dragging = false;
             }
+        }
+        else
+        {
+            transform.localScale = originalLscale;
         }
         
 
