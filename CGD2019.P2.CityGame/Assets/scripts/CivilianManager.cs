@@ -14,6 +14,8 @@ namespace App
 
         [SerializeField] Transform civilianParent;
 
+        public SpriteRenderer worldRenderer;
+
         //civilian objects
         public List<CivilianObject> civilianObjectList;
         public GameObject civilianPrefab;

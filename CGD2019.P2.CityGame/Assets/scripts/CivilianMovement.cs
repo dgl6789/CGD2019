@@ -307,12 +307,7 @@ namespace App
         }
 
         public static Bounds OrthographicBounds() {
-            float screenAspect = (float)Screen.width / (float)Screen.height;
-            float cameraHeight = CameraManager.Instance.zoomBounds.y * 2;
-            Bounds bounds = new Bounds(
-                Camera.main.transform.position,
-                new Vector3(cameraHeight * screenAspect, cameraHeight, 0));
-            return bounds;
+            return CivilianManager.Instance.worldRenderer.sprite.bounds;
         }
     }
 }
