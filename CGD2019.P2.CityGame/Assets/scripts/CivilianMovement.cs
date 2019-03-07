@@ -325,7 +325,15 @@ namespace App
 
         //method to determine bounds of screen
         public static Bounds OrthographicBounds() {
-            return CivilianManager.Instance.worldRenderer.sprite.bounds;
+            SpriteRenderer r = CivilianManager.Instance.worldRenderer;
+
+            return new Bounds(r.transform.position, new Vector3(r.sprite.bounds.extents.x * 2 * r.transform.localScale.x, r.sprite.bounds.extents.y * 2 * r.transform.localScale.y, 1));
+        }
+
+        public void Die() {
+            // Place a blood splatter
+
+            CivilianManager.Instance.RemoveCivilian(this);
         }
     }
 }

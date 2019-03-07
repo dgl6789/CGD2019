@@ -1273,6 +1273,8 @@ GameObject:
   - component: {fileID: 476313347}
   - component: {fileID: 476313350}
   - component: {fileID: 476313351}
+  - component: {fileID: 476313353}
+  - component: {fileID: 476313352}
   m_Layer: 0
   m_Name: managers
   m_TagString: Untagged
@@ -1384,6 +1386,32 @@ MonoBehaviour:
   - {fileID: 1625782359}
   - {fileID: 1109450256}
   - {fileID: 1011309502}
+  Cars: []
+--- !u!114 &476313352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 476313346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 613d7a983090d9c41a26967085b3e8e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moralityBar: {fileID: 257940500}
+--- !u!114 &476313353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 476313346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bf6e0531c94b864aaac80530c0d4c36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  badThingAmount: 0.05
+  goodThingAmount: 0.05
 --- !u!1 &484372190
 GameObject:
   m_ObjectHideFlags: 0

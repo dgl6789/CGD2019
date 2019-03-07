@@ -8,6 +8,9 @@ public class ScoreManager : MonoBehaviour {
 
     float score = 0.5f;
 
+    [SerializeField] float badThingAmount;
+    [SerializeField] float goodThingAmount;
+
     /// <summary>
     /// Use this property to adjust the player's score by an amount between 0 and 1.
     /// 
@@ -31,5 +34,15 @@ public class ScoreManager : MonoBehaviour {
         score = Mathf.Clamp01(score + adj);
 
         UIManager.Instance.UpdateMoralityBar();
+    }
+
+    public void DoBadThing() {
+        Debug.Log("Bad thing!");
+        Score += -badThingAmount;
+    }
+
+    public void DoGoodThing() {
+        Debug.Log("Good thing!");
+        Score += goodThingAmount;
     }
 }

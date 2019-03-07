@@ -11,6 +11,8 @@ namespace App
         public Transform carParent;
         public List<CarSpawn> carSpawnPoints = new List<CarSpawn>();
 
+        [HideInInspector] public List<CarMovement> Cars;
+
         //instance
         public static CarManager Instance;
 
@@ -43,6 +45,13 @@ namespace App
             car.transform.position = startPoint.transform.position;
             car.Direction = startPoint.direction;
             car.Speed = Random.Range(speedMin, speedMax);
+
+            Cars.Add(car);
+        }
+
+        public void UpdateEndangeredCiviliansDragStates(CivilianMovement c) {
+            // indicate to all of the cars that a civilian that might be in their list of endangereds was moved.
+            foreach(CarMovement car in Cars) { car.CivilianWasMoved(c); }
         }
     }
 }
