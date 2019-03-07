@@ -331,8 +331,6 @@ namespace App
         }
 
         public void Die() {
-            // Place a blood splatter
-
             CivilianManager.Instance.RemoveCivilian(this);
         }
     }

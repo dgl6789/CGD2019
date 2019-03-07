@@ -17,8 +17,8 @@ namespace App
         public static CarManager Instance;
 
         //car values
-        float speedMax = 1.5f;
-        float speedMin = 0.5f;
+        [SerializeField] float speedMax = 1.5f;
+        [SerializeField] float speedMin = 0.5f;
 
         void Awake()
         {

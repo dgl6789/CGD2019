@@ -50,8 +50,8 @@ namespace App
 
                 foreach(KeyValuePair<CivilianMovement, bool> kvp in endangeredCivilians) {
                     // for each civilian in the list that isnt dead and was moved since the car entered, add a good thing.
-                    
-                    if(kvp.Value) {
+
+                    if (kvp.Value) {
                         if (CivilianManager.Instance.CivilianList.Contains(kvp.Key)) ScoreManager.Instance.DoGoodThing(); // for a living civilian, add a good thing.
                         else ScoreManager.Instance.DoBadThing(); // for a dead one, add a bad thing.
                     }
@@ -129,7 +129,7 @@ namespace App
         }
 
         public void CivilianWasMoved(CivilianMovement c) {
-            if (endangeredCivilians.ContainsKey(c)) endangeredCivilians[c] = true;
+            if (endangeredCivilians != null && endangeredCivilians.ContainsKey(c)) endangeredCivilians[c] = true;
         }
 
         //method to determine if the car is out of bounds

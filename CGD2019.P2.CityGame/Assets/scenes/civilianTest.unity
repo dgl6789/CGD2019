@@ -171,6 +171,11 @@ Prefab:
       propertyPath: adjacentWaypoints.Array.data[0]
       value: 
       objectReference: {fileID: 84576548}
+    - target: {fileID: 212022205048503898, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
   m_IsPrefabAsset: 0
@@ -299,6 +304,11 @@ Prefab:
       propertyPath: adjacentWaypoints.Array.data[0]
       value: 
       objectReference: {fileID: 1115474961}
+    - target: {fileID: 212022205048503898, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
   m_IsPrefabAsset: 0
@@ -380,6 +390,11 @@ Prefab:
       propertyPath: adjacentWaypoints.Array.data[3]
       value: 
       objectReference: {fileID: 659437955}
+    - target: {fileID: 212022205048503898, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
   m_IsPrefabAsset: 0
@@ -452,6 +467,11 @@ Prefab:
       propertyPath: adjacentWaypoints.Array.data[0]
       value: 
       objectReference: {fileID: 130078399}
+    - target: {fileID: 212022205048503898, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
   m_IsPrefabAsset: 0
@@ -539,6 +559,11 @@ Prefab:
       propertyPath: adjacentWaypoints.Array.data[3]
       value: 
       objectReference: {fileID: 118991513}
+    - target: {fileID: 212022205048503898, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
   m_IsPrefabAsset: 0
@@ -605,6 +630,11 @@ Prefab:
       propertyPath: adjacentWaypoints.Array.data[0]
       value: 
       objectReference: {fileID: 1355264251}
+    - target: {fileID: 212022205048503898, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
   m_IsPrefabAsset: 0
@@ -671,6 +701,11 @@ Prefab:
       propertyPath: adjacentWaypoints.Array.data[0]
       value: 
       objectReference: {fileID: 476028028}
+    - target: {fileID: 212022205048503898, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
   m_IsPrefabAsset: 0
@@ -1253,6 +1288,11 @@ Prefab:
       propertyPath: adjacentWaypoints.Array.data[3]
       value: 
       objectReference: {fileID: 216094615}
+    - target: {fileID: 212022205048503898, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
   m_IsPrefabAsset: 0
@@ -1387,6 +1427,8 @@ MonoBehaviour:
   - {fileID: 1109450256}
   - {fileID: 1011309502}
   Cars: []
+  speedMax: 0.3
+  speedMin: 0.5
 --- !u!114 &476313352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1561,6 +1603,11 @@ Prefab:
       propertyPath: adjacentWaypoints.Array.data[0]
       value: 
       objectReference: {fileID: 476028028}
+    - target: {fileID: 212022205048503898, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
   m_IsPrefabAsset: 0
@@ -1806,6 +1853,11 @@ Prefab:
       propertyPath: adjacentWaypoints.Array.data[0]
       value: 
       objectReference: {fileID: 951724225}
+    - target: {fileID: 212022205048503898, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
   m_IsPrefabAsset: 0
@@ -1877,6 +1929,11 @@ Prefab:
       propertyPath: adjacentWaypoints.Array.data[0]
       value: 
       objectReference: {fileID: 1663359910}
+    - target: {fileID: 212022205048503898, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
   m_IsPrefabAsset: 0
@@ -2104,6 +2161,11 @@ Prefab:
       propertyPath: adjacentWaypoints.Array.data[0]
       value: 
       objectReference: {fileID: 1300537912}
+    - target: {fileID: 212022205048503898, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
   m_IsPrefabAsset: 0
@@ -2364,6 +2426,11 @@ Prefab:
       propertyPath: adjacentWaypoints.Array.data[3]
       value: 
       objectReference: {fileID: 647235845}
+    - target: {fileID: 212022205048503898, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
   m_IsPrefabAsset: 0
@@ -2429,6 +2496,11 @@ Prefab:
     - target: {fileID: 1616045089379912, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_Name
       value: Spawnpoint T1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212022205048503898, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
@@ -2524,6 +2596,11 @@ Prefab:
       propertyPath: adjacentWaypoints.Array.data[3]
       value: 
       objectReference: {fileID: 84576548}
+    - target: {fileID: 212022205048503898, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
   m_IsPrefabAsset: 0
@@ -3054,6 +3131,11 @@ Prefab:
       propertyPath: adjacentWaypoints.Array.data[3]
       value: 
       objectReference: {fileID: 803494063}
+    - target: {fileID: 212022205048503898, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
   m_IsPrefabAsset: 0
@@ -3141,6 +3223,11 @@ Prefab:
       propertyPath: adjacentWaypoints.Array.data[3]
       value: 
       objectReference: {fileID: 171680765}
+    - target: {fileID: 212022205048503898, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
   m_IsPrefabAsset: 0
@@ -3373,6 +3460,11 @@ Prefab:
       propertyPath: adjacentWaypoints.Array.data[3]
       value: 
       objectReference: {fileID: 670131778}
+    - target: {fileID: 212022205048503898, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
   m_IsPrefabAsset: 0
@@ -3515,6 +3607,11 @@ Prefab:
       propertyPath: adjacentWaypoints.Array.data[0]
       value: 
       objectReference: {fileID: 1115474961}
+    - target: {fileID: 212022205048503898, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
   m_IsPrefabAsset: 0
@@ -3725,6 +3822,11 @@ Prefab:
     - target: {fileID: 1616045089379912, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
       propertyPath: m_Name
       value: Spawnpoint R2
+      objectReference: {fileID: 0}
+    - target: {fileID: 212022205048503898, guid: fb73ff9dc92c6a24dbcf0e259fba09eb,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb73ff9dc92c6a24dbcf0e259fba09eb, type: 2}
