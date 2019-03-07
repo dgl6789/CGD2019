@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace App {
 
-    public enum GameState { MENU, INGAME }
+    public enum GameState { MENU, INGAME, GAMEOVER_GOOD, GAMEOVER_BAD }
 
     public class StateManager : MonoBehaviour {
 
@@ -29,6 +29,7 @@ namespace App {
                 case GameState.INGAME:
                     CivilianManager.Instance.DoUpdateStep();
                     CarManager.Instance.DoUpdateStep();
+                    ScoreManager.Instance.CheckGameover();
                     break;
 
                 case GameState.MENU:
