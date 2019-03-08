@@ -33,7 +33,22 @@ public class ScoreManager : MonoBehaviour {
     private void AdjustScore(float adj) {
         score = Mathf.Clamp01(score + adj);
 
-        UIManager.Instance.UpdateMoralityBar();
+            UIManager.Instance.UpdateMoralityBar();
+        }
+
+        public void CheckGameover()
+        {
+            Debug.Log("checking gameover");
+
+            if (score <= 0)
+            {
+                StateManager.Instance.SwapState(GameState.GAMEOVER_BAD);
+            }
+            else if (score >= 1)
+            {
+                StateManager.Instance.SwapState(GameState.GAMEOVER_BAD);
+            }
+        }
     }
 
     public void DoBadThing() {
