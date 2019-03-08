@@ -13,7 +13,7 @@ namespace App {
 
         public GameState State;
 
-        [SerializeField] GameObject[] stateObjects;
+        public GameObject[] stateObjects;
         [SerializeField] GameObject[] stateUIObjects;
 
         private void Awake() {

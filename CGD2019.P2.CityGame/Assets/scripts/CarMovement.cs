@@ -96,12 +96,12 @@ namespace App
                 if(Vector2.Distance(c.transform.position, transform.position) < killRadius) {
 
                     // TODO: replace the civilian with a blood splatter
-                    Destroy(Instantiate(bloodSplatter, c.transform.position, Quaternion.identity), 5);
+                    Destroy(Instantiate(bloodSplatter, c.transform.position, Quaternion.identity, StateManager.Instance.stateObjects[1].transform), 5);
 
                     toDestroy.Add(c);
 
                     // TODO: enable the blood streak renderer for this car
-                    BloodTrail t = Instantiate(trail, transform.position, Quaternion.identity).GetComponent<BloodTrail>();
+                    BloodTrail t = Instantiate(trail, transform.position, Quaternion.identity, StateManager.Instance.stateObjects[1].transform).GetComponent<BloodTrail>();
                     t.SetEmitter(transform);
 
                 }
