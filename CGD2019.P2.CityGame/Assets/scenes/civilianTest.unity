@@ -1405,9 +1405,9 @@ MonoBehaviour:
   panSpeed: 0.1
   panSmoothing: 12
   zoomDirectionThreshold: 0.5
-  zoomSpeed: {x: 1, y: 6}
+  zoomSpeed: {x: 0.1, y: 6}
   zoomBounds: {x: 8, y: 15}
-  touchSensitivity: 1
+  touchSensitivity: 0.25
   zoomSmoothing: 6
   desiredTransform: {fileID: 1668953644}
 --- !u!114 &476313351
