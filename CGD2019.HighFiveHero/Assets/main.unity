@@ -394,7 +394,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: HERO
+  m_text: HERO!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a2e0bd796ab3b284b8dbc861856efa3a, type: 2}
   m_sharedMaterial: {fileID: 21426048283937916, guid: a2e0bd796ab3b284b8dbc861856efa3a,
@@ -431,7 +431,7 @@ MonoBehaviour:
   m_fontStyle: 0
   m_textAlignment: 514
   m_isAlignmentEnumConverted: 1
-  m_characterSpacing: 0
+  m_characterSpacing: -3
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -463,7 +463,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 135298847}
-    characterCount: 4
+    characterCount: 5
     spriteCount: 0
     spaceCount: 0
     wordCount: 1
@@ -4177,7 +4177,7 @@ Material:
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: f65ea94c18747c145ac677ea49960912, type: 3}
         m_Scale: {x: 4, y: 4}
-        m_Offset: {x: 0.043689523, y: 0.043689523}
+        m_Offset: {x: 1.0449134, y: 1.0449134}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -5974,7 +5974,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 133.88, y: -0.000050681}
+  m_AnchoredPosition: {x: 123, y: -0.000050681}
   m_SizeDelta: {x: 632.25, y: 293}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1718269947
@@ -6369,7 +6369,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: HERO
+  m_text: HERO!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a2e0bd796ab3b284b8dbc861856efa3a, type: 2}
   m_sharedMaterial: {fileID: 21426048283937916, guid: a2e0bd796ab3b284b8dbc861856efa3a,
@@ -6406,7 +6406,7 @@ MonoBehaviour:
   m_fontStyle: 0
   m_textAlignment: 514
   m_isAlignmentEnumConverted: 1
-  m_characterSpacing: 0
+  m_characterSpacing: -3
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -6438,7 +6438,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1783992513}
-    characterCount: 4
+    characterCount: 5
     spriteCount: 0
     spaceCount: 0
     wordCount: 1
@@ -6621,7 +6621,7 @@ RectTransform:
   m_GameObject: {fileID: 1817365521}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.0715, y: 1.0715, z: 1.0715}
+  m_LocalScale: {x: 0.98577994, y: 0.98577994, z: 0.98577994}
   m_Children:
   - {fileID: 1655815886}
   - {fileID: 11656090}
@@ -6630,7 +6630,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -14, y: -146.52997}
+  m_AnchoredPosition: {x: -10, y: -146.52997}
   m_SizeDelta: {x: 0, y: 293}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1837308904 stripped
