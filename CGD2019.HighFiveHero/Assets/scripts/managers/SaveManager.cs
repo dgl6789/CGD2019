@@ -91,15 +91,19 @@ namespace App {
         /// <returns>Deserialized save data object.</returns>
         public SaveData LoadData() {
             if (load) {
-                string folderPath = Path.Combine(Application.persistentDataPath, folderName);
+                try {
+                    string folderPath = Path.Combine(Application.persistentDataPath, folderName);
 
-                if (Directory.GetFiles(folderPath).Length > 0) {
+                    if (Directory.GetFiles(folderPath).Length > 0) {
 
-                    BinaryFormatter formatter = new BinaryFormatter();
+                        BinaryFormatter formatter = new BinaryFormatter();
 
-                    using (FileStream fs = File.Open(Path.Combine(Application.persistentDataPath, Path.Combine(folderName, fileName + "." + fileExtension)), FileMode.Open))
-                        return (SaveData)formatter.Deserialize(fs);
-                } else {
+                        using (FileStream fs = File.Open(Path.Combine(Application.persistentDataPath, Path.Combine(folderName, fileName + "." + fileExtension)), FileMode.Open))
+                            return (SaveData)formatter.Deserialize(fs);
+                    } else {
+                        return new SaveData(0, ScoreManager.Instance.Currency, 1, 1, UIManager.Instance.GetMaterialByIndex(0)); // Default data (if none is present).
+                    }
+                } catch (IOException) {
                     return new SaveData(0, ScoreManager.Instance.Currency, 1, 1, UIManager.Instance.GetMaterialByIndex(0)); // Default data (if none is present).
                 }
             } else {

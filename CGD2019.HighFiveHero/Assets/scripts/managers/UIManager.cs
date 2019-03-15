@@ -223,7 +223,7 @@ namespace App.UI {
         /// <param name="isHighscore">Was the final score the highest score?</param>
         /// <param name="highScore">The player's high score.</param>
         public void SetGameOverTexts(int finalScore, bool isHighscore, int highScore) {
-            finalScoreValue.text = string.Format("{0:n0}", finalScore);
+            finalScoreValue.text = "FINAL\n" + string.Format("{0:n0}", finalScore) + "!";
 
             if(!isHighscore) {
                 endBestScoreText.text = "BEST " + string.Format("{0:n0}", highScore) + "...";
