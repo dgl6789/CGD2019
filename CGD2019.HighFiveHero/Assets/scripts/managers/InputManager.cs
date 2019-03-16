@@ -48,7 +48,7 @@ namespace App {
                     // Do input behavior for the ingame state here.
                     touches = Input.touches;
 
-                    PersonManager.Instance.CheckInput();
+                    HandManager.Instance.GetHandInputs(touches);
                     break;
             }
         }

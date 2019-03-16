@@ -49,6 +49,7 @@ namespace App {
             switch(State) {
                 case GameState.Game:
                     RunManager.Instance.UpdateRun();
+                    HandManager.Instance.UpdateHands();
                     break;
             }
         }
