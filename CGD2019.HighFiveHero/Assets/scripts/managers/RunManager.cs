@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 using App.UI;
 
@@ -6,11 +6,12 @@ namespace App {
     /// <summary>
     /// Manages the game's scoring and currency, as well as ingame flow behaviors.
     /// </summary>
-    public class ScoreManager : MonoBehaviour {
+    public class RunManager : MonoBehaviour {
 
         /// Singleton instance.
-        public static ScoreManager Instance;
+        public static RunManager Instance;
 
+        [SerializeField] int startCountdownLength;
         [SerializeField] float initialTimerValue;
         bool gameStarted;
 
@@ -90,13 +91,30 @@ namespace App {
         }
 
         /// <summary>
-        /// Starts the game.
+        /// Starts the game with a countdown timer.
         /// </summary>
-        public void StartGame() {
-            gameStarted = true;
-            CurrentGameTimer = initialTimerValue;
-
+        public IEnumerator StartGame() {
+            // Reset the score/timer
             CurrentScore = 0;
+            CurrentGameTimer = initialTimerValue;
+            UIManager.Instance.UpdateGameTimerText(CurrentGameTimer);
+
+            // Turn on the countdown, and count it down.
+            UIManager.Instance.SetStartGameCountdownTextActive(true);
+
+            float timer = startCountdownLength;
+
+            while (timer > 0) {
+                timer -= Time.deltaTime;
+
+                UIManager.Instance.SetStartGameCountdownText(Mathf.RoundToInt(timer));
+
+                yield return null;
+            }
+            
+            UIManager.Instance.SetStartGameCountdownTextActive(false);
+
+            gameStarted = true;
         }
 
         /// <summary>

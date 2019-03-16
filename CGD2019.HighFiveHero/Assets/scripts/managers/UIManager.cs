@@ -49,6 +49,8 @@ namespace App.UI {
         [SerializeField] TextMeshProUGUI gameTimerValue;
         [SerializeField] TextMeshProUGUI gameCurrencyValue;
 
+        [SerializeField] TextMeshProUGUI gameStartCountdownValue;
+
         [Header("Game Over")]
         [SerializeField] TextMeshProUGUI finalScoreValue;
         [SerializeField] TextMeshProUGUI newBestText;
@@ -97,8 +99,9 @@ namespace App.UI {
 
             zigzagObject.UpdateScrollOffset(zigzagScrollSpeed);
             backgroundScaler.UpdateScaling();
-            
         }
+
+        #region EFFECTS/TRANSITIONS
 
         /// <summary>
         /// Asynchronously swap game states via a procedural animation.
@@ -162,26 +165,50 @@ namespace App.UI {
         }
 
         /// <summary>
-        /// Set the theme of the game from one of the customization buttons.
+        /// Move the start countdown timer away.
         /// </summary>
-        /// <param name="material">Material of the swatch.</param>
-        public void SetThemeFromSwatch(Material material) {
-            ThemeMaterial = material;
+        /// <param name="active">Whether the countdown timer is moving in or out.</param>
+        /// <returns>Coroutine.</returns>
+        public IEnumerator MoveStartCountdown(bool active) {
 
-            SaveManager.Instance.SetTheme(material);
+            RectTransform countdownTransform = gameStartCountdownValue.transform.parent.GetComponent<RectTransform>();
+            
+            Vector2 desiredPosition = new Vector2(canvasContent.rect.width * canvasContent.localScale.x * 1.5f * (active ? 1 : -1), 0);
 
-            SetThemeCheckmarkStates();
+            if (active) {
+                countdownTransform.gameObject.SetActive(true);
+                countdownTransform.localPosition = desiredPosition;
+
+                desiredPosition = Vector2.zero;
+
+                // Offset it a little from the rest of the UI.
+                yield return new WaitForSeconds(1f);
+            }
+
+            while (Vector2.Distance(countdownTransform.localPosition, desiredPosition) > 0.1f) {
+                countdownTransform.localPosition = Vector2.Lerp(countdownTransform.localPosition, desiredPosition, Time.deltaTime * stateSwapDuration);
+
+                yield return null;
+            }
+
+            if (!active) {
+                countdownTransform.gameObject.SetActive(false);
+                countdownTransform.localPosition = Vector2.zero;
+            }
         }
 
         /// <summary>
-        /// Update the checkmarks on the theme swatches to reflect which one's selected.
+        /// Shake the screen from a UI button.
         /// </summary>
-        public void SetThemeCheckmarkStates() {
-            foreach(ThemeChoice c in themeContainer.GetComponentsInChildren<ThemeChoice>()) {
-                if (c.Material == ThemeMaterial) c.ToggleOn();
-                else c.ToggleOff();
-            }
+        /// <param name="strength">Strength of the shake (0, 1, or 2).</param>
+        public void DoUIScreenShake(int strength) {
+            strength = Mathf.Min(strength, buttonShakeAmounts.Length);
+            StartCoroutine(CameraEffects.Instance.ShakeCamera(buttonShakeAmounts[strength], buttonShakeDurations[strength]));
         }
+
+        #endregion
+
+        #region MAIN MENU STATE UI
 
         /// <summary>
         /// Set the value displayed in the currency box on the main menu.
@@ -200,6 +227,24 @@ namespace App.UI {
             bestScoreValue.text = "BEST " + string.Format("{0:n0}", value) + "!";
         }
 
+        #endregion
+
+        #region GAME STATE UI
+
+        /// <summary>
+        /// Set the timer value of the game start countdown text.
+        /// </summary>
+        /// <param name="time">Time (seconds) to reflect.</param>
+        public void SetStartGameCountdownText(int time) { gameStartCountdownValue.text = time.ToString() + "!"; }
+
+        /// <summary>
+        /// Show or hide the countdown timer.
+        /// </summary>
+        /// <param name="active">Whehter to show the timer or hide it.</param>
+        public void SetStartGameCountdownTextActive(bool active) {
+            StartCoroutine(MoveStartCountdown(active));
+        }
+
         /// <summary>
         /// Update the ingame score text.
         /// </summary>
@@ -215,6 +260,10 @@ namespace App.UI {
         public void UpdateGameTimerText(float value) {
             gameTimerValue.text = string.Format("{0:n0}", value);
         }
+        
+        #endregion
+
+        #region GAME OVER STATE UI
 
         /// <summary>
         /// Set the values and active states of the game over screen text elements.
@@ -233,6 +282,9 @@ namespace App.UI {
             newBestText.gameObject.SetActive(isHighscore);
         }
 
+        #endregion
+
+        #region SOUND CONTROLS
         /// <summary>
         /// Get the value of the sfx slider.
         /// </summary>
@@ -255,14 +307,9 @@ namespace App.UI {
             musicSlider.value = musicVolume;
         }
 
-        /// <summary>
-        /// Shake the screen from a UI button.
-        /// </summary>
-        /// <param name="strength">Strength of the shake (0, 1, or 2).</param>
-        public void DoUIScreenShake(int strength) {
-            strength = Mathf.Min(strength, buttonShakeAmounts.Length);
-            StartCoroutine(CameraEffects.Instance.ShakeCamera(buttonShakeAmounts[strength], buttonShakeDurations[strength]));
-        }
+        #endregion
+
+        #region THEME CONTROLS
 
         /// <summary>
         /// Update the game colors from the selected theme material.
@@ -275,6 +322,29 @@ namespace App.UI {
 
             lastThemeMaterial = ThemeMaterial;
         }
+
+        /// <summary>
+        /// Set the theme of the game from one of the customization buttons.
+        /// </summary>
+        /// <param name="material">Material of the swatch.</param>
+        public void SetThemeFromSwatch(Material material) {
+            ThemeMaterial = material;
+
+            SaveManager.Instance.SetTheme(material);
+
+            SetThemeCheckmarkStates();
+        }
+
+        /// <summary>
+        /// Update the checkmarks on the theme swatches to reflect which one's selected.
+        /// </summary>
+        public void SetThemeCheckmarkStates() {
+            foreach (ThemeChoice c in themeContainer.GetComponentsInChildren<ThemeChoice>()) {
+                if (c.Material == ThemeMaterial) c.ToggleOn();
+                else c.ToggleOff();
+            }
+        }
+
 
         /// <summary>
         /// Get the index of a material from the manifest (for saving non-serializable data).
@@ -297,5 +367,7 @@ namespace App.UI {
         public Material GetMaterialByIndex(int index) {
             return themeMaterials[Mathf.Clamp(index, 0, themeMaterials.Length)];
         }
+
+        #endregion 
     }
 }

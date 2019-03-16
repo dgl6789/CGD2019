@@ -48,7 +48,7 @@ namespace App {
 
             switch(State) {
                 case GameState.Game:
-                    ScoreManager.Instance.UpdateRun();
+                    RunManager.Instance.UpdateRun();
                     break;
             }
         }
@@ -74,7 +74,7 @@ namespace App {
 
             switch (state) {
                 case GameState.Game:
-                    ScoreManager.Instance.StartGame();
+                    StartCoroutine(RunManager.Instance.StartGame());
                     break;
                 case GameState.GameOver:
                 case GameState.Menu:

@@ -48,7 +48,7 @@ namespace App {
         /// Add a new score to the saved list of high scores.
         /// </summary>
         public void SetHighScore() {
-            LoadedData.HighScore = ScoreManager.Instance.HighScore;
+            LoadedData.HighScore = RunManager.Instance.HighScore;
         }
 
         /// <summary>
@@ -101,13 +101,13 @@ namespace App {
                         using (FileStream fs = File.Open(Path.Combine(Application.persistentDataPath, Path.Combine(folderName, fileName + "." + fileExtension)), FileMode.Open))
                             return (SaveData)formatter.Deserialize(fs);
                     } else {
-                        return new SaveData(0, ScoreManager.Instance.Currency, 1, 1, UIManager.Instance.GetMaterialByIndex(0)); // Default data (if none is present).
+                        return new SaveData(0, RunManager.Instance.Currency, 1, 1, UIManager.Instance.GetMaterialByIndex(0)); // Default data (if none is present).
                     }
                 } catch (IOException) {
-                    return new SaveData(0, ScoreManager.Instance.Currency, 1, 1, UIManager.Instance.GetMaterialByIndex(0)); // Default data (if none is present).
+                    return new SaveData(0, RunManager.Instance.Currency, 1, 1, UIManager.Instance.GetMaterialByIndex(0)); // Default data (if none is present).
                 }
             } else {
-                return new SaveData(0, ScoreManager.Instance.Currency, 1, 1, UIManager.Instance.GetMaterialByIndex(0)); // Default data (if none is present).
+                return new SaveData(0, RunManager.Instance.Currency, 1, 1, UIManager.Instance.GetMaterialByIndex(0)); // Default data (if none is present).
             }
         }
 
@@ -130,8 +130,8 @@ namespace App {
         /// Apply the loaded data to the game.
         /// </summary>
         private void ApplyLoadedData() {
-            ScoreManager.Instance.HighScore = LoadedData.HighScore;
-            ScoreManager.Instance.Currency = LoadedData.Currency;
+            RunManager.Instance.HighScore = LoadedData.HighScore;
+            RunManager.Instance.Currency = LoadedData.Currency;
 
             UIManager.Instance.SetBestScoreValue(LoadedData.HighScore);
 
