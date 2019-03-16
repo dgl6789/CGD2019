@@ -14,8 +14,6 @@ namespace App {
         // The amount of time to measure for the largest delta after a touch on a hand registers.
         [SerializeField] float strengthDeltaInterval;
 
-        [SerializeField] float deltaModifier;
-
         // List of hands/fives that still need input checking.
         private List<Hand> ActiveHands;
         private List<HighFive> ActiveFives;
@@ -39,7 +37,7 @@ namespace App {
             foreach (HighFive five in ActiveFives) {
                 if (five.HasDelta) {
                     // This five is ready to be evaluated.
-                    if (EvaluateHighFive(five))
+                    if (five.Hand.StrengthIsAcceptable(five.MaxDelta))
                         five.Hand.OnSuccessfulFive();
                     else
                         five.Hand.OnFailedFive();
@@ -115,12 +113,12 @@ namespace App {
         }
 
         /// <summary>
-        /// Determine whether a high five was successful.
+        /// Convert a hand size in unity units to a target strength for a high five.
         /// </summary>
-        /// <param name="five">The HighFive to evaluate.</param>
-        /// <returns>True if the high five was successful, false otherwise.</returns>
-        private bool EvaluateHighFive(HighFive five) {
-            return five.Hand.StrengthIsAcceptable(five.MaxDelta * deltaModifier);
+        /// <param name="size"></param>
+        /// <returns></returns>
+        public float HandSizetoTargetStrength(float size) {
+            return size;
         }
     }
 
