@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using App.Util;
+using App.UI;
 
 namespace App {
     /// <summary>
@@ -14,14 +15,16 @@ namespace App {
 
         // Hand prefab object.
         [SerializeField] GameObject handObject;
+        [SerializeField] GameObject[] indicatorObjects;
 
         // Min and max size of a hand.
         [SerializeField] Vector2 handSizeRange;
 
-        [SerializeField] float acceptableStrengthRange;
-
         // Object that holds all the hands.
-        [SerializeField] Transform handParent;
+        public Transform handParent;
+
+        [SerializeField] float acceptableStrengthRange;
+        [SerializeField] float perfectStrengthRange;
 
         // The amount of time to measure for the largest delta after a touch on a hand registers.
         [SerializeField] float strengthDeltaInterval;
@@ -32,6 +35,20 @@ namespace App {
         // List of hands/fives that still need input checking.
         private List<Hand> ActiveHands;
         private List<HighFive> ActiveFives;
+
+        [Header("Scoring")]
+
+        public int SuccessfulFiveScoreReward;
+        public int SuccessfulFiveTimeReward;
+        public int PerfectFiveScoreReward;
+        public int PerfectFiveTimeReward;
+
+        public int FailedFiveTimePenalty;
+
+        [Space(10)]
+
+        [SerializeField] string[] scoreIndicatorSuccessDescriptions;
+        [SerializeField] string[] scoreIndicatorFailureDescriptions;
 
         /// <summary>
         /// Singleton initialization.
@@ -66,18 +83,20 @@ namespace App {
                 List<HighFive> resolvedFives = new List<HighFive>();
 
                 foreach (HighFive five in ActiveFives) {
-                    if (five.MaxDelta == Mathf.Infinity) {
-                        // Infinite delta means an automatic success (testing on desktop only).
-                        five.Hand.OnSuccessfulFive();
-                    } else if(five.MaxDelta > 0) {
-                        // This five is ready to be evaluated.
-                        if (five.Hand.StrengthIsAcceptable(five.MaxDelta))
-                            five.Hand.OnSuccessfulFive();
-                        else
-                            five.Hand.OnFailedFive();
-                    }
+                    if (five.Hand != null) {
+                        if (five.MaxDelta == Mathf.Infinity) {
+                            // Infinite delta means an automatic normal success (testing on desktop only).
+                            five.Hand.OnSuccessfulFive(false);
+                        } else if (five.MaxDelta > 0) {
+                            // This five is ready to be evaluated.
+                            if (five.Hand.StrengthIsAcceptable(five.MaxDelta))
+                                five.Hand.OnSuccessfulFive(five.Hand.StrengthIsPerfect(five.MaxDelta));
+                            else
+                                five.Hand.OnFailedFive();
+                        }
 
-                    resolvedFives.Add(five);
+                        resolvedFives.Add(five);
+                    }
                 }
 
                 // Remove resolved fives from the active fives list.
@@ -97,7 +116,7 @@ namespace App {
             // TODO: Have this method attach the spawned hand to the guy, put it at a reasonable starting position, etc.
             Hand h = Instantiate(handObject, handParent).GetComponent<Hand>();
 
-            h.Initialize(Random.Range(handSizeRange.x, handSizeRange.y), acceptableStrengthRange);
+            h.Initialize(Random.Range(handSizeRange.x, handSizeRange.y), acceptableStrengthRange, perfectStrengthRange);
 
             ActiveHands.Add(h);
         }
@@ -199,6 +218,40 @@ namespace App {
         /// <returns>Scale factor of the hand scaled into the parsed strength range.</returns>
         public float HandSizetoTargetStrength(float size) {
             return MathUtility.Map(size, handSizeRange.x, handSizeRange.y, parsedStrengthRange.x, parsedStrengthRange.y);
+        }
+
+        /// <summary>
+        /// Spawn a score indicator object.
+        /// </summary>
+        /// <param name="origin">Transform of the origin hand.</param>
+        /// <param name="count">Number of score to reflect.</param>
+        public void SpawnScoreIndicator(Transform origin, bool perfect = false, int count = 1) {
+            string description = scoreIndicatorSuccessDescriptions[Random.Range(0, scoreIndicatorSuccessDescriptions.Length)];
+
+            Indicator i = Instantiate(indicatorObjects[0], origin.position, Quaternion.identity, handParent).GetComponent<Indicator>();
+            i.Initialize(count, description, perfect);
+        }
+
+        /// <summary>
+        /// Spawn a time indicator object.
+        /// </summary>
+        /// <param name="origin">Transform of the origin hand.</param>
+        /// <param name="count">Number of seconds to reflect.</param>
+        /// <param name="success">Whether the time is being added or subtracted.</param>
+        public void SpawnTimeIndicator(Transform origin, int count, bool success = false) {
+            string description = success ? "" : scoreIndicatorFailureDescriptions[Random.Range(0, scoreIndicatorFailureDescriptions.Length)];
+
+            Indicator i = Instantiate(indicatorObjects[1], origin.position, Quaternion.identity, handParent).GetComponent<Indicator>();
+            i.Initialize(count, description, false, success ? 0.15f : 0f);
+        }
+
+        /// <summary>
+        /// Spawn a ring indicator object.
+        /// </summary>
+        /// <param name="origin">Transform of the origin hand.</param>
+        public void SpawnRingIndicator(Transform origin) {
+            Indicator i = Instantiate(indicatorObjects[2], origin.position, Quaternion.identity, handParent).GetComponent<Indicator>();
+            i.Initialize(1);
         }
     }
 

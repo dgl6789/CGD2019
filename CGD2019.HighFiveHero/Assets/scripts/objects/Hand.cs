@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace App {
@@ -8,6 +7,7 @@ namespace App {
     public class Hand : MonoBehaviour {
 
         private float acceptableRange;
+        private float perfectRange;
         private float targetStrength;
 
         /// <summary>
@@ -15,27 +15,45 @@ namespace App {
         /// </summary>
         /// <param name="size">Size to scale the hand by.</param>
         /// <param name="acceptableRange">Range (+-) of strength of an input to accept as a success.</param>
-        public void Initialize(float size, float acceptableRange) {
+        public void Initialize(float size, float acceptableRange, float perfectRange) {
             transform.localScale = new Vector2(size, size);
 
             this.acceptableRange = acceptableRange;
+            this.perfectRange = perfectRange;
 
             // Parse the target strength from the given size.
             targetStrength = size * HandManager.Instance.HandSizetoTargetStrength(size);
         }
 
         /// <summary>
-        /// STUB: To do when a high five on this hand was in the acceptable strength range.
+        /// To do when a high five on this hand was in the acceptable strength range.
         /// </summary>
-        public void OnSuccessfulFive() {
-            Debug.Log("Success!");
+        public void OnSuccessfulFive(bool perfect) {
+            int scoreReward = perfect ? HandManager.Instance.PerfectFiveScoreReward : HandManager.Instance.SuccessfulFiveScoreReward;
+            int timeReward = perfect ? HandManager.Instance.PerfectFiveTimeReward : HandManager.Instance.SuccessfulFiveTimeReward;
+
+            // Spawn a success indicator
+            HandManager.Instance.SpawnScoreIndicator(transform, perfect, scoreReward);
+            HandManager.Instance.SpawnTimeIndicator(transform, timeReward, true);
+
+            // Add to the score and time.
+            RunManager.Instance.AddScore(scoreReward);
+            RunManager.Instance.AddTime(timeReward);
+
+            // TODO: Spawn a visual effect.
         }
 
         /// <summary>
-        /// STUB: To do when a high five on this hand was NOT in the acceptable strength range.
+        /// To do when a high five on this hand was NOT in the acceptable strength range.
         /// </summary>
         public void OnFailedFive() {
-            Debug.Log("Failure!");
+            // Spawn a failure indicator
+            HandManager.Instance.SpawnTimeIndicator(transform, HandManager.Instance.FailedFiveTimePenalty, false);
+
+            // Subtract from the time.
+            RunManager.Instance.AddTime(-HandManager.Instance.FailedFiveTimePenalty);
+
+            // TODO: Spawn a visual effect.
         }
 
         /// <summary>
@@ -44,5 +62,12 @@ namespace App {
         /// <param name="strength">Strength value to check.</param>
         /// <returns>True if the strength value falls within the acceptable range, false otherwise.</returns>
         public bool StrengthIsAcceptable(float strength) { return strength >= targetStrength - acceptableRange && strength <= targetStrength + acceptableRange; }
+
+        /// <summary>
+        /// Determine whether a strength value falls into the "perfect" range for this hand.
+        /// </summary>
+        /// <param name="strength">Strength value to check.</param>
+        /// <returns>True if the strength value falls within the perfect range.</returns>
+        public bool StrengthIsPerfect(float strength) { return strength >= targetStrength - perfectRange && strength <= targetStrength + perfectRange; }
     }
 }
