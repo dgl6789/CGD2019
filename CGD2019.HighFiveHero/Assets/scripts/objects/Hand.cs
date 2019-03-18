@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace App {
-    enum HandMovement { OSCILATE, JUMP };
+    enum HandMovement { OSCILLATE, JUMP };
 
     public class Hand : MonoBehaviour {
 
