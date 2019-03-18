@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace App {
+    enum HandMovement { OSCILATE, JUMP };
+
     public class Hand : MonoBehaviour {
 
         private float acceptableRange;
