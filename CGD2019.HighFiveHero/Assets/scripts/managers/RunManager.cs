@@ -13,7 +13,11 @@ namespace App {
 
         [SerializeField] int startCountdownLength;
         [SerializeField] float initialTimerValue;
+
         bool gameStarted;
+        public bool Running {
+            get { return gameStarted; }
+        }
 
         // High score list (saved and loaded from file).
         [HideInInspector] public int HighScore;
@@ -125,7 +129,8 @@ namespace App {
             
             TrySetHighScore(CurrentScore);
 
-            StateManager.Instance.SwapState(GameState.GameOver);
+            StateManager.Instance.State = GameState.GameOver;
+            HandManager.Instance.CleanupAllHands();
             UIManager.Instance.SetGameOverTexts(CurrentScore, CurrentScore > HighScore, HighScore);
         }
 

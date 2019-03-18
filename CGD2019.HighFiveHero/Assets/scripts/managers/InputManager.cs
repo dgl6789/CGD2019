@@ -14,14 +14,10 @@ namespace App {
 
         [HideInInspector] public bool MobilePlatform;
 
-        public float AccelerometerForceFactor;
-
         private Touch[] touches;
         public Touch[] Touches {
             get { return touches; }
         }
-
-        public GameState InputState { get; set; }
 
         /// <summary>
         /// Singleton initialization and platform check.
@@ -37,7 +33,7 @@ namespace App {
         /// Update per-state input behavior.
         /// </summary>
         public void UpdateInputs() {
-            switch(InputState) {
+            switch(StateManager.Instance.State) {
                 case GameState.GameOver:
                 case GameState.Menu:
                     // Do input behavior for menus here.
@@ -47,8 +43,6 @@ namespace App {
                 case GameState.Game:
                     // Do input behavior for the ingame state here.
                     touches = Input.touches;
-
-                    HandManager.Instance.GetHandInputs(touches);
                     break;
             }
         }

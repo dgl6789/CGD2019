@@ -48,8 +48,10 @@ namespace App {
 
             switch(State) {
                 case GameState.Game:
-                    RunManager.Instance.UpdateRun();
-                    HandManager.Instance.UpdateHands();
+                    if (RunManager.Instance.Running) {
+                        RunManager.Instance.UpdateRun();
+                        HandManager.Instance.UpdateHands();
+                    }
                     break;
             }
         }
@@ -64,20 +66,14 @@ namespace App {
         /// Swap the game state.
         /// </summary>
         /// <param name="state">State to swap to (enum).</param>
-        public void SwapState(GameState state) {
-            switch(_state) {
-                case GameState.Game:
-                case GameState.GameOver:
-                case GameState.Menu:
-                    // TODO: Per-state cleanup.
-                    break;
-            }
-
+        private void SwapState(GameState state) {
             switch (state) {
                 case GameState.Game:
                     StartCoroutine(RunManager.Instance.StartGame());
                     break;
                 case GameState.GameOver:
+                    HandManager.Instance.CleanupAllHands();
+                    break;
                 case GameState.Menu:
                     // TODO: Per-state setup.
                     break;

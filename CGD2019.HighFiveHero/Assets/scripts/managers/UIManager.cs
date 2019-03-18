@@ -16,15 +16,18 @@ namespace App.UI {
         /// Singleton instance.
         public static UIManager Instance;
 
+        [SerializeField] bool showDebugText;
+
         // State objects and swapping variables
         [Header("States")]
         [SerializeField] GameObject[] UIStateObjects;
         [SerializeField] float stateSwapDuration;
 
         [HideInInspector] public bool InputLock;
-        
+
         // UI transform references
         [Header("Common")]
+        [SerializeField] TextMeshProUGUI debugText;
         [SerializeField] RectTransform canvasContent;
         [SerializeField] RectTransform title;
 
@@ -89,6 +92,8 @@ namespace App.UI {
             UpdateGameColors();
 
             SetThemeCheckmarkStates();
+
+            debugText.gameObject.SetActive(showDebugText);
         }
 
         /// <summary>
@@ -100,6 +105,12 @@ namespace App.UI {
             zigzagObject.UpdateScrollOffset(zigzagScrollSpeed);
             backgroundScaler.UpdateScaling();
         }
+
+        /// <summary>
+        /// Write something to the debug text field.
+        /// </summary>
+        /// <param name="text">Text to write.</param>
+        public void WriteDebugText(string text) { debugText.text = text; }
 
         #region EFFECTS/TRANSITIONS
 

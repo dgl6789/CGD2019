@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using App.Util;
 
 namespace App {
     /// <summary>
@@ -11,8 +12,22 @@ namespace App {
         /// Singleton instance.
         public static HandManager Instance;
 
+        // Hand prefab object.
+        [SerializeField] GameObject handObject;
+
+        // Min and max size of a hand.
+        [SerializeField] Vector2 handSizeRange;
+
+        [SerializeField] float acceptableStrengthRange;
+
+        // Object that holds all the hands.
+        [SerializeField] Transform handParent;
+
         // The amount of time to measure for the largest delta after a touch on a hand registers.
         [SerializeField] float strengthDeltaInterval;
+        // The range that high five input strengths are bound to.
+        [SerializeField] Vector2 parsedStrengthRange;
+        [SerializeField] float maximumRawStrength;
 
         // List of hands/fives that still need input checking.
         private List<Hand> ActiveHands;
@@ -24,32 +39,88 @@ namespace App {
         private void Awake() {
             if (Instance == null) Instance = this;
             else Destroy(this);
+
+            if(this) {
+                ActiveHands = new List<Hand>();
+                ActiveFives = new List<HighFive>();
+            }
         }
 
         /// <summary>
         /// Update the hand movement, resolution, and spawning. Called each frame in game state.
         /// </summary>
         public void UpdateHands() {
+            if (StateManager.Instance.State.Equals(GameState.Game)) {
 
-            #region HIGH FIVE RESOLUTION
-            List<HighFive> inactiveFives = new List<HighFive>();
+                #region HAND SPAWNING
 
-            foreach (HighFive five in ActiveFives) {
-                if (five.HasDelta) {
-                    // This five is ready to be evaluated.
-                    if (five.Hand.StrengthIsAcceptable(five.MaxDelta))
+                // TODO: Actual hand spawning code goes here (Interval only -- positioning, etc. should be in SpawnHand()).
+                if (ActiveHands.Count == 0) { SpawnHand(); }
+
+                #endregion
+
+                #region HIGH FIVE RESOLUTION
+
+                GetHandInputs(InputManager.Instance.Touches);
+
+                List<HighFive> resolvedFives = new List<HighFive>();
+
+                foreach (HighFive five in ActiveFives) {
+                    if (five.MaxDelta == Mathf.Infinity) {
+                        // Infinite delta means an automatic success (testing on desktop only).
                         five.Hand.OnSuccessfulFive();
-                    else
-                        five.Hand.OnFailedFive();
+                    } else if(five.MaxDelta > 0) {
+                        // This five is ready to be evaluated.
+                        if (five.Hand.StrengthIsAcceptable(five.MaxDelta))
+                            five.Hand.OnSuccessfulFive();
+                        else
+                            five.Hand.OnFailedFive();
+                    }
 
-                    inactiveFives.Add(five);
+                    resolvedFives.Add(five);
                 }
+
+                // Remove resolved fives from the active fives list.
+                foreach (HighFive f in resolvedFives) {
+                    RemoveHand(f.Hand);
+                    ActiveFives.Remove(f);
+                }
+
+                #endregion
+            }
+        }
+
+        /// <summary>
+        /// Spawn a hand object.
+        /// </summary>
+        private void SpawnHand() {
+            // TODO: Have this method attach the spawned hand to the guy, put it at a reasonable starting position, etc.
+            Hand h = Instantiate(handObject, handParent).GetComponent<Hand>();
+
+            h.Initialize(Random.Range(handSizeRange.x, handSizeRange.y), acceptableStrengthRange);
+
+            ActiveHands.Add(h);
+        }
+
+        /// <summary>
+        /// Remove a hand.
+        /// </summary>
+        /// <param name="hand">Hand to remove.</param>
+        private void RemoveHand(Hand hand) {
+            if (ActiveHands.Contains(hand)) {
+                ActiveHands.Remove(hand);
             }
 
-            // Remove resolved fives from the active fives list.
-            foreach (HighFive f in inactiveFives) ActiveFives.Remove(f);
-            #endregion
+            // TODO: Replace this with behavior to clean up a hand nicely.
+            if(hand) Destroy(hand.gameObject);
+        }
 
+        /// <summary>
+        /// Cleanup all the active hands (used on game over).
+        /// </summary>
+        public void CleanupAllHands() {
+            while(ActiveHands.Count > 0)
+                RemoveHand(ActiveHands[0]);
         }
 
         /// <summary>
@@ -57,26 +128,35 @@ namespace App {
         /// </summary>
         /// <param name="touches">Array of touches for this frame.</param>
         public void GetHandInputs(Touch[] touches) {
+            if (InputManager.Instance.MobilePlatform) {
+                // Get the relative strength of each new touch.
+                foreach (Touch t in touches) {
+                    bool newTouch = true;
 
-            // Get the relative strength of each new touch.
-            foreach(Touch t in touches) {
-                bool newTouch = true;
+                    // Determine if this touch is actually a new one
+                    foreach (HighFive f in ActiveFives) {
+                        if (f.Touch.fingerId == t.fingerId)
+                            newTouch = false;
+                    }
 
-                // Determine if this touch is actually a new one
-                foreach(HighFive f in ActiveFives) {
-                    if (f.Touch.fingerId == t.fingerId)
-                        newTouch = false;
+                    if (newTouch) {
+                        // Check if this touch was on a hand.
+                        RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(t.position), t.position);
+
+                        if (hit.collider && hit.collider.tag == "Hand") {
+                            // Make a new high five and check its strength.
+                            HighFive five = new HighFive(t, hit.collider.GetComponent<Hand>());
+                            StartCoroutine(GetMaxDelta(five));
+                        }
+                    }
                 }
-                
-                if (newTouch) {
-                    // Check if this touch was on a hand.
-                    RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(t.position), t.position);
+            } else {
+                if (Input.GetMouseButtonDown(0)) {
+                    RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
-                    if (hit.collider.tag == "Hand") {
+                    if (hit.collider && hit.collider.tag == "Hand") {
                         // Make a new high five and check its strength.
-                        HighFive five = new HighFive(t, hit.collider.GetComponent<Hand>());
-                        ActiveFives.Add(five);
-
+                        HighFive five = new HighFive(hit.collider.GetComponent<Hand>());
                         StartCoroutine(GetMaxDelta(five));
                     }
                 }
@@ -97,7 +177,7 @@ namespace App {
             while(timer > 0) {
                 timer -= Time.deltaTime;
 
-                float thisDelta = (Input.acceleration - lastAcceleration).sqrMagnitude;
+                float thisDelta = Mathf.Abs((Input.acceleration - lastAcceleration).sqrMagnitude);
 
                 // If a larger delta is read, write the new max delta.
                 maxDelta = Mathf.Max(thisDelta, maxDelta);
@@ -107,18 +187,18 @@ namespace App {
                 yield return null;
             }
 
-            // write the max interval to the high five.
-            five.MaxDelta = maxDelta;
-            five.HasDelta = true;
+            // write the max delta to the high five object.
+            five.MaxDelta = InputManager.Instance.MobilePlatform ? MathUtility.Map(Mathf.Clamp(maxDelta, 0, maximumRawStrength), 0, maximumRawStrength, parsedStrengthRange.x, parsedStrengthRange.y) : Mathf.Infinity;
+            ActiveFives.Add(five);
         }
 
         /// <summary>
-        /// Convert a hand size in unity units to a target strength for a high five.
+        /// Convert a hand scale in unity units to a target strength for a high five.
         /// </summary>
-        /// <param name="size"></param>
-        /// <returns></returns>
+        /// <param name="size">Scale factor of the hand object.</param>
+        /// <returns>Scale factor of the hand scaled into the parsed strength range.</returns>
         public float HandSizetoTargetStrength(float size) {
-            return size;
+            return MathUtility.Map(size, handSizeRange.x, handSizeRange.y, parsedStrengthRange.x, parsedStrengthRange.y);
         }
     }
 
@@ -130,14 +210,20 @@ namespace App {
         public Touch Touch;
         public Hand Hand;
         
-        public bool HasDelta;
         public float MaxDelta;
 
         public HighFive(Touch touch, Hand hand) {
-            HasDelta = false;
-            MaxDelta = 0f;
+            MaxDelta = -1f;
 
             Touch = touch;
+            Hand = hand;
+        }
+
+        // Overload for auto-success (desktop testing only).
+        public HighFive(Hand hand) {
+            MaxDelta = Mathf.Infinity;
+
+            Touch = new Touch();
             Hand = hand;
         }
     }
