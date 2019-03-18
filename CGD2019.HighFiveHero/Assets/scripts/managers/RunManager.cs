@@ -32,7 +32,11 @@ namespace App {
             }
         }
 
-        private float CurrentGameTimer;
+        private float currentGameTimer;
+        public float CurrentGameTimer
+        {
+            get { return currentGameTimer; }
+        }
 
         // Currency value.
         private int currency;
@@ -82,12 +86,12 @@ namespace App {
         /// </summary>
         public void UpdateRun() {
             if (gameStarted) {
-                CurrentGameTimer -= Time.deltaTime;
+                currentGameTimer -= Time.deltaTime;
 
-                UIManager.Instance.UpdateGameTimerText(CurrentGameTimer);
+                UIManager.Instance.UpdateGameTimerText(currentGameTimer);
 
-                if (CurrentGameTimer <= 0) {
-                    CurrentGameTimer = 0;
+                if (currentGameTimer <= 0) {
+                    currentGameTimer = 0;
 
                     EndGame();
                 }
@@ -100,8 +104,8 @@ namespace App {
         public IEnumerator StartGame() {
             // Reset the score/timer
             CurrentScore = 0;
-            CurrentGameTimer = initialTimerValue;
-            UIManager.Instance.UpdateGameTimerText(CurrentGameTimer);
+            currentGameTimer = initialTimerValue;
+            UIManager.Instance.UpdateGameTimerText(currentGameTimer);
 
             // Turn on the countdown, and count it down.
             UIManager.Instance.SetStartGameCountdownTextActive(true);
