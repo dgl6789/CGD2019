@@ -33,6 +33,9 @@ namespace App {
         private List<Hand> ActiveHands;
         private List<HighFive> ActiveFives;
 
+        // Previous timestamp to regulate spawning
+        //private 
+
         /// <summary>
         /// Singleton initialization.
         /// </summary>
@@ -56,6 +59,8 @@ namespace App {
 
                 // TODO: Actual hand spawning code goes here (Interval only -- positioning, etc. should be in SpawnHand()).
                 if (ActiveHands.Count == 0) { SpawnHand(); }
+
+                if ()
 
                 #endregion
 

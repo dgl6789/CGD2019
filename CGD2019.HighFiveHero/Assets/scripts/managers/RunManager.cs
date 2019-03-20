@@ -150,5 +150,16 @@ namespace App {
                 UIManager.Instance.SetBestScoreValue(HighScore);
             }
         }
+
+        /// <summary>
+        /// Checks if a certain amount of time has passed
+        /// </summary>
+        /// <param name="time">Time to compare to CurrentTime</param>
+        /// <param name="numSeconds">Number of seconds to check for. Defaults to 1 second</param>
+        /// <returns></returns>
+        public bool TimePassed(float time, int numSeconds = 1)
+        {
+            return (currentGameTimer - time >= numSeconds);
+        }
     }
 }

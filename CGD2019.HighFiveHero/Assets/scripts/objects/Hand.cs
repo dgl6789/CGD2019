@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace App {
-    enum HandMovement { OSCILLATE, JUMP };
+    public enum HandMovement { OSCILLATE, JUMP };
 
     public class Hand : MonoBehaviour {
+
+        private HandMovement movementType;
 
         private float acceptableRange;
         private float targetStrength;
@@ -15,13 +17,32 @@ namespace App {
         /// </summary>
         /// <param name="size">Size to scale the hand by.</param>
         /// <param name="acceptableRange">Range (+-) of strength of an input to accept as a success.</param>
-        public void Initialize(float size, float acceptableRange) {
+        /// <param name="movementType">Movement type. Defaults to oscillating</param>
+        public void Initialize(float size, float acceptableRange, HandMovement movementType = HandMovement.OSCILLATE) {
             transform.localScale = new Vector2(size, size);
 
             this.acceptableRange = acceptableRange;
 
             // Parse the target strength from the given size.
             targetStrength = size * HandManager.Instance.HandSizetoTargetStrength(size);
+
+            this.movementType = movementType;
+        }
+
+        /// <summary>
+        /// Move the hand along its individual path, determined by the movement type
+        /// </summary>
+        public void Move()
+        {
+            switch (movementType)
+            {
+                case HandMovement.OSCILLATE:
+                    Debug.Log("Oscillating");
+                    break;
+                case HandMovement.JUMP:
+                    Debug.Log("Jumping");
+                    break;
+            }
         }
 
         /// <summary>
