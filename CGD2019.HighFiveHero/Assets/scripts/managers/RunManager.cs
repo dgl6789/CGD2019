@@ -82,6 +82,14 @@ namespace App {
         }
 
         /// <summary>
+        /// Add to the game's timer.
+        /// </summary>
+        /// <param name="amount">Amount to add.</param>
+        public void AddTime(float amount) {
+            currentGameTimer += amount;
+        }
+
+        /// <summary>
         /// Update the state of the run, difficulty, timer, etc.
         /// </summary>
         public void UpdateRun() {
@@ -130,12 +138,12 @@ namespace App {
         /// </summary>
         private void EndGame() {
             gameStarted = false;
-            
-            TrySetHighScore(CurrentScore);
 
             StateManager.Instance.State = GameState.GameOver;
             HandManager.Instance.CleanupAllHands();
             UIManager.Instance.SetGameOverTexts(CurrentScore, CurrentScore > HighScore, HighScore);
+
+            TrySetHighScore(CurrentScore);
         }
 
         /// <summary>
