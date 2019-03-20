@@ -87,6 +87,7 @@ namespace App {
         /// <param name="amount">Amount to add.</param>
         public void AddTime(float amount) {
             currentGameTimer += amount;
+            HandManager.Instance.PreviousGameTime += amount;
         }
 
         /// <summary>
@@ -114,6 +115,7 @@ namespace App {
             CurrentScore = 0;
             currentGameTimer = initialTimerValue;
             UIManager.Instance.UpdateGameTimerText(currentGameTimer);
+            HandManager.Instance.PreviousGameTime = currentGameTimer;
 
             // Turn on the countdown, and count it down.
             UIManager.Instance.SetStartGameCountdownTextActive(true);
@@ -167,7 +169,7 @@ namespace App {
         /// <returns></returns>
         public bool TimePassed(float time, int numSeconds = 1)
         {
-            return (currentGameTimer - time >= numSeconds);
+            return (time - currentGameTimer >= numSeconds);
         }
     }
 }

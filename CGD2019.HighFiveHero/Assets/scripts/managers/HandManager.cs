@@ -28,6 +28,7 @@ namespace App {
 
         // The amount of time to measure for the largest delta after a touch on a hand registers.
         [SerializeField] float strengthDeltaInterval;
+
         // The range that high five input strengths are bound to.
         [SerializeField] Vector2 parsedStrengthRange;
         [SerializeField] float maximumRawStrength;
@@ -37,8 +38,13 @@ namespace App {
         private List<HighFive> ActiveFives;
 
         // Previous timestamp to regulate spawning
-        //private 
-        
+        private float previousGameTime = 0.0f;
+        public float PreviousGameTime
+        {
+            get { return previousGameTime; }
+            set { previousGameTime = value; }
+        }
+
         [Header("Scoring")]
 
         public int SuccessfulFiveScoreReward;
@@ -75,9 +81,17 @@ namespace App {
                 #region HAND SPAWNING
 
                 // TODO: Actual hand spawning code goes here (Interval only -- positioning, etc. should be in SpawnHand()).
-                if (ActiveHands.Count == 0) { SpawnHand(); }
+                //if (ActiveHands.Count == 0) { SpawnHand(); }
 
-                if ()
+                //spawns a hand every second
+                if (RunManager.Instance.TimePassed(previousGameTime))
+                {
+                    previousGameTime = RunManager.Instance.CurrentGameTimer;
+
+                    Debug.Log(previousGameTime);
+
+                    SpawnHand();
+                }
 
                 #endregion
 
