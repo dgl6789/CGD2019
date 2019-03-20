@@ -139,6 +139,8 @@ namespace App {
             UIManager.Instance.SetThemeCheckmarkStates();
 
             UIManager.Instance.SetSoundVolumes(LoadedData.SfxVolume, LoadedData.MusicVolume);
+            SoundManager.Instance.AdjustMusicVolume();
+            SoundManager.Instance.AdjustSfxVolume();
         }
     }
 

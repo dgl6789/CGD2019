@@ -9,6 +9,9 @@ namespace App {
         private float acceptableRange;
         private float perfectRange;
         private float targetStrength;
+        public float TargetStrength {
+            get { return targetStrength; }
+        }
 
         /// <summary>
         /// Initialize the hand object.
@@ -22,7 +25,7 @@ namespace App {
             this.perfectRange = perfectRange;
 
             // Parse the target strength from the given size.
-            targetStrength = size * HandManager.Instance.HandSizetoTargetStrength(size);
+            targetStrength = HandManager.Instance.HandSizetoTargetStrength(size);
         }
 
         /// <summary>
