@@ -8,6 +8,11 @@ namespace App {
 
         private HandMovement movementType;
 
+        float orbitAngle;
+        float moveInterval;
+        float timePassed;
+        int prevSecond;
+
         private float acceptableRange;
         private float perfectRange;
         private float targetStrength;
@@ -31,6 +36,10 @@ namespace App {
             targetStrength = HandManager.Instance.HandSizetoTargetStrength(size);
 
             this.movementType = movementType;
+
+            // initialize movement variables
+            orbitAngle = Random.Range(0, 359);
+            moveInterval = Random.Range(1.5f, 3f);
         }
 
         /// <summary>
@@ -38,15 +47,49 @@ namespace App {
         /// </summary>
         public void Move()
         {
+            //get time
+            float interval = Time.deltaTime;
+            timePassed += interval;
+
+
             switch (movementType)
             {
                 case HandMovement.OSCILLATE:
-                    Debug.Log("Oscillating");
+                    Oscillate();
                     break;
                 case HandMovement.JUMP:
-                    Debug.Log("Jumping");
+                    Jump();
                     break;
             }
+
+            Orbit();
+
+            //update previous second
+            prevSecond = (int)timePassed;
+        }
+
+        /// <summary>
+        /// Jump the hand to a new spot on the arc
+        /// </summary>
+        private void Jump()
+        {
+            Debug.Log("Jumping");
+        }
+
+        /// <summary>
+        /// Move the hand smoothly along the arc
+        /// </summary>
+        private void Oscillate()
+        {
+            Debug.Log("Oscillating");
+        }
+
+        /// <summary>
+        /// Hands move in little circles
+        /// </summary>
+        private void Orbit()
+        {
+            Debug.Log("Orbitting");
         }
 
         /// <summary>
