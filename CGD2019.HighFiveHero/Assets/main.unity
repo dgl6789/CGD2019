@@ -3770,7 +3770,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1079126561}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.1949167, y: -0.0036537373, z: 0.008239585}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -4219,7 +4219,7 @@ Material:
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: f65ea94c18747c145ac677ea49960912, type: 3}
         m_Scale: {x: 4, y: 4}
-        m_Offset: {x: 0.47179613, y: 0.47179613}
+        m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -4531,8 +4531,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bfaceccdef33d440ae6ab27e752ae07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handObject: {fileID: 9023591153989209330, guid: 4fd8557bb81cb0845a78ec1d694f5e77,
-    type: 3}
+  HandObjects:
+  - {fileID: 6026535794372490773, guid: 4fd8557bb81cb0845a78ec1d694f5e77, type: 3}
+  - {fileID: 3341594852159768269, guid: 0559283bc7fd9be449a4b4e7b1af57a7, type: 3}
   indicatorObjects:
   - {fileID: 1901694566402876, guid: b4833cf28e97d3b4b9a7b68f4d84963f, type: 3}
   - {fileID: 1762786390570886, guid: fb2097d9e7edf014599fae9f93b9318c, type: 3}
@@ -4599,6 +4600,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MobilePlatform: 0
+  RingsToRemove: []
 --- !u!114 &1331530278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4656,6 +4658,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startCountdownLength: 4
   initialTimerValue: 10
+  ActiveRings: []
   HighScore: 0
 --- !u!114 &1331530282
 MonoBehaviour:

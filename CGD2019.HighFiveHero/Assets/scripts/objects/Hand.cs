@@ -12,6 +12,8 @@ namespace App {
         private float targetStrength;
         public float TargetStrength { get { return targetStrength; } }
 
+        protected float size;
+
         /// <summary>
         /// Initialize the hand object.
         /// </summary>
@@ -27,6 +29,7 @@ namespace App {
             this.perfectRange = perfectRange;
 
             targetStrength = HandManager.Instance.HandSizetoTargetStrength(size);
+            this.size = size;
         }
 
         /// <summary>
@@ -65,7 +68,7 @@ namespace App {
         /// </summary>
         /// <param name="strength">Strength value to check.</param>
         /// <returns>True if the strength value falls within the acceptable range, false otherwise.</returns>
-        public bool StrengthIsAcceptable(float strength) { return strength >= targetStrength - acceptableRange && strength <= targetStrength + acceptableRange; }
+        public virtual bool StrengthIsAcceptable(float strength) { return strength >= targetStrength - acceptableRange && strength <= targetStrength + acceptableRange; }
 
         /// <summary>
         /// Determine whether a strength value falls into the "perfect" range for this hand.

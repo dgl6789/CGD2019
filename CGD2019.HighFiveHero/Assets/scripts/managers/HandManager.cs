@@ -14,7 +14,7 @@ namespace App {
         public static HandManager Instance;
 
         // Hand prefab object.
-        [SerializeField] GameObject handObject;
+        [SerializeField] GameObject[] HandObjects;
         [SerializeField] GameObject[] indicatorObjects;
 
         // Min and max size of a hand.
@@ -86,6 +86,7 @@ namespace App {
                     if (five.Hand != null) {
                         if (five.MaxDelta == Mathf.Infinity) {
                             // Infinite delta means an automatic normal success (testing on desktop only).
+                            five.Hand.StrengthIsAcceptable(five.MaxDelta);
                             five.Hand.OnSuccessfulFive(false);
                         } else if (five.MaxDelta > 0) {
                             // This five is ready to be evaluated.
@@ -114,7 +115,7 @@ namespace App {
         /// </summary>
         private void SpawnHand() {
             // TODO: Have this method attach the spawned hand to the guy, put it at a reasonable starting position, etc.
-            Hand h = Instantiate(handObject, handParent).GetComponentInChildren<Hand>();
+            Hand h = Instantiate(HandObjects[Random.Range(0, HandObjects.Length)], handParent).GetComponentInChildren<Hand>();
 
             h.Initialize(Random.Range(handSizeRange.x, handSizeRange.y), acceptableStrengthRange, perfectStrengthRange);
 
