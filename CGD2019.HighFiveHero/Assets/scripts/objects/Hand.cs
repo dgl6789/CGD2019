@@ -15,10 +15,9 @@ namespace App {
 
         private float acceptableRange;
         private float perfectRange;
+
         private float targetStrength;
-        public float TargetStrength {
-            get { return targetStrength; }
-        }
+        public float TargetStrength { get { return targetStrength; } }
 
         /// <summary>
         /// Initialize the hand object.
@@ -27,12 +26,14 @@ namespace App {
         /// <param name="acceptableRange">Range (+-) of strength of an input to accept as a success.</param>
         /// <param name="movementType">Movement type. Defaults to oscillating</param>
         public void Initialize(float size, float acceptableRange, float perfectRange, HandMovement movementType = HandMovement.OSCILLATE) {
+            //Rendering Setup
             transform.localScale = new Vector2(size, size);
+            GetComponentInParent<Arm>().AdjustWidthForHand(size);
 
+            // Strength parameter setup
             this.acceptableRange = acceptableRange;
             this.perfectRange = perfectRange;
 
-            // Parse the target strength from the given size.
             targetStrength = HandManager.Instance.HandSizetoTargetStrength(size);
 
             this.movementType = movementType;

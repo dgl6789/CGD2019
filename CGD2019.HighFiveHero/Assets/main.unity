@@ -4219,7 +4219,7 @@ Material:
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: f65ea94c18747c145ac677ea49960912, type: 3}
         m_Scale: {x: 4, y: 4}
-        m_Offset: {x: 0.08991795, y: 0.08991795}
+        m_Offset: {x: 0.47179613, y: 0.47179613}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -4531,7 +4531,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bfaceccdef33d440ae6ab27e752ae07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handObject: {fileID: 1582009971726270, guid: 6675bdddc22e8fa47b4602f734dce33c, type: 3}
+  handObject: {fileID: 9023591153989209330, guid: 4fd8557bb81cb0845a78ec1d694f5e77,
+    type: 3}
   indicatorObjects:
   - {fileID: 1901694566402876, guid: b4833cf28e97d3b4b9a7b68f4d84963f, type: 3}
   - {fileID: 1762786390570886, guid: fb2097d9e7edf014599fae9f93b9318c, type: 3}
@@ -7091,7 +7092,7 @@ Transform:
   m_GameObject: {fileID: 1814630195}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.036, y: 0.035, z: 94.83}
-  m_LocalScale: {x: 5.8613377, y: 11, z: 1}
+  m_LocalScale: {x: 5.8653502, y: 11, z: 1}
   m_Children:
   - {fileID: 1865308969}
   m_Father: {fileID: 0}
@@ -7173,7 +7174,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1865308968}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 2, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1814630198}

@@ -133,7 +133,7 @@ namespace App {
         /// </summary>
         private void SpawnHand() {
             // TODO: Have this method attach the spawned hand to the guy, put it at a reasonable starting position, etc.
-            Hand h = Instantiate(handObject, handParent).GetComponent<Hand>();
+            Hand h = Instantiate(handObject, handParent).GetComponentInChildren<Hand>();
 
             h.Initialize(Random.Range(handSizeRange.x, handSizeRange.y), acceptableStrengthRange, perfectStrengthRange);
 
@@ -150,7 +150,7 @@ namespace App {
             }
 
             // TODO: Replace this with behavior to clean up a hand nicely.
-            if(hand) Destroy(hand.gameObject);
+            if(hand) Destroy(hand.GetComponentInParent<Arm>().gameObject);
         }
 
         /// <summary>
