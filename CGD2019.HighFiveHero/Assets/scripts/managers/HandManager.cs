@@ -159,6 +159,9 @@ namespace App {
         public void CleanupAllHands() {
             while(ActiveHands.Count > 0)
                 RemoveHand(ActiveHands[0]);
+
+            ActiveFives.Clear();
+            ActiveHands.Clear();
         }
 
         /// <summary>
@@ -177,7 +180,7 @@ namespace App {
                             newTouch = false;
                     }
 
-                    if (newTouch) {
+                    if (newTouch && t.phase == TouchPhase.Began) {
                         // Check if this touch was on a hand.
                         RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(t.position), t.position);
 
@@ -227,6 +230,7 @@ namespace App {
 
             // write the max delta to the high five object.
             five.MaxDelta = InputManager.Instance.MobilePlatform ? MathUtility.Map(Mathf.Clamp(maxDelta, 0, maximumRawStrength), 0, maximumRawStrength, parsedStrengthRange.x, parsedStrengthRange.y) : Mathf.Infinity;
+            UIManager.Instance.WriteDebugText(five.Hand.TargetStrength.ToString("n3") + " " + five.MaxDelta.ToString("n3"));
             ActiveFives.Add(five);
         }
 
@@ -261,7 +265,7 @@ namespace App {
             string description = success ? "" : scoreIndicatorFailureDescriptions[Random.Range(0, scoreIndicatorFailureDescriptions.Length)];
 
             Indicator i = Instantiate(indicatorObjects[1], origin.position, Quaternion.identity, handParent).GetComponent<Indicator>();
-            i.Initialize(count, description, false, success ? 0.15f : 0f);
+            i.Initialize(count, description, false, success ? 0.085f : 0f);
         }
 
         /// <summary>
