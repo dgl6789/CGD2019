@@ -45,6 +45,29 @@ namespace App {
             set { previousGameTime = value; }
         }
 
+        // Trig look up tables
+        private float[] sinLookUp = new float[360];
+        public float SinLookUp (int i)
+        {
+            if (i < 0)
+                i = 360 - (i % 360);
+            else if (i >= 360)
+                i %= 360;
+
+            return sinLookUp[i];
+        }
+        private float[] cosLookUp = new float[360];
+        public float CosLookUp(int i)
+        {
+            if (i < 0)
+                i = 360 - (i % 360);
+            else if (i >= 360)
+                i %= 360;
+
+            return cosLookUp[i];
+        }
+
+
         [Header("Scoring")]
 
         public int SuccessfulFiveScoreReward;
@@ -69,6 +92,8 @@ namespace App {
             if(this) {
                 ActiveHands = new List<Hand>();
                 ActiveFives = new List<HighFive>();
+
+                FillTrigLookupTables();
             }
         }
 
@@ -275,6 +300,18 @@ namespace App {
         public void SpawnRingIndicator(Transform origin) {
             Indicator i = Instantiate(indicatorObjects[2], origin.position, Quaternion.identity, handParent).GetComponent<Indicator>();
             i.Initialize(1);
+        }
+
+        /// <summary>
+        /// Fills trig lookup tables
+        /// </summary>
+        private void FillTrigLookupTables ()
+        {
+            for (int i = 0; i < 360; i++)
+            {
+                sinLookUp[i] = Mathf.Sin(i);
+                cosLookUp[i] = Mathf.Cos(i);
+            }
         }
     }
 

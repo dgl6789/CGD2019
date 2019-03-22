@@ -12,6 +12,7 @@ namespace App {
         float moveInterval;
         float timePassed;
         int prevSecond;
+        float armRadius;
 
         private float acceptableRange;
         private float perfectRange;
@@ -41,6 +42,14 @@ namespace App {
             // initialize movement variables
             orbitAngle = Random.Range(0, 359);
             moveInterval = Random.Range(1.5f, 3f);
+            prevSecond = 0;
+            timePassed = 0.0f;
+
+            //determine arm radius
+            float vertExtent = Camera.main.orthographicSize * 2f;
+            float horzExtent = vertExtent * (Screen.width / (float)Screen.height);
+
+            armRadius = (horzExtent / 2f) - (1f - Random.Range(0, 25) / 100f); //half screen width - padding
         }
 
         /// <summary>
@@ -64,9 +73,6 @@ namespace App {
             }
 
             Orbit();
-
-            //update previous second
-            prevSecond = (int)timePassed;
         }
 
         /// <summary>
@@ -74,7 +80,22 @@ namespace App {
         /// </summary>
         private void Jump()
         {
-            Debug.Log("Jumping");
+            if (timePassed - prevSecond >= moveInterval)
+            {
+                prevSecond = (int)timePassed;
+
+                //generate a new angle
+                int newAngle = Random.Range(0, 120) + 30;
+                if (Random.Range(0, 1) == 0)
+                    newAngle *= -1;
+
+                //find new position on arc
+                Vector3 newPos = new Vector3(HandManager.Instance.CosLookUp(newAngle), HandManager.Instance.SinLookUp(newAngle), 0.0f);
+                newPos *= armRadius;
+
+                //move hand to new location
+                
+            }
         }
 
         /// <summary>
