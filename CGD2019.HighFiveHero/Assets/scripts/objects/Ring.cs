@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using App.UI;
 using UnityEngine;
 
 namespace App {
@@ -51,6 +50,8 @@ namespace App {
         /// </summary>
         public void OnCollect() {
             RunManager.Instance.AddCurrency();
+
+            HandManager.Instance.SpawnRingIndicator(transform);
         }
     }
 }

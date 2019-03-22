@@ -125,8 +125,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1b16263bc1d86742b65c2ab7c5fadfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifetime: 1
-  upwardSpeed: 5
+  lifetime: 0.5
+  upwardSpeed: 3
   perfectDescriptionShakeAmount: 0
   countText: {fileID: 114976569545038918}
   descriptionText: {fileID: 3019914275441426063}
