@@ -63,19 +63,21 @@ namespace App {
 #endif
 
         private void RenderArm() {
-            List<Vector3> points = new List<Vector3>();
+            if (elbow && shoulder && wrist) {
+                List<Vector3> points = new List<Vector3>();
 
-            // Construct the list of points.
-            for (float ratio = 0; ratio <= 1; ratio += 1.0f / detail) {
-                points.Add(Vector2.Lerp(
-                    Vector2.Lerp(shoulder.position, elbow.position, ratio),
-                    Vector2.Lerp(elbow.position, wrist.position, ratio),
-                    ratio));
+                // Construct the list of points.
+                for (float ratio = 0; ratio <= 1; ratio += 1.0f / detail) {
+                    points.Add(Vector2.Lerp(
+                        Vector2.Lerp(shoulder.position, elbow.position, ratio),
+                        Vector2.Lerp(elbow.position, wrist.position, ratio),
+                        ratio));
+                }
+
+                // Apply it.
+                lineRenderer.positionCount = points.Count;
+                lineRenderer.SetPositions(points.ToArray());
             }
-
-            // Apply it.
-            lineRenderer.positionCount = points.Count;
-            lineRenderer.SetPositions(points.ToArray());
         }
 
         /// <summary>

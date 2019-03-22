@@ -203,7 +203,7 @@ Transform:
   m_Children:
   - {fileID: 8352357762204610374}
   - {fileID: 3600050463209766709}
-  - {fileID: 5554316993569790130}
+  - {fileID: 3950074576120738451}
   - {fileID: 6242687031961125888}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -224,9 +224,9 @@ MonoBehaviour:
   drawGizmos: 0
   shoulder: {fileID: 3600050463209766709}
   elbow: {fileID: 8352357762204610374}
-  wrist: {fileID: 5554316993569790130}
+  wrist: {fileID: 3950074576120738451}
   detail: 10
-  wristWidthModifier: 0
+  wristWidthModifier: 0.6
 --- !u!1 &9093891071769494191
 GameObject:
   m_ObjectHideFlags: 0
@@ -257,7 +257,7 @@ Transform:
   m_Father: {fileID: 7749128762477189595}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &5555943712490015500
+--- !u!1001 &3953935451128504621
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -282,15 +282,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4020630633370558, guid: 6675bdddc22e8fa47b4602f734dce33c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4020630633370558, guid: 6675bdddc22e8fa47b4602f734dce33c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4020630633370558, guid: 6675bdddc22e8fa47b4602f734dce33c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4020630633370558, guid: 6675bdddc22e8fa47b4602f734dce33c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -312,11 +312,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 212387873261928244, guid: 6675bdddc22e8fa47b4602f734dce33c,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6675bdddc22e8fa47b4602f734dce33c, type: 3}
---- !u!4 &5554316993569790130 stripped
+--- !u!4 &3950074576120738451 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4020630633370558, guid: 6675bdddc22e8fa47b4602f734dce33c,
     type: 3}
-  m_PrefabInstance: {fileID: 5555943712490015500}
+  m_PrefabInstance: {fileID: 3953935451128504621}
   m_PrefabAsset: {fileID: 0}
