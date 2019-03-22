@@ -5,13 +5,12 @@ namespace App {
     enum HandMovement { OSCILATE, JUMP };
 
     public class Hand : MonoBehaviour {
-
+        
         private float acceptableRange;
         private float perfectRange;
+
         private float targetStrength;
-        public float TargetStrength {
-            get { return targetStrength; }
-        }
+        public float TargetStrength { get { return targetStrength; } }
 
         /// <summary>
         /// Initialize the hand object.
@@ -19,12 +18,14 @@ namespace App {
         /// <param name="size">Size to scale the hand by.</param>
         /// <param name="acceptableRange">Range (+-) of strength of an input to accept as a success.</param>
         public void Initialize(float size, float acceptableRange, float perfectRange) {
+            // Rendering setup
             transform.localScale = new Vector2(size, size);
+            GetComponentInParent<Arm>().AdjustWidthForHand(size);
 
+            // Strength parameter setup
             this.acceptableRange = acceptableRange;
             this.perfectRange = perfectRange;
 
-            // Parse the target strength from the given size.
             targetStrength = HandManager.Instance.HandSizetoTargetStrength(size);
         }
 
