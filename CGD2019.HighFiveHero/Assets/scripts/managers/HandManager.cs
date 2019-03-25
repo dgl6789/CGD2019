@@ -49,24 +49,17 @@ namespace App {
         private float[] sinLookUp = new float[360];
         public float SinLookUp (int i)
         {
-            if (i < 0)
-                i = 360 - (i % 360);
-            else if (i >= 360)
-                i %= 360;
+            i %= 360;
 
             return sinLookUp[i];
         }
         private float[] cosLookUp = new float[360];
         public float CosLookUp(int i)
         {
-            if (i < 0)
-                i = 360 - (i % 360);
-            else if (i >= 360)
-                i %= 360;
+            i %= 360;
 
             return cosLookUp[i];
         }
-
 
         [Header("Scoring")]
 
@@ -106,16 +99,25 @@ namespace App {
                 #region HAND SPAWNING
 
                 // TODO: Actual hand spawning code goes here (Interval only -- positioning, etc. should be in SpawnHand()).
-                //if (ActiveHands.Count == 0) { SpawnHand(); }
+                if (ActiveHands.Count == 0) { SpawnHand(); }
 
                 //spawns a hand every second
-                if (RunManager.Instance.TimePassed(previousGameTime))
+                //if (RunManager.Instance.TimePassed(previousGameTime))
+                //{
+                //    previousGameTime = RunManager.Instance.CurrentGameTimer;
+
+                //    Debug.Log(previousGameTime);
+
+                //    SpawnHand();
+                //}
+
+                #endregion
+
+                #region HAND MOVEMENT
+
+                foreach (Hand h in ActiveHands)
                 {
-                    previousGameTime = RunManager.Instance.CurrentGameTimer;
-
-                    Debug.Log(previousGameTime);
-
-                    SpawnHand();
+                    h.Move();
                 }
 
                 #endregion

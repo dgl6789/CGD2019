@@ -41,7 +41,8 @@ namespace App {
 
             // initialize movement variables
             orbitAngle = Random.Range(0, 359);
-            moveInterval = Random.Range(1.5f, 3f);
+            //moveInterval = Random.Range(1.5f, 3f);
+            moveInterval = 1.0f;
             prevSecond = 0;
             timePassed = 0.0f;
 
@@ -61,18 +62,17 @@ namespace App {
             float interval = Time.deltaTime;
             timePassed += interval;
 
+            //switch (movementType)
+            //{
+            //    case HandMovement.OSCILLATE:
+            //        Oscillate();
+            //        break;
+            //    case HandMovement.JUMP:
+            //        Jump();
+            //        break;
+            //}
 
-            switch (movementType)
-            {
-                case HandMovement.OSCILLATE:
-                    Oscillate();
-                    break;
-                case HandMovement.JUMP:
-                    Jump();
-                    break;
-            }
-
-            Orbit();
+            //Orbit();
         }
 
         /// <summary>
@@ -85,16 +85,16 @@ namespace App {
                 prevSecond = (int)timePassed;
 
                 //generate a new angle
-                int newAngle = Random.Range(0, 120) + 30;
-                if (Random.Range(0, 1) == 0)
-                    newAngle *= -1;
+                int newAngle = Random.Range(0, 360);
 
                 //find new position on arc
-                Vector3 newPos = new Vector3(HandManager.Instance.CosLookUp(newAngle), HandManager.Instance.SinLookUp(newAngle), 0.0f);
-                newPos *= armRadius;
+                Vector3 handPos = new Vector3(HandManager.Instance.CosLookUp(newAngle), HandManager.Instance.SinLookUp(newAngle), 0.0f);
+                handPos *= armRadius;
+
+                Vector3 elbowPos = new Vector3(handPos.x, 0.6f * handPos.y, 0.0f);
 
                 //move hand to new location
-                
+                GetComponentInParent<Arm>().AdjustJointPositions(elbowPos, handPos);
             }
         }
 
