@@ -8,11 +8,13 @@ namespace App {
 
         private HandMovement movementType;
 
-        float orbitAngle;
+        int orbitAngle;
         float moveInterval;
         float timePassed;
         int prevSecond;
         float armRadius;
+        bool moveUp;
+        int oscillateAngle;
 
         private float acceptableRange;
         private float perfectRange;
@@ -45,6 +47,8 @@ namespace App {
             moveInterval = 1.0f;
             prevSecond = 0;
             timePassed = 0.0f;
+            moveUp = (Random.Range(0, 2) == 0);
+            oscillateAngle = Random.Range(0, 359);
 
             //determine arm radius
             float vertExtent = Camera.main.orthographicSize * 2f;
@@ -61,6 +65,8 @@ namespace App {
             //get time
             float interval = Time.deltaTime;
             timePassed += interval;
+
+            Oscillate();
 
             //switch (movementType)
             //{
@@ -80,6 +86,7 @@ namespace App {
         /// </summary>
         private void Jump()
         {
+            //jump after the designated time interval has passed
             if (timePassed - prevSecond >= moveInterval)
             {
                 prevSecond = (int)timePassed;
@@ -87,14 +94,8 @@ namespace App {
                 //generate a new angle
                 int newAngle = Random.Range(0, 360);
 
-                //find new position on arc
-                Vector3 handPos = new Vector3(HandManager.Instance.CosLookUp(newAngle), HandManager.Instance.SinLookUp(newAngle), 0.0f);
-                handPos *= armRadius;
-
-                Vector3 elbowPos = new Vector3(handPos.x, 0.6f * handPos.y, 0.0f);
-
-                //move hand to new location
-                GetComponentInParent<Arm>().AdjustJointPositions(elbowPos, handPos);
+                //Move hand to new position
+                MoveHand(new Vector3(HandManager.Instance.CosLookUp(newAngle), HandManager.Instance.SinLookUp(newAngle), 0.0f));
             }
         }
 
@@ -103,7 +104,25 @@ namespace App {
         /// </summary>
         private void Oscillate()
         {
-            Debug.Log("Oscillating");
+            if (moveUp)
+                oscillateAngle++;
+            else
+                oscillateAngle--;
+
+            Vector3 handPos = new Vector3(HandManager.Instance.CosLookUp(oscillateAngle), HandManager.Instance.SinLookUp(oscillateAngle), 0.0f);
+
+            Debug.Log(oscillateAngle + " hand at " + handPos);
+
+            //Move hand to new position
+            MoveHand(handPos);
+
+            //reverse direction after designated time interval has passed
+            if (timePassed - prevSecond >= moveInterval)
+            {
+                prevSecond = (int)timePassed;
+
+                moveUp = !moveUp;
+            }
         }
 
         /// <summary>
@@ -112,6 +131,16 @@ namespace App {
         private void Orbit()
         {
             Debug.Log("Orbitting");
+        }
+
+        private void MoveHand(Vector3 newPos)
+        {
+            newPos *= armRadius;
+
+            Vector3 elbowPos = new Vector3(newPos.x, 0.6f * newPos.y, 0.0f);
+
+            //move hand to new location
+            GetComponentInParent<Arm>().AdjustJointPositions(elbowPos, newPos);
         }
 
         /// <summary>
