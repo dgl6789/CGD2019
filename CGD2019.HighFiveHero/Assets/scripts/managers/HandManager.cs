@@ -51,12 +51,16 @@ namespace App {
         {
             i %= 360;
 
+            if (i < 0) return 0;
+
             return sinLookUp[i];
         }
         private float[] cosLookUp = new float[360];
         public float CosLookUp(int i)
         {
             i %= 360;
+
+            if (i < 0) return 0;
 
             return cosLookUp[i];
         }
