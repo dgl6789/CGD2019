@@ -2,19 +2,18 @@
 using UnityEngine;
 
 namespace App {
-    public enum HandMovement { OSCILLATE, JUMP };
+    public enum HandMovement { RANDOM, OSCILLATE, JUMP };
 
     public class Hand : MonoBehaviour {
 
-        private HandMovement movementType;
+        [SerializeField] HandMovement movementType;
 
         int orbitAngle;
-        float moveInterval;
+        int moveInterval;
         float timePassed;
         bool intervalPassed;
         int prevSecond;
         float armRadius;
-        bool moveUp;
         int oscillateAngleStart;
         int oscillateAngleEnd;
 
@@ -30,7 +29,7 @@ namespace App {
         /// <param name="size">Size to scale the hand by.</param>
         /// <param name="acceptableRange">Range (+-) of strength of an input to accept as a success.</param>
         /// <param name="movementType">Movement type. Defaults to oscillating</param>
-        public void Initialize(float size, float acceptableRange, float perfectRange, HandMovement movementType = HandMovement.OSCILLATE) {
+        public void Initialize(float size, float acceptableRange, float perfectRange, HandMovement movementType = HandMovement.RANDOM) {
             //Rendering Setup
             transform.localScale = new Vector2(size, size);
             GetComponentInParent<Arm>().AdjustWidthForHand(size);
@@ -40,21 +39,39 @@ namespace App {
             this.perfectRange = perfectRange;
 
             targetStrength = HandManager.Instance.HandSizetoTargetStrength(size);
+            
+            if (movementType == HandMovement.RANDOM)
+            {
+                if (Random.Range(0, 4) == 0)
+                    this.movementType = HandMovement.JUMP;
+                else
+                    this.movementType = HandMovement.OSCILLATE;
+            }
+            else
+                this.movementType = movementType;
 
-            this.movementType = movementType;
-
-            // initialize movement variables
-            orbitAngle = Random.Range(0, 359);
-            //moveInterval = Random.Range(1.5f, 3f);
-            moveInterval = 1.0f;
+            // initialize time variables
             prevSecond = 0;
             timePassed = 0.0f;
-            moveUp = (Random.Range(0, 2) == 0);
-            oscillateAngleStart = Random.Range(0, 359);
-            if (moveUp)
-                oscillateAngleEnd = oscillateAngleStart - 120;
-            else
-                oscillateAngleEnd = oscillateAngleStart + 120;
+
+            //initialize movement variables
+            orbitAngle = Random.Range(0, 360);
+
+            switch (this.movementType)
+            {
+                case HandMovement.OSCILLATE:
+                    moveInterval = Random.Range(1, 5);
+                    oscillateAngleStart = Random.Range(0, 360);
+                    int deltaAngle = 120;
+                    if (Random.Range(0, 2) == 0)
+                        oscillateAngleEnd = oscillateAngleStart - deltaAngle;
+                    else
+                        oscillateAngleEnd = oscillateAngleStart + deltaAngle;
+                    break;
+                case HandMovement.JUMP:
+                    moveInterval = 1;
+                    break;
+            }
 
             //determine arm radius
             float vertExtent = Camera.main.orthographicSize * 2f;
@@ -76,24 +93,25 @@ namespace App {
 
             //check if the movement interval has passed
             if (timePassed - prevSecond >= moveInterval)
-            {
-                prevSecond = (int)timePassed;
                 intervalPassed = true;
+
+            switch (movementType)
+            {
+                case HandMovement.OSCILLATE:
+                    Oscillate();
+                    break;
+                case HandMovement.JUMP:
+                    Jump();
+                    break;
+                default:
+                    Debug.Log(movementType + " isn't an accepted movement type");
+                    break;
             }
 
-            Oscillate();
-
-            //switch (movementType)
-            //{
-            //    case HandMovement.OSCILLATE:
-            //        Oscillate();
-            //        break;
-            //    case HandMovement.JUMP:
-            //        Jump();
-            //        break;
-            //}
-
             //Orbit();
+
+            if (intervalPassed)
+                prevSecond = (int)timePassed;
         }
 
         /// <summary>
@@ -122,15 +140,15 @@ namespace App {
                 oscillateAngleEnd, 
                 (timePassed - prevSecond) / moveInterval));
 
-            Debug.Log("Lerping from " + oscillateAngleStart + " to " + oscillateAngleEnd + " resulting to " + targetAngle + " degrees");
-
             //Move hand to new position
             MoveHand(targetAngle);
 
             //reverse direction after designated time interval has passed
             if (intervalPassed)
             {
-                moveUp = !moveUp;
+                int temp = oscillateAngleEnd;
+                oscillateAngleEnd = oscillateAngleStart;
+                oscillateAngleStart = temp;
             }
         }
 
@@ -150,6 +168,7 @@ namespace App {
         {
             //find hand position
             Vector3 handPos = new Vector3(HandManager.Instance.CosLookUp(armAngle), HandManager.Instance.SinLookUp(armAngle), 0.0f);
+
             handPos *= armRadius;
 
             //find elbow position

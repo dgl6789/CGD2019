@@ -47,11 +47,12 @@ namespace App {
 
         // Trig look up tables
         private float[] sinLookUp = new float[360];
-        public float SinLookUp (int i)
+        public float SinLookUp(int i)
         {
             i %= 360;
 
-            if (i < 0) return 0;
+            if (i < 0)
+                i = 360 + i;
 
             return sinLookUp[i];
         }
@@ -60,8 +61,9 @@ namespace App {
         {
             i %= 360;
 
-            if (i < 0) return 0;
-
+            if (i < 0)
+                i = 360 + i;
+            
             return cosLookUp[i];
         }
 
@@ -103,17 +105,15 @@ namespace App {
                 #region HAND SPAWNING
 
                 // TODO: Actual hand spawning code goes here (Interval only -- positioning, etc. should be in SpawnHand()).
-                if (ActiveHands.Count == 0) { SpawnHand(); }
+                //if (ActiveHands.Count == 0) { SpawnHand(); SpawnHand(); SpawnHand(); }
 
                 //spawns a hand every second
-                //if (RunManager.Instance.TimePassed(previousGameTime))
-                //{
-                //    previousGameTime = RunManager.Instance.CurrentGameTimer;
+                if (RunManager.Instance.TimePassed(previousGameTime))
+                {
+                    previousGameTime = RunManager.Instance.CurrentGameTimer;
 
-                //    Debug.Log(previousGameTime);
-
-                //    SpawnHand();
-                //}
+                    SpawnHand();
+                }
 
                 #endregion
 
@@ -315,8 +315,10 @@ namespace App {
         {
             for (int i = 0; i < 360; i++)
             {
-                sinLookUp[i] = Mathf.Sin(i);
-                cosLookUp[i] = Mathf.Cos(i);
+                float r = i * Mathf.PI / 180;
+
+                cosLookUp[i] = Mathf.Cos(r);
+                sinLookUp[i] = Mathf.Sin(r);
             }
         }
     }
