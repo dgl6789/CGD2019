@@ -55,7 +55,8 @@ namespace App {
             
             if (movementType == HandMovement.RANDOM)
             {
-                if (Random.Range(0, 4) == 0)
+                //fifty percent chance to become oscillating or jumping
+                if (Random.Range(0, 2) == 0)
                     targetMovement = HandMovement.JUMP;
                 else
                     targetMovement = HandMovement.OSCILLATE;
@@ -89,7 +90,7 @@ namespace App {
                     currentAngle = angleStart;
                     break;
                 case HandMovement.JUMP:
-                    moveInterval = 1.0f;
+                    moveInterval = Random.Range(0.0f, 1.0f) + 0.5f;
                     
                     currentAngle = angleEnd = angleStart = Random.Range(0, 360);
                     break;
