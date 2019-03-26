@@ -21,6 +21,9 @@ namespace App {
         [SerializeField] int detail;
         [SerializeField] float wristWidthModifier;
 
+        //properties
+        public Transform Shoulder { get { return shoulder; } }
+
         /// <summary>
         /// Adjust the size of the wrist according to the size of the attached hand.
         /// </summary>

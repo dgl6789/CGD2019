@@ -36,6 +36,7 @@ namespace App {
         // List of hands/fives that still need input checking.
         private List<Hand> ActiveHands;
         private List<HighFive> ActiveFives;
+        private List<Hand> DeadHands;
 
         // Previous timestamp to regulate spawning
         private float previousGameTime = 0.0f;
@@ -91,6 +92,7 @@ namespace App {
             if(this) {
                 ActiveHands = new List<Hand>();
                 ActiveFives = new List<HighFive>();
+                DeadHands = new List<Hand>();
 
                 FillTrigLookupTables();
             }
@@ -105,10 +107,10 @@ namespace App {
                 #region HAND SPAWNING
 
                 // TODO: Actual hand spawning code goes here (Interval only -- positioning, etc. should be in SpawnHand()).
-                //if (ActiveHands.Count == 0) { SpawnHand(); SpawnHand(); SpawnHand(); }
+                if (ActiveHands.Count == 0) { SpawnHand(); SpawnHand(); }
 
                 //spawns a hand every second
-                if (RunManager.Instance.TimePassed(previousGameTime))
+                if (RunManager.Instance.TimePassed(previousGameTime, 3))
                 {
                     previousGameTime = RunManager.Instance.CurrentGameTimer;
 
@@ -121,7 +123,7 @@ namespace App {
 
                 foreach (Hand h in ActiveHands)
                 {
-                    h.Move();
+                    h.DoUpdateStep();
                 }
 
                 #endregion
@@ -133,7 +135,7 @@ namespace App {
                 List<HighFive> resolvedFives = new List<HighFive>();
 
                 foreach (HighFive five in ActiveFives) {
-                    if (five.Hand != null) {
+                    if (five.Hand != null && five.Hand.isActive) {
                         if (five.MaxDelta == Mathf.Infinity) {
                             // Infinite delta means an automatic normal success (testing on desktop only).
                             five.Hand.OnSuccessfulFive(false);
@@ -150,9 +152,16 @@ namespace App {
                 }
 
                 // Remove resolved fives from the active fives list.
-                foreach (HighFive f in resolvedFives) {
-                    RemoveHand(f.Hand);
+                foreach (HighFive f in resolvedFives)
+                {
+                    f.Hand.isActive = false;
                     ActiveFives.Remove(f);
+                }
+
+                //remove dead hands from the game
+                foreach (Hand h in DeadHands)
+                {
+                    RemoveHand(h);
                 }
 
                 #endregion
@@ -162,13 +171,32 @@ namespace App {
         /// <summary>
         /// Spawn a hand object.
         /// </summary>
-        private void SpawnHand() {
+        /// <param name="movementType">Movement type for hand. Defaults to random selection</param>
+        private void SpawnHand(HandMovement movementType = HandMovement.RANDOM) {
             // TODO: Have this method attach the spawned hand to the guy, put it at a reasonable starting position, etc.
             Hand h = Instantiate(handObject, handParent).GetComponentInChildren<Hand>();
 
-            h.Initialize(Random.Range(handSizeRange.x, handSizeRange.y), acceptableStrengthRange, perfectStrengthRange);
+            h.Initialize(Random.Range(handSizeRange.x, handSizeRange.y), acceptableStrengthRange, perfectStrengthRange, movementType);
 
             ActiveHands.Add(h);
+        }
+
+        /// <summary>
+        /// Handles spawning of hands after removal of another hand
+        /// </summary>
+        /// <param name="movemenType"></param>
+        private void ReplaceHand(HandMovement movemenType = HandMovement.RANDOM)
+        {
+            //replace the hand
+            SpawnHand(movemenType);
+
+            //every ten hands split in half
+            if (Random.Range(0,10) == 0)
+            {
+                SpawnHand(movemenType);
+
+                Debug.Log("split hand in two");
+            }
         }
 
         /// <summary>
@@ -185,14 +213,25 @@ namespace App {
         }
 
         /// <summary>
+        /// Adds a hand to the list of hands to be removed
+        /// </summary>
+        /// <param name="hand">Hand to be removed</param>
+        public void KillHand(Hand hand)
+        {
+            DeadHands.Add(hand);
+        }
+
+        /// <summary>
         /// Cleanup all the active hands (used on game over).
         /// </summary>
-        public void CleanupAllHands() {
-            while(ActiveHands.Count > 0)
+        public void CleanupAllHands()
+        {
+            while (ActiveHands.Count > 0)
                 RemoveHand(ActiveHands[0]);
 
             ActiveFives.Clear();
             ActiveHands.Clear();
+            DeadHands.Clear();
         }
 
         /// <summary>

@@ -6,16 +6,29 @@ namespace App {
 
     public class Hand : MonoBehaviour {
 
-        [SerializeField] HandMovement movementType;
+        //movement type
+        private HandMovement movementType;
+        public HandMovement MovementType { get { return movementType; } }
 
-        int orbitAngle;
-        int moveInterval;
-        float timePassed;
-        bool intervalPassed;
-        int prevSecond;
-        float armRadius;
-        int oscillateAngleStart;
-        int oscillateAngleEnd;
+        //in/out variables
+        public bool isActive = false;
+        private bool fullyGrown = false;
+        private float targetSize;
+        private float minSize = 0.1f;
+
+        //time tracking variables
+        private float moveInterval;
+        private float transitionInterval;
+        private float timePassed;
+        private bool intervalPassed;
+        private float prevSecond;
+
+        //movement variables
+        private float armRadius;
+        private int orbitAngle;
+        private int oscillateAngleStart;
+        private int oscillateAngleEnd;
+        private int currentAngle;
 
         private float acceptableRange;
         private float perfectRange;
@@ -33,6 +46,7 @@ namespace App {
             //Rendering Setup
             transform.localScale = new Vector2(size, size);
             GetComponentInParent<Arm>().AdjustWidthForHand(size);
+            targetSize = size;
 
             // Strength parameter setup
             this.acceptableRange = acceptableRange;
@@ -48,28 +62,37 @@ namespace App {
                     this.movementType = HandMovement.OSCILLATE;
             }
             else
+            {
                 this.movementType = movementType;
+            }
 
             // initialize time variables
-            prevSecond = 0;
+            prevSecond = 0.0f;
             timePassed = 0.0f;
+            transitionInterval = 0.5f;
 
             //initialize movement variables
             orbitAngle = Random.Range(0, 360);
-
             switch (this.movementType)
             {
                 case HandMovement.OSCILLATE:
-                    moveInterval = Random.Range(1, 5);
+                    moveInterval = Random.Range(1.0f, 5.0f);
                     oscillateAngleStart = Random.Range(0, 360);
+
                     int deltaAngle = 120;
+
                     if (Random.Range(0, 2) == 0)
                         oscillateAngleEnd = oscillateAngleStart - deltaAngle;
                     else
                         oscillateAngleEnd = oscillateAngleStart + deltaAngle;
+
+                    currentAngle = oscillateAngleStart;
+
                     break;
                 case HandMovement.JUMP:
-                    moveInterval = 1;
+                    moveInterval = 1.0f;
+
+                    currentAngle = Random.Range(0, 360);
                     break;
             }
 
@@ -81,20 +104,34 @@ namespace App {
         }
 
         /// <summary>
-        /// Move the hand along its individual path, determined by the movement type
+        /// Updates the hand according to its internal behavior
         /// </summary>
-        public void Move()
+        public void DoUpdateStep()
         {
             intervalPassed = false;
 
             //get time
-            float interval = Time.deltaTime;
-            timePassed += interval;
+            timePassed += Time.deltaTime;
 
             //check if the movement interval has passed
             if (timePassed - prevSecond >= moveInterval)
                 intervalPassed = true;
 
+            if (isActive) //move the hand if it's still active
+                Move();
+            else //if the hand is inactive, grow it to size or shrink it accordingly
+                Transition();
+
+            //reset interval if it passed
+            if (intervalPassed)
+                prevSecond = timePassed;
+        }
+
+        /// <summary>
+        /// Move the hand along its individual path, determined by the movement type
+        /// </summary>
+        public void Move()
+        {
             switch (movementType)
             {
                 case HandMovement.OSCILLATE:
@@ -109,9 +146,6 @@ namespace App {
             }
 
             //Orbit();
-
-            if (intervalPassed)
-                prevSecond = (int)timePassed;
         }
 
         /// <summary>
@@ -123,10 +157,10 @@ namespace App {
             if (intervalPassed)
             {
                 //generate a new angle
-                int newAngle = Random.Range(0, 360);
+                currentAngle = Random.Range(0, 360);
 
                 //Move hand to new position
-                MoveHand(newAngle);
+                MoveHand(currentAngle);
             }
         }
 
@@ -135,13 +169,13 @@ namespace App {
         /// </summary>
         private void Oscillate()
         {
-            int targetAngle = Mathf.RoundToInt(Mathf.LerpAngle(
+            int currentAngle = Mathf.RoundToInt(Mathf.LerpAngle(
                 oscillateAngleStart, 
                 oscillateAngleEnd, 
                 (timePassed - prevSecond) / moveInterval));
 
             //Move hand to new position
-            MoveHand(targetAngle);
+            MoveHand(currentAngle);
 
             //reverse direction after designated time interval has passed
             if (intervalPassed)
@@ -157,25 +191,63 @@ namespace App {
         /// </summary>
         private void Orbit()
         {
-            Debug.Log("Orbitting");
+            Debug.Log("Orbiting");
         }
 
         /// <summary>
         /// Moves hand to a given position and adjusts elbow position
         /// </summary>
         /// <param name="newPos"> position to move the hand to</param>
-        private void MoveHand(int armAngle)
+        private void MoveHand(int armAngle, float radius = -1.0f)
         {
             //find hand position
             Vector3 handPos = new Vector3(HandManager.Instance.CosLookUp(armAngle), HandManager.Instance.SinLookUp(armAngle), 0.0f);
 
-            handPos *= armRadius;
+            if (radius == -1.0f)
+                handPos *= armRadius;
+            else
+                handPos *= radius;
 
             //find elbow position
             Vector3 elbowPos = new Vector3(handPos.x, 0.6f * handPos.y, 0.0f);
 
             //move hand to new location
             GetComponentInParent<Arm>().AdjustJointPositions(elbowPos, handPos);
+        }
+
+        /// <summary>
+        /// Handles hand growth and destruction
+        /// </summary>
+        public void Transition ()
+        {
+            float size = 0.1f;
+            float radius = armRadius;
+            float t = (timePassed - prevSecond) / transitionInterval;
+
+            if (fullyGrown) //if fully grown, shrink
+            {
+                size = Mathf.Lerp(targetSize, minSize, t);
+                radius = Mathf.Lerp(armRadius, minSize, t);
+
+                if ((timePassed - prevSecond) >= transitionInterval) //delete if shrunk completely
+                    HandManager.Instance.KillHand(this);
+            }
+            else //if growing, then grow
+            {
+                size = Mathf.Lerp(minSize, targetSize, t);
+                radius = Mathf.Lerp(minSize, armRadius, t);
+
+                if ((timePassed - prevSecond) >= transitionInterval) //if growth is complete, start moving
+                {
+                    fullyGrown = true;
+                    isActive = true;
+                }
+            }
+
+            transform.localScale = new Vector2(size, size);
+            GetComponentInParent<Arm>().AdjustWidthForHand(size);
+
+            MoveHand(currentAngle, radius);
         }
 
         /// <summary>
