@@ -25,8 +25,8 @@ namespace App {
         //movement variables
         private float armRadius;
         private int orbitAngle;
-        private int oscillateAngleStart;
-        private int oscillateAngleEnd;
+        private int angleStart;
+        private int angleEnd;
         private int currentAngle;
 
         private float acceptableRange;
@@ -77,22 +77,21 @@ namespace App {
             {
                 case HandMovement.OSCILLATE:
                     moveInterval = Random.Range(1.0f, 5.0f);
-                    oscillateAngleStart = Random.Range(0, 360);
+                    angleStart = Random.Range(0, 360);
 
                     int deltaAngle = 120;
 
                     if (Random.Range(0, 2) == 0)
-                        oscillateAngleEnd = oscillateAngleStart - deltaAngle;
+                        angleEnd = angleStart - deltaAngle;
                     else
-                        oscillateAngleEnd = oscillateAngleStart + deltaAngle;
+                        angleEnd = angleStart + deltaAngle;
 
-                    currentAngle = oscillateAngleStart;
-
+                    currentAngle = angleStart;
                     break;
                 case HandMovement.JUMP:
                     moveInterval = 1.0f;
-
-                    currentAngle = Random.Range(0, 360);
+                    
+                    currentAngle = angleEnd = angleStart = Random.Range(0, 360);
                     break;
             }
 
@@ -153,15 +152,21 @@ namespace App {
         /// </summary>
         private void Jump()
         {
-            //jump after the designated time interval has passed
+            //generate a new jump angle when the interval is over
             if (intervalPassed)
             {
-                //generate a new angle
-                currentAngle = Random.Range(0, 360);
-
-                //Move hand to new position
-                MoveHand(currentAngle);
+                angleStart = angleEnd;
+                angleEnd = Random.Range(0, 360);
             }
+
+            if (timePassed / transitionInterval < 1.0f)
+                currentAngle = Mathf.RoundToInt(Mathf.LerpAngle(
+                    angleStart,
+                    angleEnd,
+                    timePassed / transitionInterval));
+
+            //Move hand to new position
+            MoveHand(currentAngle);
         }
 
         /// <summary>
@@ -169,9 +174,9 @@ namespace App {
         /// </summary>
         private void Oscillate()
         {
-            int currentAngle = Mathf.RoundToInt(Mathf.LerpAngle(
-                oscillateAngleStart, 
-                oscillateAngleEnd, 
+            currentAngle = Mathf.RoundToInt(Mathf.LerpAngle(
+                angleStart, 
+                angleEnd, 
                 timePassed / moveInterval));
 
             //Move hand to new position
@@ -180,9 +185,9 @@ namespace App {
             //reverse direction after designated time interval has passed
             if (intervalPassed)
             {
-                int temp = oscillateAngleEnd;
-                oscillateAngleEnd = oscillateAngleStart;
-                oscillateAngleStart = temp;
+                int temp = angleEnd;
+                angleEnd = angleStart;
+                angleStart = temp;
             }
         }
 
@@ -247,7 +252,8 @@ namespace App {
         /// <summary>
         /// Moves hand to a given position and adjusts elbow position
         /// </summary>
-        /// <param name="newPos"> position to move the hand to</param>
+        /// <param name="armAngle">angle to move the hand to</param>
+        /// <param name="radius">distance from the shoulder to position the hand</param>
         private void MoveHand(int armAngle, float radius = -1.0f)
         {
             //find hand position
