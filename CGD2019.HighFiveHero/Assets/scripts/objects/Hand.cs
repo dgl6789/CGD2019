@@ -2,17 +2,17 @@
 using UnityEngine;
 
 namespace App {
-    public enum HandMovement { RANDOM, OSCILLATE, JUMP };
+    public enum HandMovement { RANDOM, GROW, SHRINK, OSCILLATE, JUMP };
 
     public class Hand : MonoBehaviour {
 
         //movement type
+        private HandMovement targetMovement;
         private HandMovement movementType;
         public HandMovement MovementType { get { return movementType; } }
+        public bool IsActive() { return (movementType == HandMovement.OSCILLATE || movementType == HandMovement.JUMP); }
 
         //in/out variables
-        public bool isActive = false;
-        private bool fullyGrown = false;
         private float targetSize;
         private float minSize = 0.1f;
 
@@ -21,7 +21,6 @@ namespace App {
         private float transitionInterval;
         private float timePassed;
         private bool intervalPassed;
-        private float prevSecond;
 
         //movement variables
         private float armRadius;
@@ -57,23 +56,24 @@ namespace App {
             if (movementType == HandMovement.RANDOM)
             {
                 if (Random.Range(0, 4) == 0)
-                    this.movementType = HandMovement.JUMP;
+                    targetMovement = HandMovement.JUMP;
                 else
-                    this.movementType = HandMovement.OSCILLATE;
+                    targetMovement = HandMovement.OSCILLATE;
             }
             else
             {
-                this.movementType = movementType;
+                targetMovement = movementType;
             }
 
+            this.movementType = HandMovement.GROW;
+
             // initialize time variables
-            prevSecond = 0.0f;
             timePassed = 0.0f;
             transitionInterval = 0.5f;
 
             //initialize movement variables
             orbitAngle = Random.Range(0, 360);
-            switch (this.movementType)
+            switch (targetMovement)
             {
                 case HandMovement.OSCILLATE:
                     moveInterval = Random.Range(1.0f, 5.0f);
@@ -113,25 +113,15 @@ namespace App {
             //get time
             timePassed += Time.deltaTime;
 
+            //get correct interval
+            float thisInterval = moveInterval;
+            if (movementType == HandMovement.GROW || movementType == HandMovement.SHRINK)
+                thisInterval = transitionInterval;
+
             //check if the movement interval has passed
-            if (timePassed - prevSecond >= moveInterval)
+            if (timePassed >= thisInterval)
                 intervalPassed = true;
 
-            if (isActive) //move the hand if it's still active
-                Move();
-            else //if the hand is inactive, grow it to size or shrink it accordingly
-                Transition();
-
-            //reset interval if it passed
-            if (intervalPassed)
-                prevSecond = timePassed;
-        }
-
-        /// <summary>
-        /// Move the hand along its individual path, determined by the movement type
-        /// </summary>
-        public void Move()
-        {
             switch (movementType)
             {
                 case HandMovement.OSCILLATE:
@@ -140,12 +130,22 @@ namespace App {
                 case HandMovement.JUMP:
                     Jump();
                     break;
+                case HandMovement.GROW:
+                    Grow();
+                    break;
+                case HandMovement.SHRINK:
+                    Shrink();
+                    break;
                 default:
                     Debug.Log(movementType + " isn't an accepted movement type");
                     break;
             }
 
             //Orbit();
+
+            //reset interval if it passed
+            if (intervalPassed)
+                timePassed = 0.0f;
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace App {
             int currentAngle = Mathf.RoundToInt(Mathf.LerpAngle(
                 oscillateAngleStart, 
                 oscillateAngleEnd, 
-                (timePassed - prevSecond) / moveInterval));
+                timePassed / moveInterval));
 
             //Move hand to new position
             MoveHand(currentAngle);
@@ -192,6 +192,56 @@ namespace App {
         private void Orbit()
         {
             Debug.Log("Orbiting");
+        }
+
+        /// <summary>
+        /// grow hand into existence
+        /// </summary>
+        private void Grow()
+        {
+            float size = 0.1f;
+            float radius = armRadius;
+            float t = timePassed / transitionInterval;
+
+            //lerp scale and position
+            size = Mathf.Lerp(minSize, targetSize, t);
+            radius = Mathf.Lerp(minSize, armRadius, t);
+
+            //start moving if growth is complete
+            if (intervalPassed)
+                ChangeMovementType(targetMovement);
+
+            //adjust scale
+            transform.localScale = new Vector2(size, size);
+            GetComponentInParent<Arm>().AdjustWidthForHand(size);
+
+            //move hand to new position
+            MoveHand(currentAngle, radius);
+        }
+
+        /// <summary>
+        /// shrink hand out of existence
+        /// </summary>
+        private void Shrink ()
+        {
+            float size = 0.1f;
+            float radius = armRadius;
+            float t = timePassed / transitionInterval;
+
+            //lerp scale and position
+            size = Mathf.Lerp(targetSize, minSize, t);
+            radius = Mathf.Lerp(armRadius, minSize, t);
+
+            //mark hand for removal if completed
+            if (intervalPassed)
+                HandManager.Instance.KillHand(this);
+
+            //adjust scale
+            transform.localScale = new Vector2(size, size);
+            GetComponentInParent<Arm>().AdjustWidthForHand(size);
+
+            //move hand to new position
+            MoveHand(currentAngle, radius);
         }
 
         /// <summary>
@@ -216,38 +266,14 @@ namespace App {
         }
 
         /// <summary>
-        /// Handles hand growth and destruction
+        /// changes movement type and resets timer
         /// </summary>
-        public void Transition ()
+        /// <param name="newMovement"></param>
+        private void ChangeMovementType (HandMovement newMovement)
         {
-            float size = 0.1f;
-            float radius = armRadius;
-            float t = (timePassed - prevSecond) / transitionInterval;
+            timePassed = 0.0f;
 
-            if (fullyGrown) //if fully grown, shrink
-            {
-                size = Mathf.Lerp(targetSize, minSize, t);
-                radius = Mathf.Lerp(armRadius, minSize, t);
-
-                if ((timePassed - prevSecond) >= transitionInterval) //delete if shrunk completely
-                    HandManager.Instance.KillHand(this);
-            }
-            else //if growing, then grow
-            {
-                size = Mathf.Lerp(minSize, targetSize, t);
-                radius = Mathf.Lerp(minSize, armRadius, t);
-
-                if ((timePassed - prevSecond) >= transitionInterval) //if growth is complete, start moving
-                {
-                    fullyGrown = true;
-                    isActive = true;
-                }
-            }
-
-            transform.localScale = new Vector2(size, size);
-            GetComponentInParent<Arm>().AdjustWidthForHand(size);
-
-            MoveHand(currentAngle, radius);
+            movementType = newMovement;
         }
 
         /// <summary>
@@ -266,6 +292,9 @@ namespace App {
             RunManager.Instance.AddTime(timeReward);
 
             // TODO: Spawn a visual effect.
+
+            //start shrinking
+            ChangeMovementType(HandMovement.SHRINK);
         }
 
         /// <summary>

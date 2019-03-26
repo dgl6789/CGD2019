@@ -135,7 +135,7 @@ namespace App {
                 List<HighFive> resolvedFives = new List<HighFive>();
 
                 foreach (HighFive five in ActiveFives) {
-                    if (five.Hand != null && five.Hand.isActive) {
+                    if (five.Hand != null && five.Hand.IsActive()) {
                         if (five.MaxDelta == Mathf.Infinity) {
                             // Infinite delta means an automatic normal success (testing on desktop only).
                             five.Hand.OnSuccessfulFive(false);
@@ -154,7 +154,6 @@ namespace App {
                 // Remove resolved fives from the active fives list.
                 foreach (HighFive f in resolvedFives)
                 {
-                    f.Hand.isActive = false;
                     ActiveFives.Remove(f);
                 }
 
