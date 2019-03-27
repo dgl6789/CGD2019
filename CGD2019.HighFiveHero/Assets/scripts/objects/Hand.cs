@@ -312,7 +312,7 @@ namespace App {
             HandManager.Instance.SpawnTimeIndicator(transform, HandManager.Instance.FailedFiveTimePenalty, false);
 
             // Subtract from the time.
-            RunManager.Instance.AddTime(-HandManager.Instance.FailedFiveTimePenalty);
+            RunManager.Instance.AddTime(HandManager.Instance.FailedFiveTimePenalty);
 
             // TODO: Spawn a visual effect.
         }
