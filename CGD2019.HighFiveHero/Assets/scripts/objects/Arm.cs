@@ -21,6 +21,9 @@ namespace App {
         [SerializeField] int detail;
         [SerializeField] float wristWidthModifier;
 
+        //properties
+        public Transform Shoulder { get { return shoulder; } }
+
         /// <summary>
         /// Adjust the size of the wrist according to the size of the attached hand.
         /// </summary>
@@ -35,8 +38,8 @@ namespace App {
         /// <param name="wristPosition">Position of the wrist (Hand).</param>
         public void AdjustJointPositions(Vector3 elbowPosition, Vector3 wristPosition, Vector3 shoulderPosition) {
             elbow.position = elbowPosition;
-            wristPosition = wrist.position;
-            
+            wrist.position = wristPosition;
+
             shoulder.position = shoulderPosition;
 
             RenderArm();
@@ -49,7 +52,7 @@ namespace App {
         /// <param name="wristPosition">Position of the wrist (Hand).</param>
         public void AdjustJointPositions(Vector3 elbowPosition, Vector3 wristPosition) {
             elbow.position = elbowPosition;
-            wristPosition = wrist.position;
+            wrist.position = wristPosition;
 
             RenderArm();
         }

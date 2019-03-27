@@ -87,6 +87,7 @@ namespace App {
         /// <param name="amount">Amount to add.</param>
         public void AddTime(float amount) {
             currentGameTimer += amount;
+            HandManager.Instance.PreviousGameTime += amount;
         }
 
         /// <summary>
@@ -114,6 +115,7 @@ namespace App {
             CurrentScore = 0;
             currentGameTimer = initialTimerValue;
             UIManager.Instance.UpdateGameTimerText(currentGameTimer);
+            HandManager.Instance.PreviousGameTime = currentGameTimer;
 
             // Turn on the countdown, and count it down.
             UIManager.Instance.SetStartGameCountdownTextActive(true);
@@ -157,6 +159,17 @@ namespace App {
                 SaveManager.Instance.SetHighScore();
                 UIManager.Instance.SetBestScoreValue(HighScore);
             }
+        }
+
+        /// <summary>
+        /// Checks if a certain amount of time has passed
+        /// </summary>
+        /// <param name="time">Time to compare to CurrentTime</param>
+        /// <param name="numSeconds">Number of seconds to check for. Defaults to 1 second</param>
+        /// <returns></returns>
+        public bool TimePassed(float time, int numSeconds = 1)
+        {
+            return (time - currentGameTimer >= numSeconds);
         }
     }
 }
