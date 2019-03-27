@@ -89,7 +89,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4020630633370558}
   - component: {fileID: 1963967304506185730}
-  - component: {fileID: 58836257167363394}
   m_Layer: 0
   m_Name: Hand
   m_TagString: Hand
@@ -124,19 +123,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31a3bce86ee15144f8d5bfdd42841f67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!58 &58836257167363394
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1582009971726270}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.75
+  radius: 0.75

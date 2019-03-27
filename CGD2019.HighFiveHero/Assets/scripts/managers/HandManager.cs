@@ -164,23 +164,21 @@ namespace App {
 
                     if (newTouch && t.phase == TouchPhase.Began) {
                         // Check if this touch was on a hand.
-                        RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(t.position), t.position);
-
-                        if (hit.collider && hit.collider.tag == "Hand") {
-                            // Make a new high five and check its strength.
-                            HighFive five = new HighFive(t, hit.collider.GetComponent<Hand>());
-                            StartCoroutine(GetMaxDelta(five));
+                        foreach(Hand h in ActiveHands) {
+                            if(h.CheckCollision(Camera.main.ScreenToWorldPoint(t.position))) {
+                                StartCoroutine(GetMaxDelta(new HighFive(t, h)));
+                                break;
+                            }
                         }
                     }
                 }
             } else {
                 if (Input.GetMouseButtonDown(0)) {
-                    RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-
-                    if (hit.collider && hit.collider.tag == "Hand") {
-                        // Make a new high five and check its strength.
-                        HighFive five = new HighFive(hit.collider.GetComponent<Hand>());
-                        StartCoroutine(GetMaxDelta(five));
+                    foreach (Hand h in ActiveHands) {
+                        if (h.CheckCollision(Camera.main.ScreenToWorldPoint(Input.mousePosition))) {
+                            StartCoroutine(GetMaxDelta(new HighFive(h)));
+                            break;
+                        }
                     }
                 }
             }
@@ -212,7 +210,7 @@ namespace App {
 
             // write the max delta to the high five object.
             five.MaxDelta = InputManager.Instance.MobilePlatform ? MathUtility.Map(Mathf.Clamp(maxDelta, 0, maximumRawStrength), 0, maximumRawStrength, parsedStrengthRange.x, parsedStrengthRange.y) : Mathf.Infinity;
-            UIManager.Instance.WriteDebugText(five.Hand.TargetStrength.ToString("n3") + " " + five.MaxDelta.ToString("n3"));
+            // UIManager.Instance.WriteDebugText(five.Hand.TargetStrength.ToString("n3") + " " + five.MaxDelta.ToString("n3"));
             ActiveFives.Add(five);
         }
 

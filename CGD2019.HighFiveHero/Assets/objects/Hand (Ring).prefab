@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7036031679383101171}
   - component: {fileID: 500907248400611636}
-  - component: {fileID: 7024012833439694863}
   m_Layer: 0
   m_Name: Hand (Ring)
   m_TagString: Hand
@@ -45,26 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d79edf8ebc2eb444cb376e1e54841e20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  radius: 0.75
   RingObject: {fileID: 8564116866581092128, guid: 462b51a1836941b4db3817cde733eae3,
     type: 3}
   minStrengthToSpawnRing: 0.85
   upwardBias: 2.5
---- !u!58 &7024012833439694863
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7038800636725418739}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.75
 --- !u!1 &7038956700322132545
 GameObject:
   m_ObjectHideFlags: 0

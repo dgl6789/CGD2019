@@ -12,6 +12,8 @@ namespace App {
         private float targetStrength;
         public float TargetStrength { get { return targetStrength; } }
 
+        [SerializeField] float radius;
+
         protected float size;
 
         /// <summary>
@@ -61,6 +63,15 @@ namespace App {
             RunManager.Instance.AddTime(-HandManager.Instance.FailedFiveTimePenalty);
 
             // TODO: Spawn a visual effect.
+        }
+
+        /// <summary>
+        /// Check collision on this hand with a touch or mouse position.
+        /// </summary>
+        /// <param name="position">Touch/mouse position to check against this hand.</param>
+        /// <returns>Whether the touch or mouse position collides with this hand.</returns>
+        public bool CheckCollision(Vector2 position) {
+            return Vector2.Distance(position, transform.position) <= radius * size;
         }
 
         /// <summary>
