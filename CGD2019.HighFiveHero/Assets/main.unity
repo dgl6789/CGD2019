@@ -4219,7 +4219,7 @@ Material:
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: f65ea94c18747c145ac677ea49960912, type: 3}
         m_Scale: {x: 4, y: 4}
-        m_Offset: {x: 0.002, y: 0.002}
+        m_Offset: {x: 0.086, y: 0.086}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -4454,6 +4454,7 @@ GameObject:
   - component: {fileID: 1331530281}
   - component: {fileID: 1331530280}
   - component: {fileID: 1331530283}
+  - component: {fileID: 1331530284}
   m_Layer: 0
   m_Name: _Managers
   m_TagString: Untagged
@@ -4775,6 +4776,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1331530284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331530273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 554e85aa19b726b46b10ef7058c3c1b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1362455035
 GameObject:
   m_ObjectHideFlags: 0
@@ -7092,7 +7105,7 @@ Transform:
   m_GameObject: {fileID: 1814630195}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.036, y: 0.035, z: 94.83}
-  m_LocalScale: {x: 19.836477, y: 11, z: 1}
+  m_LocalScale: {x: 18.28285, y: 11, z: 1}
   m_Children:
   - {fileID: 1865308969}
   m_Father: {fileID: 0}
