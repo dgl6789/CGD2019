@@ -4548,7 +4548,7 @@ MonoBehaviour:
   SuccessfulFiveTimeReward: 1
   PerfectFiveScoreReward: 3
   PerfectFiveTimeReward: 1
-  FailedFiveTimePenalty: 1
+  FailedFiveTimePenalty: -1
   scoreIndicatorSuccessDescriptions:
   - NICE!
   - WOW!
@@ -7092,7 +7092,7 @@ Transform:
   m_GameObject: {fileID: 1814630195}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.036, y: 0.035, z: 94.83}
-  m_LocalScale: {x: 6.6157637, y: 11, z: 1}
+  m_LocalScale: {x: 19.836477, y: 11, z: 1}
   m_Children:
   - {fileID: 1865308969}
   m_Father: {fileID: 0}

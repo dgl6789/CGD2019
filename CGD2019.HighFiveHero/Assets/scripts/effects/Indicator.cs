@@ -25,7 +25,7 @@ namespace App.UI {
         /// <param name="description">Description of the indicator, like 'Perfect' or 'Bad.'</param>
         /// <param name="perfect">Whether the high five was 'Perfect.'</param>
         public void Initialize(int count, string description = "", bool perfect = false, float delay = 0) {
-            countText.text = (count > 0 ? "+" : "-") + count;
+            countText.text = (count > 0 ? "+" : "") + count;
             descriptionText.text = perfect ? "PERFECT!" : description;
 
             this.perfect = perfect;
