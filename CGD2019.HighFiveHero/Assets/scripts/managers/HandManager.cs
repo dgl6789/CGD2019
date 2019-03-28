@@ -33,6 +33,9 @@ namespace App {
         [SerializeField] Vector2 parsedStrengthRange;
         [SerializeField] float maximumRawStrength;
 
+        [Range(0f, 1f)]
+        [SerializeField] float ringHandSpawnRate;
+
         // List of hands/fives that still need input checking.
         private List<Hand> ActiveHands;
         private List<HighFive> ActiveFives;
@@ -174,7 +177,7 @@ namespace App {
         /// <param name="movementType">Movement type for hand. Defaults to random selection</param>
         private void SpawnHand(HandMovement movementType = HandMovement.RANDOM) {
             // TODO: Have this method attach the spawned hand to the guy, put it at a reasonable starting position, etc.
-            Hand h = Instantiate(HandObjects[Random.Range(0, HandObjects.Length)], handParent).GetComponentInChildren<Hand>();
+            Hand h = Instantiate(HandObjects[Random.Range(0f, 1f) < ringHandSpawnRate ? 1 : 0], handParent).GetComponentInChildren<Hand>();
 
             h.Initialize(Random.Range(handSizeRange.x, handSizeRange.y), acceptableStrengthRange, perfectStrengthRange, movementType);
 
@@ -194,8 +197,6 @@ namespace App {
             if (Random.Range(0,10) == 0)
             {
                 SpawnHand(movemenType);
-
-                Debug.Log("split hand in two");
             }
         }
 

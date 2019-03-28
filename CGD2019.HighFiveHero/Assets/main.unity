@@ -4219,7 +4219,7 @@ Material:
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: f65ea94c18747c145ac677ea49960912, type: 3}
         m_Scale: {x: 4, y: 4}
-        m_Offset: {x: 0.002, y: 0.002}
+        m_Offset: {x: 0.11552049, y: 0.11552049}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -4545,6 +4545,7 @@ MonoBehaviour:
   strengthDeltaInterval: 0.2
   parsedStrengthRange: {x: 0, y: 1}
   maximumRawStrength: 7.5
+  ringHandSpawnRate: 0.15
   SuccessfulFiveScoreReward: 1
   SuccessfulFiveTimeReward: 1
   PerfectFiveScoreReward: 3
@@ -7095,7 +7096,7 @@ Transform:
   m_GameObject: {fileID: 1814630195}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.036, y: 0.035, z: 94.83}
-  m_LocalScale: {x: 19.836477, y: 11, z: 1}
+  m_LocalScale: {x: 5.8653502, y: 11, z: 1}
   m_Children:
   - {fileID: 1865308969}
   m_Father: {fileID: 0}
