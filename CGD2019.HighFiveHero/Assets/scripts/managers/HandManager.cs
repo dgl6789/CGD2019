@@ -21,7 +21,7 @@ namespace App {
         [SerializeField] Vector2 handSizeRange;
 
         // Object that holds all the hands.
-        public Transform handParent;
+        public Person handParent;
 
         [SerializeField] float acceptableStrengthRange;
         [SerializeField] float perfectStrengthRange;
@@ -177,9 +177,13 @@ namespace App {
         /// <param name="movementType">Movement type for hand. Defaults to random selection</param>
         private void SpawnHand(HandMovement movementType = HandMovement.RANDOM) {
             // TODO: Have this method attach the spawned hand to the guy, put it at a reasonable starting position, etc.
-            Hand h = Instantiate(HandObjects[Random.Range(0f, 1f) < ringHandSpawnRate ? 1 : 0], handParent).GetComponentInChildren<Hand>();
+            Hand h = Instantiate(HandObjects[Random.Range(0f, 1f) < ringHandSpawnRate ? 1 : 0], handParent.transform).GetComponentInChildren<Hand>();
+            Arm a = h.GetComponentInParent<Arm>();
 
-            h.Initialize(Random.Range(handSizeRange.x, handSizeRange.y), acceptableStrengthRange, perfectStrengthRange, movementType);
+            bool left;
+            a.Shoulder = handParent.GetShoulderTransform(h.transform.position, out left, true);
+
+            h.Initialize(Random.Range(handSizeRange.x, handSizeRange.y), acceptableStrengthRange, perfectStrengthRange, left, movementType);
 
             ActiveHands.Add(h);
         }
@@ -187,16 +191,16 @@ namespace App {
         /// <summary>
         /// Handles spawning of hands after removal of another hand
         /// </summary>
-        /// <param name="movemenType"></param>
-        private void ReplaceHand(HandMovement movemenType = HandMovement.RANDOM)
+        /// <param name="movementType"></param>
+        private void ReplaceHand(HandMovement movementType = HandMovement.RANDOM)
         {
             //replace the hand
-            SpawnHand(movemenType);
+            SpawnHand(movementType);
 
             //every ten hands split in half
             if (Random.Range(0,10) == 0)
             {
-                SpawnHand(movemenType);
+                SpawnHand(movementType);
             }
         }
 
@@ -320,7 +324,7 @@ namespace App {
         public void SpawnScoreIndicator(Transform origin, bool perfect = false, int count = 1) {
             string description = scoreIndicatorSuccessDescriptions[Random.Range(0, scoreIndicatorSuccessDescriptions.Length)];
 
-            Indicator i = Instantiate(indicatorObjects[0], origin.position, Quaternion.identity, handParent).GetComponent<Indicator>();
+            Indicator i = Instantiate(indicatorObjects[0], origin.position, Quaternion.identity, handParent.transform).GetComponent<Indicator>();
             i.Initialize(count, description, perfect);
         }
 
@@ -333,8 +337,8 @@ namespace App {
         public void SpawnTimeIndicator(Transform origin, int count, bool success = false) {
             string description = success ? "" : scoreIndicatorFailureDescriptions[Random.Range(0, scoreIndicatorFailureDescriptions.Length)];
 
-            Indicator i = Instantiate(indicatorObjects[1], origin.position, Quaternion.identity, handParent).GetComponent<Indicator>();
-            i.Initialize(count, description, false, success ? 0.085f : 0f);
+            Indicator i = Instantiate(indicatorObjects[1], origin.position, Quaternion.identity, handParent.transform).GetComponent<Indicator>();
+            i.Initialize(count, description, false, success ? 0.15f : 0f);
         }
 
         /// <summary>
@@ -342,7 +346,7 @@ namespace App {
         /// </summary>
         /// <param name="origin">Transform of the origin hand.</param>
         public void SpawnRingIndicator(Transform origin) {
-            Indicator i = Instantiate(indicatorObjects[2], origin.position, Quaternion.identity, handParent).GetComponent<Indicator>();
+            Indicator i = Instantiate(indicatorObjects[2], origin.position, Quaternion.identity, handParent.transform).GetComponent<Indicator>();
             i.Initialize(1);
         }
 

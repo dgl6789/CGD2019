@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using App.Util;
 
 namespace App {
     public enum HandMovement { RANDOM, GROW, SHRINK, OSCILLATE, JUMP };
@@ -18,9 +19,14 @@ namespace App {
 
         //time tracking variables
         private float moveInterval;
-        private float transitionInterval;
+        [SerializeField] private float TransitionInterval;
+
         private float timePassed;
         private bool intervalPassed;
+
+        // Effects
+        [SerializeField] float shakeAmount;
+        [SerializeField] float shakeDuration;
 
         //movement variables
         private float armRadius;
@@ -45,11 +51,12 @@ namespace App {
         /// <param name="size">Size to scale the hand by.</param>
         /// <param name="acceptableRange">Range (+-) of strength of an input to accept as a success.</param>
         /// <param name="movementType">Movement type. Defaults to oscillating</param>
-        public void Initialize(float size, float acceptableRange, float perfectRange, HandMovement movementType = HandMovement.RANDOM) {
+        public void Initialize(float size, float acceptableRange, float perfectRange, bool left, HandMovement movementType = HandMovement.RANDOM) {
             //Rendering Setup
-            transform.localScale = new Vector2(size, size);
+            transform.localScale = new Vector2(size * (left ? -1 : 1), size);
             GetComponentInParent<Arm>().AdjustWidthForHand(size);
             targetSize = size;
+            this.size = size;
 
             // Strength parameter setup
             this.acceptableRange = acceptableRange;
@@ -74,7 +81,6 @@ namespace App {
 
             // initialize time variables
             timePassed = 0.0f;
-            transitionInterval = 0.5f;
 
             //initialize movement variables
             orbitAngle = Random.Range(0, 360);
@@ -105,6 +111,7 @@ namespace App {
             float horzExtent = vertExtent * (Screen.width / (float)Screen.height);
 
             armRadius = (horzExtent / 2f) - (1f - Random.Range(0, 25) / 100f); //half screen width - padding
+
         }
 
         /// <summary>
@@ -120,7 +127,7 @@ namespace App {
             //get correct interval
             float thisInterval = moveInterval;
             if (movementType == HandMovement.GROW || movementType == HandMovement.SHRINK)
-                thisInterval = transitionInterval;
+                thisInterval = TransitionInterval;
 
             //check if the movement interval has passed
             if (timePassed >= thisInterval)
@@ -141,7 +148,7 @@ namespace App {
                     Shrink();
                     break;
                 default:
-                    Debug.Log(movementType + " isn't an accepted movement type");
+                    // Debug.Log(movementType + " isn't an accepted movement type");
                     break;
             }
 
@@ -164,11 +171,11 @@ namespace App {
                 angleEnd = Random.Range(0, 360);
             }
 
-            if (timePassed / transitionInterval < 1.0f)
+            if (timePassed / TransitionInterval < 1.0f)
                 currentAngle = Mathf.RoundToInt(Mathf.LerpAngle(
                     angleStart,
                     angleEnd,
-                    timePassed / transitionInterval));
+                    timePassed / TransitionInterval));
 
             //Move hand to new position
             MoveHand(currentAngle);
@@ -201,7 +208,7 @@ namespace App {
         /// </summary>
         private void Orbit()
         {
-            Debug.Log("Orbiting");
+            // Debug.Log("Orbiting");
         }
 
         /// <summary>
@@ -211,7 +218,7 @@ namespace App {
         {
             float size = 0.1f;
             float radius = armRadius;
-            float t = timePassed / transitionInterval;
+            float t = timePassed / TransitionInterval;
 
             //lerp scale and position
             size = Mathf.Lerp(minSize, targetSize, t);
@@ -222,7 +229,7 @@ namespace App {
                 ChangeMovementType(targetMovement);
 
             //adjust scale
-            transform.localScale = new Vector2(size, size);
+            transform.localScale = new Vector2(Mathf.Sign(transform.localScale.x) * size, size);
             GetComponentInParent<Arm>().AdjustWidthForHand(size);
 
             //move hand to new position
@@ -236,7 +243,7 @@ namespace App {
         {
             float size = 0.1f;
             float radius = armRadius;
-            float t = timePassed / transitionInterval;
+            float t = timePassed / TransitionInterval;
 
             //lerp scale and position
             size = Mathf.Lerp(targetSize, minSize, t);
@@ -247,7 +254,7 @@ namespace App {
                 HandManager.Instance.KillHand(this);
 
             //adjust scale
-            transform.localScale = new Vector2(size, size);
+            transform.localScale = new Vector2(Mathf.Sign(transform.localScale.x) * size, size);
             GetComponentInParent<Arm>().AdjustWidthForHand(size);
 
             //move hand to new position
@@ -296,11 +303,15 @@ namespace App {
 
             // Spawn a success indicator
             HandManager.Instance.SpawnScoreIndicator(transform, perfect, scoreReward);
-            HandManager.Instance.SpawnTimeIndicator(transform, timeReward, true);
+            // HandManager.Instance.SpawnTimeIndicator(transform, timeReward, true);
 
             // Add to the score and time.
             RunManager.Instance.AddScore(scoreReward);
             RunManager.Instance.AddTime(timeReward);
+
+            // Play a sound and shake the screen
+            SoundManager.Instance.PlayHighFiveSound(HandManager.Instance.HandSizetoTargetStrength(size));
+            CameraEffects.Instance.ShakeFromHand(HandManager.Instance.HandSizetoTargetStrength(size));
 
             // TODO: Spawn a visual effect.
 
@@ -316,7 +327,7 @@ namespace App {
             HandManager.Instance.SpawnTimeIndicator(transform, HandManager.Instance.FailedFiveTimePenalty, false);
 
             // Subtract from the time.
-            RunManager.Instance.AddTime(-HandManager.Instance.FailedFiveTimePenalty);
+            RunManager.Instance.AddTime(HandManager.Instance.FailedFiveTimePenalty);
 
             // TODO: Spawn a visual effect.
         }

@@ -21,10 +21,10 @@ namespace App {
         /// <returns>True if a ring was spawned or the strength was in the acceptable range, false otherwise.</returns>
         public override bool StrengthIsAcceptable(float strength) {
             if (strength >= minStrengthToSpawnRing) {
-                Ring r = Instantiate(RingObject, transform.position, Quaternion.identity, HandManager.Instance.handParent).GetComponent<Ring>();
+                Ring r = Instantiate(RingObject, transform.position, Quaternion.identity, HandManager.Instance.handParent.transform).GetComponent<Ring>();
 
                 r.Initialize(new Vector2(
-                    Random.Range(-1f, 1f), 
+                    Random.Range(-0.5f, 0.5f), 
                     Random.Range(0f, upwardBias)),
                     size);
 
