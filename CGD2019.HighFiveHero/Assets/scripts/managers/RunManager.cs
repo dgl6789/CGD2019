@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using App.UI;
 
@@ -18,6 +19,9 @@ namespace App {
         public bool Running {
             get { return gameStarted; }
         }
+
+        // List of active ringg objects
+        [HideInInspector] public List<Ring> ActiveRings;
 
         // High score list (saved and loaded from file).
         [HideInInspector] public int HighScore;
@@ -56,6 +60,8 @@ namespace App {
         private void Awake() {
             if (Instance == null) Instance = this;
             else Destroy(this);
+
+            if (this) ActiveRings = new List<Ring>();
         }
 
         /// <summary>

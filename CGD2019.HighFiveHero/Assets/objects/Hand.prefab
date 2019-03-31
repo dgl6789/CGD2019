@@ -67,16 +67,16 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: bdc2c0f746b865246b8567c24dfb71b3, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_SortingOrder: 2
+  m_Sprite: {fileID: 21300000, guid: 6e60e03580005cf418ae9ff04d32c8f8, type: 3}
+  m_Color: {r: 0.8867924, g: 0.48104307, b: 0.48104307, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.1789055, y: 1.6970593}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1582009971726270
@@ -88,8 +88,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4020630633370558}
-  - component: {fileID: 114272966687327324}
-  - component: {fileID: 58836257167363394}
+  - component: {fileID: 1963967304506185730}
   m_Layer: 0
   m_Name: Hand
   m_TagString: Hand
@@ -112,7 +111,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114272966687327324
+--- !u!114 &1963967304506185730
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -124,19 +123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31a3bce86ee15144f8d5bfdd42841f67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!58 &58836257167363394
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1582009971726270}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.75
+  TransitionInterval: 0.15
+  shakeAmount: 0
+  shakeDuration: 0
+  radius: 0.75
