@@ -177,5 +177,9 @@ namespace App {
         {
             return (time - currentGameTimer >= numSeconds);
         }
+        public bool TimePassed(float time, float numSeconds = 1)
+        {
+            return (time - currentGameTimer >= numSeconds);
+        }
     }
 }
