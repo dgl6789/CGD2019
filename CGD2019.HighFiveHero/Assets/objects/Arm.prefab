@@ -264,10 +264,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 100}
     m_Modifications:
-    - target: {fileID: 1582009971726270, guid: 6675bdddc22e8fa47b4602f734dce33c, type: 3}
-      propertyPath: m_Name
-      value: Hand
-      objectReference: {fileID: 0}
     - target: {fileID: 4020630633370558, guid: 6675bdddc22e8fa47b4602f734dce33c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1
@@ -311,6 +307,10 @@ PrefabInstance:
     - target: {fileID: 4020630633370558, guid: 6675bdddc22e8fa47b4602f734dce33c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1582009971726270, guid: 6675bdddc22e8fa47b4602f734dce33c, type: 3}
+      propertyPath: m_Name
+      value: Hand
       objectReference: {fileID: 0}
     - target: {fileID: 4767510038862490, guid: 6675bdddc22e8fa47b4602f734dce33c, type: 3}
       propertyPath: m_LocalPosition.x

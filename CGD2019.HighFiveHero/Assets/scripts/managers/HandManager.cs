@@ -109,15 +109,13 @@ namespace App {
 
                 #region HAND SPAWNING
 
-                // TODO: Actual hand spawning code goes here (Interval only -- positioning, etc. should be in SpawnHand()).
-                if (ActiveHands.Count == 0) { SpawnHand(); SpawnHand(); }
-
                 //spawns a hand every second
-                if (RunManager.Instance.TimePassed(previousGameTime, 3))
+                if (RunManager.Instance.TimePassed(previousGameTime, DifficultyManager.Instance.handSpawnInterval))
                 {
-                    previousGameTime = RunManager.Instance.CurrentGameTimer;
-
-                    SpawnHand();
+                        if (ActiveHands.Count <= DifficultyManager.Instance.handsPerWave)
+                        {
+                            SpawnHand();
+                        }
                 }
 
                 #endregion

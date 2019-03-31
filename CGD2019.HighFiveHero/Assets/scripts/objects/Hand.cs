@@ -313,6 +313,9 @@ namespace App {
             SoundManager.Instance.PlayHighFiveSound(HandManager.Instance.HandSizetoTargetStrength(size));
             CameraEffects.Instance.ShakeFromHand(HandManager.Instance.HandSizetoTargetStrength(size));
 
+            // Ramp up the difficulty
+            DifficultyManager.Instance.OnHighFive();
+
             // TODO: Spawn a visual effect.
 
             //start shrinking
@@ -329,6 +332,8 @@ namespace App {
             // Subtract from the time.
             RunManager.Instance.AddTime(HandManager.Instance.FailedFiveTimePenalty);
 
+            //Pull back the difficulty
+            DifficultyManager.Instance.OnMiss();
             // TODO: Spawn a visual effect.
         }
 
