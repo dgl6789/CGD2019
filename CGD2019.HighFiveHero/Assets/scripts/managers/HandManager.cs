@@ -112,12 +112,24 @@ namespace App {
                 //spawns a hand every second
                 if (RunManager.Instance.TimePassed(previousGameTime, DifficultyManager.Instance.handSpawnInterval))
                 {
-                        if (ActiveHands.Count <= DifficultyManager.Instance.handsPerWave)
+                    for (int i = 0; i < DifficultyManager.Instance.maxHands; i++)
+                    {
+                        if (ActiveHands.Count <= DifficultyManager.Instance.maxHands)
                         {
                             SpawnHand();
                         }
+                    }
+                    
+                    previousGameTime = RunManager.Instance.CurrentGameTimer;
                 }
-
+                else if (RunManager.Instance.CurrentGameTimer >= 9.7f && previousGameTime == 10f)
+                {
+                    if (ActiveHands.Count <= DifficultyManager.Instance.maxHands)
+                    {
+                        SpawnHand();
+                    }
+                    previousGameTime = RunManager.Instance.CurrentGameTimer;
+                }
                 #endregion
 
                 #region HAND MOVEMENT
