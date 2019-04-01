@@ -15,6 +15,9 @@ namespace App {
 
         bool shaking;
 
+        [SerializeField] float[] handShakeAmounts;
+        [SerializeField] float[] handShakeDurations;
+
         /// <summary>
         /// Singleton initialization and reference setup.
         /// </summary>
@@ -23,6 +26,13 @@ namespace App {
             else Destroy(this);
 
             if (this) cam = Camera.main;
+        }
+
+        public void ShakeFromHand(float intensity) {
+            float mSize = Mathf.Round(intensity / 0.33f) * 0.33f;
+            int index = Mathf.FloorToInt(mSize * 3);
+            
+            StartCoroutine(ShakeCamera(handShakeAmounts[index], handShakeDurations[index]));
         }
 
         /// <summary>

@@ -82,6 +82,27 @@ namespace App {
             Destroy(s.gameObject, clip.length);
         }
 
+        public void PlayHighFiveSound(float size) {
+            float mSize = Mathf.Round(size / 0.33f) * 0.33f;
+            int index = Mathf.FloorToInt(mSize * 3);
+
+            string toPlay = "slap soft";
+            switch(index) {
+                case 0:
+                    toPlay = "slap soft";
+                    break;
+                case 1:
+                    toPlay = "slap medium";
+                    break;
+                case 2:
+                    toPlay = "slap hard";
+                    break;
+            }
+
+
+            PlaySoundWithRandomPitch(toPlay, 0.75f, 1.25f);
+        }
+
         /// <summary>
         /// Play a slap sound. For UI buttons.
         /// </summary>

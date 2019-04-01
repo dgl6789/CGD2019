@@ -145,6 +145,7 @@ namespace App.UI {
             
             // Enable the proper state
             for (int i = 0; i < UIStateObjects.Length; i++) UIStateObjects[i].SetActive(i == (int)to);
+            HandManager.Instance.handParent.gameObject.SetActive(to.Equals(GameState.Game));
 
             // Teleport the canvas' content one screen-width to the right of its original position.
             canvasContent.localPosition = new Vector2(screenWidth, 0);

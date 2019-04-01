@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4557114608362230}
   - component: {fileID: 212565511677958044}
   m_Layer: 0
-  m_Name: Ring
+  m_Name: Stopwatch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25,8 +25,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1677770589969976}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.16231, y: 0.071934, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_LocalPosition: {x: -0.502, y: -0.148, z: 0}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
   m_Children: []
   m_Father: {fileID: 4958295307465996}
   m_RootOrder: 2
@@ -68,8 +68,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: e6b7480aca0579e46b6ce9daa22c1fdd, type: 3}
-  m_Color: {r: 1, g: 0.8217412, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 6a75996c49f8e704bafb268e7ffd969c, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 4958295307465996}
   - component: {fileID: 4804504132107848440}
   m_Layer: 0
-  m_Name: Ring Indicator
+  m_Name: Time Indicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifetime: 1
-  upwardSpeed: 5
+  upwardSpeed: 3
   perfectDescriptionShakeAmount: 0
   countText: {fileID: 114976569545038918}
   descriptionText: {fileID: 3019914275441426063}
@@ -160,15 +160,15 @@ RectTransform:
   m_GameObject: {fileID: 1853878811524702}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4958295307465996}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.22077, y: 0.071934}
-  m_SizeDelta: {x: 0.973, y: 0.84}
+  m_AnchoredPosition: {x: 0.333, y: -0.148}
+  m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!33 &33032274973007620
 MeshFilter:
@@ -243,7 +243,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 1
+  m_text: +1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 313c8c818af270547a0641f467de85aa, type: 2}
   m_sharedMaterial: {fileID: 21007243877607994, guid: 313c8c818af270547a0641f467de85aa,
@@ -313,10 +313,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 114976569545038918}
-    characterCount: 1
+    characterCount: 2
     spriteCount: 0
     spaceCount: 0
-    wordCount: 1
+    wordCount: 2
     linkCount: 0
     lineCount: 1
     pageCount: 1
@@ -368,15 +368,15 @@ RectTransform:
   m_GameObject: {fileID: 603169317223487359}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4958295307465996}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.078052, y: 0.44477}
-  m_SizeDelta: {x: 2.35, y: 0.675}
+  m_AnchoredPosition: {x: 0, y: 0.445}
+  m_SizeDelta: {x: 2.3, y: 0.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!33 &8191113659274240412
 MeshFilter:

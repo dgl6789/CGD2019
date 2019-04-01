@@ -22,7 +22,13 @@ namespace App {
         [SerializeField] float wristWidthModifier;
 
         //properties
-        public Transform Shoulder { get { return shoulder; } }
+        public Transform Shoulder {
+            get { return shoulder; }
+            set {
+                shoulder = value;
+                RenderArm();
+            }
+        }
 
         /// <summary>
         /// Adjust the size of the wrist according to the size of the attached hand.

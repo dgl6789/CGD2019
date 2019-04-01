@@ -14,14 +14,14 @@ namespace App {
         public static HandManager Instance;
 
         // Hand prefab object.
-        [SerializeField] GameObject handObject;
+        [SerializeField] GameObject[] HandObjects;
         [SerializeField] GameObject[] indicatorObjects;
 
         // Min and max size of a hand.
         [SerializeField] Vector2 handSizeRange;
 
         // Object that holds all the hands.
-        public Transform handParent;
+        public Person handParent;
 
         [SerializeField] float acceptableStrengthRange;
         [SerializeField] float perfectStrengthRange;
@@ -32,6 +32,9 @@ namespace App {
         // The range that high five input strengths are bound to.
         [SerializeField] Vector2 parsedStrengthRange;
         [SerializeField] float maximumRawStrength;
+
+        [Range(0f, 1f)]
+        [SerializeField] float ringHandSpawnRate;
 
         // List of hands/fives that still need input checking.
         private List<Hand> ActiveHands;
@@ -106,15 +109,13 @@ namespace App {
 
                 #region HAND SPAWNING
 
-                // TODO: Actual hand spawning code goes here (Interval only -- positioning, etc. should be in SpawnHand()).
-                if (ActiveHands.Count == 0) { SpawnHand(); SpawnHand(); }
-
                 //spawns a hand every second
-                if (RunManager.Instance.TimePassed(previousGameTime, 3))
+                if (RunManager.Instance.TimePassed(previousGameTime, DifficultyManager.Instance.handSpawnInterval))
                 {
-                    previousGameTime = RunManager.Instance.CurrentGameTimer;
-
-                    SpawnHand();
+                        if (ActiveHands.Count <= DifficultyManager.Instance.handsPerWave)
+                        {
+                            SpawnHand();
+                        }
                 }
 
                 #endregion
@@ -138,6 +139,7 @@ namespace App {
                     if (five.Hand != null && five.Hand.IsActive()) {
                         if (five.MaxDelta == Mathf.Infinity) {
                             // Infinite delta means an automatic normal success (testing on desktop only).
+                            five.Hand.StrengthIsAcceptable(five.MaxDelta);
                             five.Hand.OnSuccessfulFive(false);
                         } else if (five.MaxDelta > 0) {
                             // This five is ready to be evaluated.
@@ -173,9 +175,13 @@ namespace App {
         /// <param name="movementType">Movement type for hand. Defaults to random selection</param>
         private void SpawnHand(HandMovement movementType = HandMovement.RANDOM) {
             // TODO: Have this method attach the spawned hand to the guy, put it at a reasonable starting position, etc.
-            Hand h = Instantiate(handObject, handParent).GetComponentInChildren<Hand>();
+            Hand h = Instantiate(HandObjects[Random.Range(0f, 1f) < ringHandSpawnRate ? 1 : 0], handParent.transform).GetComponentInChildren<Hand>();
+            Arm a = h.GetComponentInParent<Arm>();
 
-            h.Initialize(Random.Range(handSizeRange.x, handSizeRange.y), acceptableStrengthRange, perfectStrengthRange, movementType);
+            bool left;
+            a.Shoulder = handParent.GetShoulderTransform(h.transform.position, out left, true);
+
+            h.Initialize(Random.Range(handSizeRange.x, handSizeRange.y), acceptableStrengthRange, perfectStrengthRange, left, movementType);
 
             ActiveHands.Add(h);
         }
@@ -183,18 +189,16 @@ namespace App {
         /// <summary>
         /// Handles spawning of hands after removal of another hand
         /// </summary>
-        /// <param name="movemenType"></param>
-        private void ReplaceHand(HandMovement movemenType = HandMovement.RANDOM)
+        /// <param name="movementType"></param>
+        private void ReplaceHand(HandMovement movementType = HandMovement.RANDOM)
         {
             //replace the hand
-            SpawnHand(movemenType);
+            SpawnHand(movementType);
 
             //every ten hands split in half
             if (Random.Range(0,10) == 0)
             {
-                SpawnHand(movemenType);
-
-                Debug.Log("split hand in two");
+                SpawnHand(movementType);
             }
         }
 
@@ -251,23 +255,21 @@ namespace App {
 
                     if (newTouch && t.phase == TouchPhase.Began) {
                         // Check if this touch was on a hand.
-                        RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(t.position), t.position);
-
-                        if (hit.collider && hit.collider.tag == "Hand") {
-                            // Make a new high five and check its strength.
-                            HighFive five = new HighFive(t, hit.collider.GetComponent<Hand>());
-                            StartCoroutine(GetMaxDelta(five));
+                        foreach(Hand h in ActiveHands) {
+                            if(h.CheckCollision(Camera.main.ScreenToWorldPoint(t.position))) {
+                                StartCoroutine(GetMaxDelta(new HighFive(t, h)));
+                                break;
+                            }
                         }
                     }
                 }
             } else {
                 if (Input.GetMouseButtonDown(0)) {
-                    RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-
-                    if (hit.collider && hit.collider.tag == "Hand") {
-                        // Make a new high five and check its strength.
-                        HighFive five = new HighFive(hit.collider.GetComponent<Hand>());
-                        StartCoroutine(GetMaxDelta(five));
+                    foreach (Hand h in ActiveHands) {
+                        if (h.CheckCollision(Camera.main.ScreenToWorldPoint(Input.mousePosition))) {
+                            StartCoroutine(GetMaxDelta(new HighFive(h)));
+                            break;
+                        }
                     }
                 }
             }
@@ -299,7 +301,7 @@ namespace App {
 
             // write the max delta to the high five object.
             five.MaxDelta = InputManager.Instance.MobilePlatform ? MathUtility.Map(Mathf.Clamp(maxDelta, 0, maximumRawStrength), 0, maximumRawStrength, parsedStrengthRange.x, parsedStrengthRange.y) : Mathf.Infinity;
-            UIManager.Instance.WriteDebugText(five.Hand.TargetStrength.ToString("n3") + " " + five.MaxDelta.ToString("n3"));
+            // UIManager.Instance.WriteDebugText(five.Hand.TargetStrength.ToString("n3") + " " + five.MaxDelta.ToString("n3"));
             ActiveFives.Add(five);
         }
 
@@ -320,7 +322,7 @@ namespace App {
         public void SpawnScoreIndicator(Transform origin, bool perfect = false, int count = 1) {
             string description = scoreIndicatorSuccessDescriptions[Random.Range(0, scoreIndicatorSuccessDescriptions.Length)];
 
-            Indicator i = Instantiate(indicatorObjects[0], origin.position, Quaternion.identity, handParent).GetComponent<Indicator>();
+            Indicator i = Instantiate(indicatorObjects[0], origin.position, Quaternion.identity, handParent.transform).GetComponent<Indicator>();
             i.Initialize(count, description, perfect);
         }
 
@@ -333,8 +335,8 @@ namespace App {
         public void SpawnTimeIndicator(Transform origin, int count, bool success = false) {
             string description = success ? "" : scoreIndicatorFailureDescriptions[Random.Range(0, scoreIndicatorFailureDescriptions.Length)];
 
-            Indicator i = Instantiate(indicatorObjects[1], origin.position, Quaternion.identity, handParent).GetComponent<Indicator>();
-            i.Initialize(count, description, false, success ? 0.085f : 0f);
+            Indicator i = Instantiate(indicatorObjects[1], origin.position, Quaternion.identity, handParent.transform).GetComponent<Indicator>();
+            i.Initialize(count, description, false, success ? 0.15f : 0f);
         }
 
         /// <summary>
@@ -342,7 +344,7 @@ namespace App {
         /// </summary>
         /// <param name="origin">Transform of the origin hand.</param>
         public void SpawnRingIndicator(Transform origin) {
-            Indicator i = Instantiate(indicatorObjects[2], origin.position, Quaternion.identity, handParent).GetComponent<Indicator>();
+            Indicator i = Instantiate(indicatorObjects[2], origin.position, Quaternion.identity, handParent.transform).GetComponent<Indicator>();
             i.Initialize(1);
         }
 
