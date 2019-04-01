@@ -31,6 +31,7 @@ namespace App {
 
         // The range that high five input strengths are bound to.
         [SerializeField] Vector2 parsedStrengthRange;
+        [Range(0f, 10f)]
         [SerializeField] float maximumRawStrength;
 
         [Range(0f, 1f)]
