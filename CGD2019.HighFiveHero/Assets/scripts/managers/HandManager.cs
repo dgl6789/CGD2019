@@ -257,15 +257,8 @@ namespace App {
             if (InputManager.Instance.MobilePlatform) {
                 // Get the relative strength of each new touch.
                 foreach (Touch t in touches) {
-                    bool newTouch = true;
 
-                    // Determine if this touch is actually a new one
-                    foreach (HighFive f in ActiveFives) {
-                        if (f.Touch.fingerId == t.fingerId)
-                            newTouch = false;
-                    }
-
-                    if (newTouch && t.phase == TouchPhase.Began) {
+                    if (t.phase == TouchPhase.Began) {
                         // Check if this touch was on a hand.
                         foreach(Hand h in ActiveHands) {
                             if(h.CheckCollision(Camera.main.ScreenToWorldPoint(t.position))) {
