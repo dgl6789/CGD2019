@@ -158,7 +158,7 @@ namespace App {
                             if (five.Hand.StrengthIsAcceptable(five.MaxDelta))
                                 five.Hand.OnSuccessfulFive(five.Hand.StrengthIsPerfect(five.MaxDelta));
                             else
-                                five.Hand.OnFailedFive();
+                                five.Hand.OnFailedFive(five.Hand.TargetStrength-five.MaxDelta);
                         }
 
                         resolvedFives.Add(five);
@@ -346,8 +346,14 @@ namespace App {
         /// <param name="success">Whether the time is being added or subtracted.</param>
         public void SpawnTimeIndicator(Transform origin, int count, bool success = false) {
             string description = success ? "" : scoreIndicatorFailureDescriptions[Random.Range(0, scoreIndicatorFailureDescriptions.Length)];
-
-            Indicator i = Instantiate(indicatorObjects[1], origin.position, Quaternion.identity, handParent.transform).GetComponent<Indicator>();
+            GameObject j = Instantiate(indicatorObjects[1], origin.position, Quaternion.identity, handParent.transform);
+            Indicator i = j.GetComponent<Indicator>();
+            if (!success)
+            {
+                j.transform.GetChild(0).GetComponent<TMPro.TextMeshPro>().color = Color.red;
+                j.transform.GetChild(1).GetComponent<TMPro.TextMeshPro>().color = Color.red;
+                j.transform.GetChild(2).GetComponent<SpriteRenderer>().color = Color.red;
+            }
             i.Initialize(count, description, false, success ? 0.15f : 0f);
         }
 
