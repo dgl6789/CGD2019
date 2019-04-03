@@ -117,7 +117,7 @@ namespace App {
                     {
                         if (ActiveHands.Count <= DifficultyManager.Instance.maxHands)
                         {
-                            SpawnHand();
+                            SpawnHand(HandMovement.HYDRA);
                         }
                     }
                     
@@ -127,7 +127,7 @@ namespace App {
                 {
                     if (ActiveHands.Count <= DifficultyManager.Instance.maxHands)
                     {
-                        SpawnHand();
+                        SpawnHand(HandMovement.HYDRA);
                     }
                     previousGameTime = RunManager.Instance.CurrentGameTimer;
                 }
@@ -188,31 +188,33 @@ namespace App {
         /// <param name="movementType">Movement type for hand. Defaults to random selection</param>
         private void SpawnHand(HandMovement movementType = HandMovement.RANDOM) {
             // TODO: Have this method attach the spawned hand to the guy, put it at a reasonable starting position, etc.
-            Hand h = Instantiate(HandObjects[Random.Range(0f, 1f) < ringHandSpawnRate ? 1 : 0], handParent.transform).GetComponentInChildren<Hand>();
+            int handObj = Random.Range(0f, 1f) < ringHandSpawnRate ? 1 : 0;
+            Hand h = Instantiate(HandObjects[handObj], handParent.transform).GetComponentInChildren<Hand>();
             Arm a = h.GetComponentInParent<Arm>();
 
             bool left;
             a.Shoulder = handParent.GetShoulderTransform(h.transform.position, out left, true);
 
-            h.Initialize(Random.Range(handSizeRange.x, handSizeRange.y), acceptableStrengthRange, perfectStrengthRange, left, movementType);
+            h.Initialize(Random.Range(handSizeRange.x, handSizeRange.y), acceptableStrengthRange, perfectStrengthRange, left, handObj, movementType);
 
             ActiveHands.Add(h);
         }
 
         /// <summary>
-        /// Handles spawning of hands after removal of another hand
+        /// creates a hand copying the given hand
         /// </summary>
-        /// <param name="movementType"></param>
-        private void ReplaceHand(HandMovement movementType = HandMovement.RANDOM)
+        /// <param name="hand">hand to copy</param>
+        public void CopyHand(Hand hand, bool oppositeDir = false)
         {
-            //replace the hand
-            SpawnHand(movementType);
+            // TODO: Have this method attach the spawned hand to the guy, put it at a reasonable starting position, etc.
+            Hand h = Instantiate(HandObjects[hand.handObj], handParent.transform).GetComponentInChildren<Hand>();
+            Arm a = h.GetComponentInParent<Arm>();
 
-            //every ten hands split in half
-            if (Random.Range(0,10) == 0)
-            {
-                SpawnHand(movementType);
-            }
+            a.Shoulder = handParent.GetShoulderTransform(hand.left);
+
+            h.Initialize(hand, oppositeDir);
+
+            ActiveHands.Add(h);
         }
 
         /// <summary>
