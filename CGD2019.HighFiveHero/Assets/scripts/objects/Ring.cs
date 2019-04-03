@@ -20,7 +20,7 @@ namespace App {
 
             yMin = -Camera.main.orthographicSize - 5f;
 
-            transform.localScale = new Vector3(size, size, size);
+            transform.localScale = new Vector3(size, size, size) * 2f;
 
             RunManager.Instance.ActiveRings.Add(this);
 

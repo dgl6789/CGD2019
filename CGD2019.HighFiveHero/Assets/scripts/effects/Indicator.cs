@@ -31,6 +31,7 @@ namespace App.UI {
             this.perfect = perfect;
 
             StartCoroutine(RiseAndFade(delay));
+            Destroy(gameObject, lifetime);
         }
 
         /// <summary>
@@ -59,8 +60,6 @@ namespace App.UI {
 
                 yield return null;
             }
-
-            Destroy(gameObject);
         }
     }
 }
