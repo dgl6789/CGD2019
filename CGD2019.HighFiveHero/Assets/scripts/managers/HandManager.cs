@@ -158,7 +158,7 @@ namespace App {
                             if (five.Hand.StrengthIsAcceptable(five.MaxDelta))
                                 five.Hand.OnSuccessfulFive(five.Hand.StrengthIsPerfect(five.MaxDelta));
                             else
-                                five.Hand.OnFailedFive(five.Hand.TargetStrength-five.MaxDelta);
+                                five.Hand.OnFailedFive(five.Hand.TargetStrength>five.MaxDelta);
                         }
 
                         resolvedFives.Add(five);
