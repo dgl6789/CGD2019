@@ -19,6 +19,7 @@ namespace App {
 
         // Min and max size of a hand.
         [SerializeField] Vector2 handSizeRange;
+        [SerializeField] float[] possibleHandSizes;
 
         // Object that holds all the hands.
         public Person handParent;
@@ -110,24 +111,15 @@ namespace App {
                 #region HAND SPAWNING
 
                 //spawns a hand every second
-                if (RunManager.Instance.TimePassed(previousGameTime, DifficultyManager.Instance.handSpawnInterval))
-                {
-                    for (int i = 0; i < DifficultyManager.Instance.maxHands; i++)
-                    {
-                        if (ActiveHands.Count <= DifficultyManager.Instance.maxHands)
-                        {
-                            SpawnHand();
-                        }
+                if (RunManager.Instance.TimePassed(previousGameTime, DifficultyManager.Instance.handSpawnInterval)) {
+                    for (int i = 0; i < DifficultyManager.Instance.maxHands; i++) {
+                        if (ActiveHands.Count <= DifficultyManager.Instance.maxHands) SpawnHand();
                     }
                     
                     previousGameTime = RunManager.Instance.CurrentGameTimer;
-                }
-                else if (RunManager.Instance.CurrentGameTimer >= 9.7f && previousGameTime == 10f)
-                {
-                    if (ActiveHands.Count <= DifficultyManager.Instance.maxHands)
-                    {
-                        SpawnHand();
-                    }
+                } else if (RunManager.Instance.CurrentGameTimer >= 9.7f && previousGameTime == 10f) {
+                    if (ActiveHands.Count <= DifficultyManager.Instance.maxHands) SpawnHand();
+
                     previousGameTime = RunManager.Instance.CurrentGameTimer;
                 }
                 #endregion
@@ -193,7 +185,9 @@ namespace App {
             bool left;
             a.Shoulder = handParent.GetShoulderTransform(h.transform.position, out left, true);
 
-            h.Initialize(Random.Range(handSizeRange.x, handSizeRange.y), acceptableStrengthRange, perfectStrengthRange, left, movementType);
+            float size = Mathf.Clamp(possibleHandSizes[Random.Range(0, possibleHandSizes.Length)], handSizeRange.x, handSizeRange.y);
+
+            h.Initialize(size, acceptableStrengthRange, perfectStrengthRange, left, movementType);
 
             ActiveHands.Add(h);
         }
@@ -208,10 +202,7 @@ namespace App {
             SpawnHand(movementType);
 
             //every ten hands split in half
-            if (Random.Range(0,10) == 0)
-            {
-                SpawnHand(movementType);
-            }
+            if (Random.Range(0,10) == 0) SpawnHand(movementType);
         }
 
         /// <summary>
