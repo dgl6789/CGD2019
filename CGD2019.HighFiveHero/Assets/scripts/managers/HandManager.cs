@@ -19,6 +19,7 @@ namespace App {
 
         // Min and max size of a hand.
         [SerializeField] Vector2 handSizeRange;
+        [SerializeField] float[] possibleHandSizes;
 
         // Object that holds all the hands.
         public Person handParent;
@@ -110,24 +111,15 @@ namespace App {
                 #region HAND SPAWNING
 
                 //spawns a hand every second
-                if (RunManager.Instance.TimePassed(previousGameTime, DifficultyManager.Instance.handSpawnInterval))
-                {
-                    for (int i = 0; i < DifficultyManager.Instance.maxHands; i++)
-                    {
-                        if (ActiveHands.Count <= DifficultyManager.Instance.maxHands)
-                        {
-                            SpawnHand();
-                        }
+                if (RunManager.Instance.TimePassed(previousGameTime, DifficultyManager.Instance.handSpawnInterval)) {
+                    for (int i = 0; i < DifficultyManager.Instance.maxHands; i++) {
+                        if (ActiveHands.Count <= DifficultyManager.Instance.maxHands) SpawnHand();
                     }
                     
                     previousGameTime = RunManager.Instance.CurrentGameTimer;
-                }
-                else if (RunManager.Instance.CurrentGameTimer >= 9.7f && previousGameTime == 10f)
-                {
-                    if (ActiveHands.Count <= DifficultyManager.Instance.maxHands)
-                    {
-                        SpawnHand();
-                    }
+                } else if (RunManager.Instance.CurrentGameTimer >= 9.7f && previousGameTime == 10f) {
+                    if (ActiveHands.Count <= DifficultyManager.Instance.maxHands) SpawnHand();
+
                     previousGameTime = RunManager.Instance.CurrentGameTimer;
                 }
                 #endregion
@@ -193,7 +185,9 @@ namespace App {
             bool left;
             a.Shoulder = handParent.GetShoulderTransform(h.transform.position, out left, true);
 
-            h.Initialize(Random.Range(handSizeRange.x, handSizeRange.y), acceptableStrengthRange, perfectStrengthRange, left, movementType);
+            float size = Mathf.Clamp(possibleHandSizes[Random.Range(0, possibleHandSizes.Length)], handSizeRange.x, handSizeRange.y);
+
+            h.Initialize(size, acceptableStrengthRange, perfectStrengthRange, left, movementType);
 
             ActiveHands.Add(h);
         }
@@ -208,10 +202,7 @@ namespace App {
             SpawnHand(movementType);
 
             //every ten hands split in half
-            if (Random.Range(0,10) == 0)
-            {
-                SpawnHand(movementType);
-            }
+            if (Random.Range(0,10) == 0) SpawnHand(movementType);
         }
 
         /// <summary>
@@ -257,15 +248,8 @@ namespace App {
             if (InputManager.Instance.MobilePlatform) {
                 // Get the relative strength of each new touch.
                 foreach (Touch t in touches) {
-                    bool newTouch = true;
 
-                    // Determine if this touch is actually a new one
-                    foreach (HighFive f in ActiveFives) {
-                        if (f.Touch.fingerId == t.fingerId)
-                            newTouch = false;
-                    }
-
-                    if (newTouch && t.phase == TouchPhase.Began) {
+                    if (t.phase == TouchPhase.Began) {
                         // Check if this touch was on a hand.
                         foreach(Hand h in ActiveHands) {
                             if(h.CheckCollision(Camera.main.ScreenToWorldPoint(t.position))) {
@@ -344,7 +328,7 @@ namespace App {
         /// <param name="origin">Transform of the origin hand.</param>
         /// <param name="count">Number of seconds to reflect.</param>
         /// <param name="success">Whether the time is being added or subtracted.</param>
-        public void SpawnTimeIndicator(Transform origin, int count, bool success = false) {
+        public void SpawnTimeIndicator(Transform origin, int count, bool toWeak, bool success = false) {
             string description = success ? "" : scoreIndicatorFailureDescriptions[Random.Range(0, scoreIndicatorFailureDescriptions.Length)];
             GameObject j = Instantiate(indicatorObjects[1], origin.position, Quaternion.identity, handParent.transform);
             Indicator i = j.GetComponent<Indicator>();
@@ -353,6 +337,14 @@ namespace App {
                 j.transform.GetChild(0).GetComponent<TMPro.TextMeshPro>().color = Color.red;
                 j.transform.GetChild(1).GetComponent<TMPro.TextMeshPro>().color = Color.red;
                 j.transform.GetChild(2).GetComponent<SpriteRenderer>().color = Color.red;
+            }
+            if (toWeak)
+            {
+                description = "To Weak!";
+            }
+            else
+            {
+                description = "To Strong!";
             }
             i.Initialize(count, description, false, success ? 0.15f : 0f);
         }

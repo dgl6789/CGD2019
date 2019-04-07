@@ -325,7 +325,7 @@ namespace App {
         /// <summary>
         /// To do when a high five on this hand was NOT in the acceptable strength range.
         /// </summary>
-        public void OnFailedFive(bool diff) {
+        public void OnFailedFive(bool toWeak) {
             // Spawn a failure indicator
             HandManager.Instance.SpawnTimeIndicator(transform, HandManager.Instance.FailedFiveTimePenalty, false);
 
