@@ -144,12 +144,16 @@ namespace App {
         /// initilizes hand by cpoying data from a given hand
         /// </summary>
         /// <param name="parentHand">hand to copy from</param>
+        /// <param name="oppositeDir">go in the same direction or the opposite one?</param>
         public void Initialize(Hand parentHand, bool oppositeDir)
         {
             //get size information from parent hand
             this.left = parentHand.left;
             this.size = parentHand.size;
             this.handObj = parentHand.handObj;
+
+            // set hand to appropriate position
+            this.transform.position = parentHand.transform.position;
 
             //Rendering Setup
             transform.localScale = new Vector2(size * (left ? -1 : 1), size);
@@ -178,6 +182,24 @@ namespace App {
                 //move opposite direction
                 this.angleStart = parentHand.angleEnd;
                 this.angleEnd = parentHand.angleStart;
+
+                //int deltaAngle = 0;
+                //if (this.angleStart > this.angleEnd)
+                //    deltaAngle = -120;
+                //else
+                //    deltaAngle = 120;
+
+                //adjustMovementRange = (deltaAngle != 0);
+                //this.angleEnd += deltaAngle;
+
+                //this.angleStart = parentHand.currentAngle;
+                //this.angleEnd = parentHand.angleStart + 120;
+
+                //parentHand.angleStart = parentHand.currentAngle;
+                //parentHand.angleEnd = parentHand.angleStart - 120;
+
+                //timePassed = 0;
+                //parentHand.timePassed = 0;
             }
             else
             {
@@ -187,7 +209,7 @@ namespace App {
             }
             this.currentAngle = parentHand.currentAngle;
 
-            // initialize time variables
+            //initialize time variables
             timePassed = moveInterval - parentHand.timePassed;
         }
 
