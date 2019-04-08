@@ -163,6 +163,7 @@ namespace App {
                 HighScore = value;
 
                 SaveManager.Instance.SetHighScore();
+                GPManager.Instance.AddScoreToLeaderboard(GPGSIds.leaderboard_best, value);
                 UIManager.Instance.SetBestScoreValue(HighScore);
             }
         }
