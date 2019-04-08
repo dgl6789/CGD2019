@@ -40,6 +40,7 @@ public class GPManager : MonoBehaviour
     }
 
     public void ShowAchievementsUI() {
+        Debug.Log("Showing Achievements UI");
         Social.ShowAchievementsUI();
     }
 
@@ -52,6 +53,7 @@ public class GPManager : MonoBehaviour
     }
 
     public void ShowLeaderboardUI() {
+        Debug.Log("Showing Leaderboard UI");
         Social.ShowLeaderboardUI();
     }
 
