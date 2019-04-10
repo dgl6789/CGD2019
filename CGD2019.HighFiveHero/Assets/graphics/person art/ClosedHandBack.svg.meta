@@ -2,9 +2,9 @@ fileFormatVersion: 2
 guid: 1971c558bb8d90648b528c48d99ad44a
 ScriptedImporter:
   fileIDToRecycleName:
-    100000: gameObject/HFH_ClosedHandBack
-    400000: gameObject/HFH_ClosedHandBack/Transform
-    21200000: gameObject/HFH_ClosedHandBack/SpriteRenderer
+    100002: gameObject/ClosedHandBack
+    400002: gameObject/ClosedHandBack/Transform
+    21200002: gameObject/ClosedHandBack/SpriteRenderer
     21300000: sprite
     100100000: gameObject
   externalObjects: {}

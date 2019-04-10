@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: a7e45870ec962f1459f23a2e55e8c320
+guid: e30d859514c2f334f9618b7a8853e719
 ScriptedImporter:
   fileIDToRecycleName:
-    100000: gameObject/HFH_HydraHand
-    400000: gameObject/HFH_HydraHand/Transform
-    21200000: gameObject/HFH_HydraHand/SpriteRenderer
+    100002: gameObject/ClosedHandFront
+    400002: gameObject/ClosedHandFront/Transform
+    21200002: gameObject/ClosedHandFront/SpriteRenderer
     21300000: sprite
     100100000: gameObject
   externalObjects: {}
@@ -14,7 +14,7 @@ ScriptedImporter:
   script: {fileID: 11500000, guid: a57477913897c46af95d590f580878bd, type: 3}
   svgType: 0
   texturedSpriteMeshType: 0
-  svgPixelsPerUnit: 75
+  svgPixelsPerUnit: 100
   gradientResolution: 128
   alignment: 0
   customPivot: {x: 0, y: 0}
@@ -40,16 +40,16 @@ ScriptedImporter:
   spriteData:
     TessellationDetail: 0
     SpriteRect:
-      name: HFH_HydraHandSprite
+      name: 
       originalName: 
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       alignment: 0
       border: {x: 0, y: 0, z: 0, w: 0}
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 80
-        height: 100
-      spriteID: 06636d234a791ab45b4cbb2ca7d44186
+        width: 0
+        height: 0
+      spriteID: 6a30417fb11a1fe4bb88b824d9d06b1b
     PhysicsOutlines: []
