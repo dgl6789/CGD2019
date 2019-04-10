@@ -128,6 +128,8 @@ MonoBehaviour:
   shakeAmount: 0
   shakeDuration: 0
   radius: 0.75
+  left: 0
+  handObj: 0
   RingObject: {fileID: 8564116866581092128, guid: 462b51a1836941b4db3817cde733eae3,
     type: 3}
   minStrengthToSpawnRing: 0.85

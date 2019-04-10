@@ -3,7 +3,7 @@ using UnityEngine;
 using App.Util;
 
 namespace App {
-    public enum HandMovement { RANDOM, GROW, SHRINK, OSCILLATE, JUMP };
+    public enum HandMovement { RANDOM, GROW, SHRINK, OSCILLATE, JUMP, HYDRA };
 
     public class Hand : MonoBehaviour {
 
@@ -11,7 +11,7 @@ namespace App {
         private HandMovement targetMovement;
         private HandMovement movementType;
         public HandMovement MovementType { get { return movementType; } }
-        public bool IsActive() { return (movementType == HandMovement.OSCILLATE || movementType == HandMovement.JUMP); }
+        public bool IsActive() { return (movementType == HandMovement.OSCILLATE || movementType == HandMovement.JUMP || movementType == HandMovement.HYDRA); }
 
         //in/out variables
         private float targetSize;
@@ -30,7 +30,6 @@ namespace App {
 
         //movement variables
         private float armRadius;
-        private int orbitAngle;
         private int angleStart;
         private int angleEnd;
         private int currentAngle;
@@ -43,7 +42,10 @@ namespace App {
 
         [SerializeField] float radius;
 
+        //initilized variables
+        public bool left;
         protected float size;
+        public int handObj;
 
         /// <summary>
         /// Initialize the hand object.
@@ -51,12 +53,14 @@ namespace App {
         /// <param name="size">Size to scale the hand by.</param>
         /// <param name="acceptableRange">Range (+-) of strength of an input to accept as a success.</param>
         /// <param name="movementType">Movement type. Defaults to oscillating</param>
-        public void Initialize(float size, float acceptableRange, float perfectRange, bool left, HandMovement movementType = HandMovement.RANDOM) {
+        public void Initialize(float size, float acceptableRange, float perfectRange, bool left, int handObj, HandMovement movementType = HandMovement.RANDOM) {
             //Rendering Setup
             transform.localScale = new Vector2(size * (left ? -1 : 1), size);
             GetComponentInParent<Arm>().AdjustWidthForHand(size);
             targetSize = size;
             this.size = size;
+            this.left = left;
+            this.handObj = handObj;
 
             // Strength parameter setup
             this.acceptableRange = acceptableRange;
@@ -66,11 +70,34 @@ namespace App {
             
             if (movementType == HandMovement.RANDOM)
             {
-                //fifty percent chance to become oscillating or jumping
-                if (Random.Range(0, 2) == 0)
-                    targetMovement = HandMovement.JUMP;
-                else
-                    targetMovement = HandMovement.OSCILLATE;
+                //randomly determines movement type
+                switch (Random.Range(0,15))
+                {
+                    case 0:
+                        targetMovement = HandMovement.HYDRA;
+                        break;
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                    case 6:
+                    case 7:
+                        targetMovement = HandMovement.JUMP;
+                        break;
+                    case 8:
+                    case 9:
+                    case 10:
+                    case 11:
+                    case 12:
+                    case 13:
+                    case 14:
+                        targetMovement = HandMovement.OSCILLATE;
+                        break;
+                    default:
+                        targetMovement = HandMovement.OSCILLATE;
+                        break;
+                }
             }
             else
             {
@@ -83,9 +110,9 @@ namespace App {
             timePassed = 0.0f;
 
             //initialize movement variables
-            orbitAngle = Random.Range(0, 360);
             switch (targetMovement)
             {
+                case HandMovement.HYDRA:
                 case HandMovement.OSCILLATE:
                     moveInterval = Random.Range(1.0f, 5.0f);
                     angleStart = Random.Range(0, 360);
@@ -111,7 +138,81 @@ namespace App {
             float horzExtent = vertExtent * (Screen.width / (float)Screen.height);
 
             armRadius = (horzExtent / 2f) - (1f - Random.Range(0, 25) / 100f); //half screen width - padding
+        }
 
+        /// <summary>
+        /// initilizes hand by cpoying data from a given hand
+        /// </summary>
+        /// <param name="parentHand">hand to copy from</param>
+        /// <param name="oppositeDir">go in the same direction or the opposite one?</param>
+        public void Initialize(Hand parentHand, bool oppositeDir)
+        {
+            //get size information from parent hand
+            this.left = parentHand.left;
+            this.size = parentHand.size;
+            this.handObj = parentHand.handObj;
+
+            // set hand to appropriate position
+            //this.transform.position = parentHand.transform.position;
+
+            //Rendering Setup
+            transform.localScale = new Vector2(size * (left ? -1 : 1), size);
+            GetComponentInParent<Arm>().AdjustWidthForHand(size);
+            targetSize = size;
+
+            // Strength parameter setup
+            this.acceptableRange = parentHand.acceptableRange;
+            this.perfectRange = parentHand.perfectRange;
+
+            targetStrength = HandManager.Instance.HandSizetoTargetStrength(size);
+
+            // initialize time variables
+            timePassed = moveInterval - parentHand.timePassed;
+
+            //get movement information from parent hand
+            this.movementType = parentHand.movementType;
+
+            this.moveInterval = parentHand.moveInterval;
+            this.TransitionInterval = parentHand.TransitionInterval;
+            
+            this.armRadius = parentHand.armRadius;
+
+            if (oppositeDir)
+            {
+                //move opposite direction
+                //this.angleStart = parentHand.angleEnd;
+                //this.angleEnd = parentHand.angleStart;
+
+                //int deltaAngle = 0;
+                //if (this.angleStart > this.angleEnd)
+                //    deltaAngle = -120;
+                //else
+                //    deltaAngle = 120;
+
+                //adjustMovementRange = (deltaAngle != 0);
+                //this.angleEnd += deltaAngle;
+
+                this.angleStart = parentHand.currentAngle;
+                this.angleEnd = parentHand.currentAngle + 120;
+
+                MoveHand(this.angleStart);
+
+                parentHand.angleStart = parentHand.currentAngle;
+                parentHand.angleEnd = parentHand.currentAngle - 120;
+
+                timePassed = 0;
+                parentHand.timePassed = 0;
+            }
+            else
+            {
+                //move in the same direction
+                this.angleStart = parentHand.angleStart;
+                this.angleEnd = parentHand.angleEnd;
+            }
+            //this.currentAngle = parentHand.currentAngle;
+
+            ////initialize time variables
+            //timePassed = moveInterval - parentHand.timePassed;
         }
 
         /// <summary>
@@ -141,6 +242,9 @@ namespace App {
                 case HandMovement.JUMP:
                     Jump();
                     break;
+                case HandMovement.HYDRA:
+                    Oscillate();
+                    break;
                 case HandMovement.GROW:
                     Grow();
                     break;
@@ -151,8 +255,6 @@ namespace App {
                     // Debug.Log(movementType + " isn't an accepted movement type");
                     break;
             }
-
-            //Orbit();
 
             //reset interval if it passed
             if (intervalPassed)
@@ -201,14 +303,6 @@ namespace App {
                 angleEnd = angleStart;
                 angleStart = temp;
             }
-        }
-
-        /// <summary>
-        /// Hands move in little circles
-        /// </summary>
-        private void Orbit()
-        {
-            // Debug.Log("Orbiting");
         }
 
         /// <summary>
@@ -335,6 +429,10 @@ namespace App {
             //Pull back the difficulty
             DifficultyManager.Instance.OnMiss();
             // TODO: Spawn a visual effect.
+
+            //split if hydra
+            if (movementType == HandMovement.HYDRA)
+                HandManager.Instance.CopyHand(this, true);
         }
 
         /// <summary>

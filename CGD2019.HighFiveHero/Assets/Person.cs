@@ -31,6 +31,19 @@ namespace App {
             return left ? shoulderLeft : shoulderRight;
         }
 
+        /// <summary>
+        /// get the transform of a specific shoulder
+        /// </summary>
+        /// <param name="left">bool to specify shoulder</param>
+        /// <returns></returns>
+        public Transform GetShoulderTransform(bool left)
+        {
+            if (left)
+                return shoulderLeft;
+            else
+                return shoulderRight;
+        }
+
         public void RemoveArm(Transform shoulder) {
             if (shoulder.Equals(shoulderLeft)) LeftArmCount--;
             else RightArmCount--;
