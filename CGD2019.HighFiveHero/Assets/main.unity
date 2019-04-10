@@ -4361,7 +4361,7 @@ Material:
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: f65ea94c18747c145ac677ea49960912, type: 3}
         m_Scale: {x: 4, y: 4}
-        m_Offset: {x: 0.050119538, y: 0.050119538}
+        m_Offset: {x: 0.022, y: 0.022}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -4737,6 +4737,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handSpawnInterval: 0
   maxHands: 0
+  specialtyHandRate: 0.2
 --- !u!114 &1331530277
 MonoBehaviour:
   m_ObjectHideFlags: 0
