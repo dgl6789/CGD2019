@@ -153,7 +153,7 @@ namespace App {
             this.handObj = parentHand.handObj;
 
             // set hand to appropriate position
-            this.transform.position = parentHand.transform.position;
+            //this.transform.position = parentHand.transform.position;
 
             //Rendering Setup
             transform.localScale = new Vector2(size * (left ? -1 : 1), size);
@@ -180,8 +180,8 @@ namespace App {
             if (oppositeDir)
             {
                 //move opposite direction
-                this.angleStart = parentHand.angleEnd;
-                this.angleEnd = parentHand.angleStart;
+                //this.angleStart = parentHand.angleEnd;
+                //this.angleEnd = parentHand.angleStart;
 
                 //int deltaAngle = 0;
                 //if (this.angleStart > this.angleEnd)
@@ -192,14 +192,16 @@ namespace App {
                 //adjustMovementRange = (deltaAngle != 0);
                 //this.angleEnd += deltaAngle;
 
-                //this.angleStart = parentHand.currentAngle;
-                //this.angleEnd = parentHand.angleStart + 120;
+                this.angleStart = parentHand.currentAngle;
+                this.angleEnd = parentHand.currentAngle + 120;
 
-                //parentHand.angleStart = parentHand.currentAngle;
-                //parentHand.angleEnd = parentHand.angleStart - 120;
+                MoveHand(this.angleStart);
 
-                //timePassed = 0;
-                //parentHand.timePassed = 0;
+                parentHand.angleStart = parentHand.currentAngle;
+                parentHand.angleEnd = parentHand.currentAngle - 120;
+
+                timePassed = 0;
+                parentHand.timePassed = 0;
             }
             else
             {
@@ -207,10 +209,10 @@ namespace App {
                 this.angleStart = parentHand.angleStart;
                 this.angleEnd = parentHand.angleEnd;
             }
-            this.currentAngle = parentHand.currentAngle;
+            //this.currentAngle = parentHand.currentAngle;
 
-            //initialize time variables
-            timePassed = moveInterval - parentHand.timePassed;
+            ////initialize time variables
+            //timePassed = moveInterval - parentHand.timePassed;
         }
 
         /// <summary>
