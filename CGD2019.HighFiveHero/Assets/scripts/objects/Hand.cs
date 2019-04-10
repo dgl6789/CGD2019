@@ -71,32 +71,13 @@ namespace App {
             if (movementType == HandMovement.RANDOM)
             {
                 //randomly determines movement type
-                switch (Random.Range(0,15))
+                if (Random.Range(0, 2) == 0)
                 {
-                    case 0:
-                        targetMovement = HandMovement.HYDRA;
-                        break;
-                    case 1:
-                    case 2:
-                    case 3:
-                    case 4:
-                    case 5:
-                    case 6:
-                    case 7:
-                        targetMovement = HandMovement.JUMP;
-                        break;
-                    case 8:
-                    case 9:
-                    case 10:
-                    case 11:
-                    case 12:
-                    case 13:
-                    case 14:
-                        targetMovement = HandMovement.OSCILLATE;
-                        break;
-                    default:
-                        targetMovement = HandMovement.OSCILLATE;
-                        break;
+                    targetMovement = HandMovement.OSCILLATE;
+                }
+                else
+                {
+                    targetMovement = HandMovement.JUMP;
                 }
             }
             else
@@ -153,7 +134,7 @@ namespace App {
             this.handObj = parentHand.handObj;
 
             // set hand to appropriate position
-            //this.transform.position = parentHand.transform.position;
+            this.transform.position = parentHand.transform.position;
 
             //Rendering Setup
             transform.localScale = new Vector2(size * (left ? -1 : 1), size);
@@ -180,18 +161,6 @@ namespace App {
             if (oppositeDir)
             {
                 //move opposite direction
-                //this.angleStart = parentHand.angleEnd;
-                //this.angleEnd = parentHand.angleStart;
-
-                //int deltaAngle = 0;
-                //if (this.angleStart > this.angleEnd)
-                //    deltaAngle = -120;
-                //else
-                //    deltaAngle = 120;
-
-                //adjustMovementRange = (deltaAngle != 0);
-                //this.angleEnd += deltaAngle;
-
                 this.angleStart = parentHand.currentAngle;
                 this.angleEnd = parentHand.currentAngle + 120;
 
@@ -208,11 +177,12 @@ namespace App {
                 //move in the same direction
                 this.angleStart = parentHand.angleStart;
                 this.angleEnd = parentHand.angleEnd;
-            }
-            //this.currentAngle = parentHand.currentAngle;
 
-            ////initialize time variables
-            //timePassed = moveInterval - parentHand.timePassed;
+                this.currentAngle = parentHand.currentAngle;
+
+                ////initialize time variables
+                timePassed = moveInterval - parentHand.timePassed;
+            }
         }
 
         /// <summary>

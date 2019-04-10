@@ -114,12 +114,12 @@ namespace App {
                 //spawns a hand every second
                 if (RunManager.Instance.TimePassed(previousGameTime, DifficultyManager.Instance.handSpawnInterval)) {
                     for (int i = 0; i < DifficultyManager.Instance.maxHands; i++) {
-                        if (ActiveHands.Count <= DifficultyManager.Instance.maxHands) SpawnHand();
+                        if (ActiveHands.Count <= DifficultyManager.Instance.maxHands) SpawnHand(HandMovement.HYDRA);
                     }
                     
                     previousGameTime = RunManager.Instance.CurrentGameTimer;
                 } else if (RunManager.Instance.CurrentGameTimer >= 9.7f && previousGameTime == 10f) {
-                    if (ActiveHands.Count <= DifficultyManager.Instance.maxHands) SpawnHand();
+                    if (ActiveHands.Count <= DifficultyManager.Instance.maxHands) SpawnHand(HandMovement.HYDRA);
 
                     previousGameTime = RunManager.Instance.CurrentGameTimer;
                 }
@@ -180,7 +180,11 @@ namespace App {
         /// <param name="movementType">Movement type for hand. Defaults to random selection</param>
         private void SpawnHand(HandMovement movementType = HandMovement.RANDOM) {
             // TODO: Have this method attach the spawned hand to the guy, put it at a reasonable starting position, etc.
-            int handObj = Random.Range(0f, 1f) < ringHandSpawnRate ? 1 : 0;
+            int handObj;
+            if (movementType == HandMovement.HYDRA)
+                handObj = 2;
+            else
+                handObj = Random.Range(0f, 1f) < ringHandSpawnRate ? 1 : 0;
             Hand h = Instantiate(HandObjects[handObj], handParent.transform).GetComponentInChildren<Hand>();
             Arm a = h.GetComponentInParent<Arm>();
 
