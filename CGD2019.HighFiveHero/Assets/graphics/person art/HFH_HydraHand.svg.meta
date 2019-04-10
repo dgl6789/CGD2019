@@ -1,16 +1,18 @@
 fileFormatVersion: 2
-guid: 309a2b0e150f17d4a82b5a1d21019e16
+guid: a7e45870ec962f1459f23a2e55e8c320
 ScriptedImporter:
   fileIDToRecycleName:
-    2800000: tex
+    100000: gameObject/HFH_HydraHand
+    400000: gameObject/HFH_HydraHand/Transform
+    21200000: gameObject/HFH_HydraHand/SpriteRenderer
     21300000: sprite
-    2186277476908879412: ImportLogs
+    100100000: gameObject
   externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: a57477913897c46af95d590f580878bd, type: 3}
-  svgType: 1
+  svgType: 0
   texturedSpriteMeshType: 0
   svgPixelsPerUnit: 100
   gradientResolution: 128
@@ -29,10 +31,10 @@ ScriptedImporter:
   maxTangentAngleEnabled: 0
   maxTangentAngle: 5
   keepTextureAspectRatio: 1
-  textureSize: 512
+  textureSize: 256
   textureWidth: 256
   textureHeight: 256
-  wrapMode: 1
+  wrapMode: 0
   filterMode: 1
   sampleCount: 4
   spriteData:
@@ -49,5 +51,5 @@ ScriptedImporter:
         y: 0
         width: 0
         height: 0
-      spriteID: db7daf6c4b1c76543a2ad2c04aa571e3
+      spriteID: 06636d234a791ab45b4cbb2ca7d44186
     PhysicsOutlines: []

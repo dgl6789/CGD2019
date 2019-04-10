@@ -19,6 +19,7 @@ namespace App {
 
         // Min and max size of a hand.
         [SerializeField] Vector2 handSizeRange;
+        [SerializeField] float[] possibleHandSizes;
 
         // Object that holds all the hands.
         public Person handParent;
@@ -111,24 +112,15 @@ namespace App {
                 #region HAND SPAWNING
 
                 //spawns a hand every second
-                if (RunManager.Instance.TimePassed(previousGameTime, DifficultyManager.Instance.handSpawnInterval))
-                {
-                    for (int i = 0; i < DifficultyManager.Instance.maxHands; i++)
-                    {
-                        if (ActiveHands.Count <= DifficultyManager.Instance.maxHands)
-                        {
-                            SpawnHand(HandMovement.HYDRA);
-                        }
+                if (RunManager.Instance.TimePassed(previousGameTime, DifficultyManager.Instance.handSpawnInterval)) {
+                    for (int i = 0; i < DifficultyManager.Instance.maxHands; i++) {
+                        if (ActiveHands.Count <= DifficultyManager.Instance.maxHands) SpawnHand();
                     }
                     
                     previousGameTime = RunManager.Instance.CurrentGameTimer;
-                }
-                else if (RunManager.Instance.CurrentGameTimer >= 9.7f && previousGameTime == 10f)
-                {
-                    if (ActiveHands.Count <= DifficultyManager.Instance.maxHands)
-                    {
-                        SpawnHand(HandMovement.HYDRA);
-                    }
+                } else if (RunManager.Instance.CurrentGameTimer >= 9.7f && previousGameTime == 10f) {
+                    if (ActiveHands.Count <= DifficultyManager.Instance.maxHands) SpawnHand();
+
                     previousGameTime = RunManager.Instance.CurrentGameTimer;
                 }
                 #endregion
@@ -195,7 +187,9 @@ namespace App {
             bool left;
             a.Shoulder = handParent.GetShoulderTransform(h.transform.position, out left, true);
 
-            h.Initialize(Random.Range(handSizeRange.x, handSizeRange.y), acceptableStrengthRange, perfectStrengthRange, left, handObj, movementType);
+            float size = Mathf.Clamp(possibleHandSizes[Random.Range(0, possibleHandSizes.Length)], handSizeRange.x, handSizeRange.y);
+
+            h.Initialize(size, acceptableStrengthRange, perfectStrengthRange, left, movementType);
 
             ActiveHands.Add(h);
         }
@@ -260,15 +254,8 @@ namespace App {
             if (InputManager.Instance.MobilePlatform) {
                 // Get the relative strength of each new touch.
                 foreach (Touch t in touches) {
-                    bool newTouch = true;
 
-                    // Determine if this touch is actually a new one
-                    foreach (HighFive f in ActiveFives) {
-                        if (f.Touch.fingerId == t.fingerId)
-                            newTouch = false;
-                    }
-
-                    if (newTouch && t.phase == TouchPhase.Began) {
+                    if (t.phase == TouchPhase.Began) {
                         // Check if this touch was on a hand.
                         foreach(Hand h in ActiveHands) {
                             if(h.CheckCollision(Camera.main.ScreenToWorldPoint(t.position))) {
