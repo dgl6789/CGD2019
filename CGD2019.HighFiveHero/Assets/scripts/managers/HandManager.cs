@@ -189,7 +189,7 @@ namespace App {
 
             float size = Mathf.Clamp(possibleHandSizes[Random.Range(0, possibleHandSizes.Length)], handSizeRange.x, handSizeRange.y);
 
-            h.Initialize(size, acceptableStrengthRange, perfectStrengthRange, left, movementType);
+            h.Initialize(size, acceptableStrengthRange, perfectStrengthRange, left, handObj, movementType);
 
             ActiveHands.Add(h);
         }
