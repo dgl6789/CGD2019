@@ -3,47 +3,57 @@ using UnityEngine;
 using App.Util;
 
 namespace App {
-    public enum HandMovement { RANDOM, GROW, SHRINK, OSCILLATE, JUMP };
+    public enum HandMovement { RANDOM, GROW, SHRINK, OSCILLATE, JUMP, HYDRA, FIST };
 
     public class Hand : MonoBehaviour {
 
         //movement type
-        private HandMovement targetMovement;
+        protected HandMovement targetMovement;
         private HandMovement movementType;
         public HandMovement MovementType { get { return movementType; } }
-        public bool IsActive() { return (movementType == HandMovement.OSCILLATE || movementType == HandMovement.JUMP); }
+        public bool IsActive() {
+            return (
+                movementType != HandMovement.RANDOM && 
+                movementType != HandMovement.GROW && 
+                movementType != HandMovement.SHRINK);
+        }
 
         //in/out variables
-        private float targetSize;
-        private float minSize = 0.1f;
+        protected float targetSize;
+        protected float minSize = 0.1f;
 
         //time tracking variables
-        private float moveInterval;
-        [SerializeField] private float TransitionInterval;
+        protected float moveInterval;
+        [SerializeField] protected float TransitionInterval;
 
-        private float timePassed;
-        private bool intervalPassed;
+        protected float timePassed;
+        protected bool intervalPassed;
 
         // Effects
         [SerializeField] float shakeAmount;
         [SerializeField] float shakeDuration;
 
         //movement variables
-        private float armRadius;
-        private int orbitAngle;
-        private int angleStart;
-        private int angleEnd;
-        private int currentAngle;
+        protected float armRadius;
+        protected int angleStart;
+        protected int angleEnd;
+        protected int currentAngle;
 
-        private float acceptableRange;
-        private float perfectRange;
+        protected float acceptableRange;
+        protected float perfectRange;
 
-        private float targetStrength;
+        protected float targetStrength;
         public float TargetStrength { get { return targetStrength; } }
 
         [SerializeField] float radius;
 
+        //closed open state
+        public bool isOpen = true;
+
+        //initialized variables
+        public bool left;
         protected float size;
+        public int handObj;
 
         /// <summary>
         /// Initialize the hand object.
@@ -51,26 +61,43 @@ namespace App {
         /// <param name="size">Size to scale the hand by.</param>
         /// <param name="acceptableRange">Range (+-) of strength of an input to accept as a success.</param>
         /// <param name="movementType">Movement type. Defaults to oscillating</param>
-        public void Initialize(float size, float acceptableRange, float perfectRange, bool left, HandMovement movementType = HandMovement.RANDOM) {
+        public void Initialize(float size, float acceptableRange, float perfectRange, bool left, int handObj, HandMovement movementType = HandMovement.RANDOM) {
             //Rendering Setup
             transform.localScale = new Vector2(size * (left ? -1 : 1), size);
             GetComponentInParent<Arm>().AdjustWidthForHand(size);
             targetSize = size;
+
+            //set copying reference variables
             this.size = size;
+            this.left = left;
+            this.handObj = handObj;
 
             // Strength parameter setup
             this.acceptableRange = acceptableRange;
             this.perfectRange = perfectRange;
 
+            //TODO: make specialty hands harder to hit?
+            //if (movementType == HandMovement.HYDRA || movementType == HandMovement.FIST)
+            //{
+            //    float specialtyStrModifier = 0.8f;
+
+            //    this.acceptableRange *= specialtyStrModifier;
+            //    this.perfectRange *= specialtyStrModifier;
+            //}
+
             targetStrength = HandManager.Instance.HandSizetoTargetStrength(size);
             
             if (movementType == HandMovement.RANDOM)
             {
-                //fifty percent chance to become oscillating or jumping
+                //randomly determines movement type
                 if (Random.Range(0, 2) == 0)
-                    targetMovement = HandMovement.JUMP;
-                else
+                {
                     targetMovement = HandMovement.OSCILLATE;
+                }
+                else
+                {
+                    targetMovement = HandMovement.JUMP;
+                }
             }
             else
             {
@@ -83,9 +110,9 @@ namespace App {
             timePassed = 0.0f;
 
             //initialize movement variables
-            orbitAngle = Random.Range(0, 360);
             switch (targetMovement)
             {
+                case HandMovement.HYDRA:
                 case HandMovement.OSCILLATE:
                     moveInterval = Random.Range(1.0f, 5.0f);
                     angleStart = Random.Range(0, 360);
@@ -99,8 +126,9 @@ namespace App {
 
                     currentAngle = angleStart;
                     break;
+                case HandMovement.FIST:
                 case HandMovement.JUMP:
-                    moveInterval = Random.Range(0.0f, 1.0f) + 0.5f;
+                    moveInterval = Random.Range(0.0f, 1.0f) + 0.75f;
                     
                     currentAngle = angleEnd = angleStart = Random.Range(0, 360);
                     break;
@@ -111,7 +139,70 @@ namespace App {
             float horzExtent = vertExtent * (Screen.width / (float)Screen.height);
 
             armRadius = (horzExtent / 2f) - (1f - Random.Range(0, 25) / 100f); //half screen width - padding
+        }
 
+        /// <summary>
+        /// initilizes hand by cpoying data from a given hand
+        /// </summary>
+        /// <param name="parentHand">hand to copy from</param>
+        /// <param name="oppositeDir">go in the same direction or the opposite one?</param>
+        public void Initialize(Hand parentHand, bool oppositeDir)
+        {
+            //get size information from parent hand
+            this.left = parentHand.left;
+            this.size = parentHand.size;
+            this.handObj = parentHand.handObj;
+
+            // set hand to appropriate position
+            this.transform.position = parentHand.transform.position;
+
+            //Rendering Setup
+            transform.localScale = new Vector2(size * (left ? -1 : 1), size);
+            GetComponentInParent<Arm>().AdjustWidthForHand(size);
+            targetSize = size;
+
+            // Strength parameter setup
+            this.acceptableRange = parentHand.acceptableRange;
+            this.perfectRange = parentHand.perfectRange;
+
+            targetStrength = HandManager.Instance.HandSizetoTargetStrength(size);
+
+            // initialize time variables
+            timePassed = moveInterval - parentHand.timePassed;
+
+            //get movement information from parent hand
+            this.movementType = parentHand.movementType;
+
+            this.moveInterval = parentHand.moveInterval;
+            this.TransitionInterval = parentHand.TransitionInterval;
+            
+            this.armRadius = parentHand.armRadius;
+
+            if (oppositeDir)
+            {
+                //move opposite direction
+                this.angleStart = parentHand.currentAngle;
+                this.angleEnd = parentHand.currentAngle + 120;
+
+                MoveHand(this.angleStart);
+
+                parentHand.angleStart = parentHand.currentAngle;
+                parentHand.angleEnd = parentHand.currentAngle - 120;
+
+                timePassed = 0;
+                parentHand.timePassed = 0;
+            }
+            else
+            {
+                //move in the same direction
+                this.angleStart = parentHand.angleStart;
+                this.angleEnd = parentHand.angleEnd;
+
+                this.currentAngle = parentHand.currentAngle;
+
+                ////initialize time variables
+                timePassed = moveInterval - parentHand.timePassed;
+            }
         }
 
         /// <summary>
@@ -135,9 +226,11 @@ namespace App {
 
             switch (movementType)
             {
+                case HandMovement.HYDRA:
                 case HandMovement.OSCILLATE:
                     Oscillate();
                     break;
+                case HandMovement.FIST:
                 case HandMovement.JUMP:
                     Jump();
                     break;
@@ -152,8 +245,6 @@ namespace App {
                     break;
             }
 
-            //Orbit();
-
             //reset interval if it passed
             if (intervalPassed)
                 timePassed = 0.0f;
@@ -162,7 +253,7 @@ namespace App {
         /// <summary>
         /// Jump the hand to a new spot on the arc
         /// </summary>
-        private void Jump()
+        protected virtual void Jump()
         {
             //generate a new jump angle when the interval is over
             if (intervalPassed)
@@ -204,14 +295,6 @@ namespace App {
         }
 
         /// <summary>
-        /// Hands move in little circles
-        /// </summary>
-        private void Orbit()
-        {
-            // Debug.Log("Orbiting");
-        }
-
-        /// <summary>
         /// grow hand into existence
         /// </summary>
         private void Grow()
@@ -226,11 +309,13 @@ namespace App {
 
             //start moving if growth is complete
             if (intervalPassed)
+            {
                 ChangeMovementType(targetMovement);
+            }
 
             //adjust scale
-            transform.localScale = new Vector2(Mathf.Sign(transform.localScale.x) * size, size);
             GetComponentInParent<Arm>().AdjustWidthForHand(size);
+            transform.localScale = new Vector2(Mathf.Sign(transform.localScale.x) * size, size);
 
             //move hand to new position
             MoveHand(currentAngle, radius);
@@ -266,7 +351,7 @@ namespace App {
         /// </summary>
         /// <param name="armAngle">angle to move the hand to</param>
         /// <param name="radius">distance from the shoulder to position the hand</param>
-        private void MoveHand(int armAngle, float radius = -1.0f)
+        protected void MoveHand(int armAngle, float radius = -1.0f)
         {
             //find hand position
             Vector3 handPos = new Vector3(HandManager.Instance.CosLookUp(armAngle), HandManager.Instance.SinLookUp(armAngle), 0.0f);
@@ -335,6 +420,10 @@ namespace App {
             //Pull back the difficulty
             DifficultyManager.Instance.OnMiss();
             // TODO: Spawn a visual effect.
+
+            //split if hydra
+            if (movementType == HandMovement.HYDRA)
+                HandManager.Instance.CopyHand(this, true);
         }
 
         /// <summary>
