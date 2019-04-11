@@ -23,10 +23,10 @@ public class RingManager : MonoBehaviour
     public List<Theme> bought;
     public void setThemes(bool[] b)
     {
-        b[6] = true;
-        for (int i = 0; i < b.Length; i++)
+        App.SaveManager.Instance.LoadedData.Bought[(int)Theme.tigres]=true;
+        for (int i = 0; i < App.SaveManager.Instance.LoadedData.Bought.Length; i++)
         {
-            if (b[i])
+            if (App.SaveManager.Instance.LoadedData.Bought[i])
             {
                 bought.Add((Theme)i);
             }
