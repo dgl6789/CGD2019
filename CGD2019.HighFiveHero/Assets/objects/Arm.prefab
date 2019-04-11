@@ -264,10 +264,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 122}
     m_Modifications:
-    - target: {fileID: 1582009971726270, guid: 6675bdddc22e8fa47b4602f734dce33c, type: 3}
-      propertyPath: m_Name
-      value: Hand
-      objectReference: {fileID: 0}
     - target: {fileID: 4020630633370558, guid: 6675bdddc22e8fa47b4602f734dce33c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1
@@ -312,13 +308,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1582009971726270, guid: 6675bdddc22e8fa47b4602f734dce33c, type: 3}
+      propertyPath: m_Name
+      value: Hand
+      objectReference: {fileID: 0}
     - target: {fileID: 4767510038862490, guid: 6675bdddc22e8fa47b4602f734dce33c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.155
+      value: -0.1121
       objectReference: {fileID: 0}
     - target: {fileID: 4767510038862490, guid: 6675bdddc22e8fa47b4602f734dce33c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.499
+      value: 0.4381
+      objectReference: {fileID: 0}
+    - target: {fileID: 4767510038862490, guid: 6675bdddc22e8fa47b4602f734dce33c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.4170783
+      objectReference: {fileID: 0}
+    - target: {fileID: 4767510038862490, guid: 6675bdddc22e8fa47b4602f734dce33c, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.4170783
+      objectReference: {fileID: 0}
+    - target: {fileID: 4767510038862490, guid: 6675bdddc22e8fa47b4602f734dce33c, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.4170783
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6675bdddc22e8fa47b4602f734dce33c, type: 3}

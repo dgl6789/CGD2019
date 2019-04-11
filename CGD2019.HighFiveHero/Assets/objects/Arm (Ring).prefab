@@ -327,12 +327,27 @@ PrefabInstance:
     - target: {fileID: 7042426061438506967, guid: 8f36aad1b3c82424ca6909878bf13a44,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.477
+      value: 0.491
       objectReference: {fileID: 0}
     - target: {fileID: 7042426061438506967, guid: 8f36aad1b3c82424ca6909878bf13a44,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.157
+      value: -0.088
+      objectReference: {fileID: 0}
+    - target: {fileID: 7042426061438506967, guid: 8f36aad1b3c82424ca6909878bf13a44,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5348248
+      objectReference: {fileID: 0}
+    - target: {fileID: 7042426061438506967, guid: 8f36aad1b3c82424ca6909878bf13a44,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5348248
+      objectReference: {fileID: 0}
+    - target: {fileID: 7042426061438506967, guid: 8f36aad1b3c82424ca6909878bf13a44,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5348248
       objectReference: {fileID: 0}
     - target: {fileID: 5961469278266279608, guid: 8f36aad1b3c82424ca6909878bf13a44,
         type: 3}
@@ -343,6 +358,22 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.117
+      objectReference: {fileID: 0}
+    - target: {fileID: 7158969220851184249, guid: 8f36aad1b3c82424ca6909878bf13a44,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 76c6a8328b52de44bac6a7be1748ea9b,
+        type: 3}
+    - target: {fileID: 7158969220851184249, guid: 8f36aad1b3c82424ca6909878bf13a44,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 0.70487297
+      objectReference: {fileID: 0}
+    - target: {fileID: 7158969220851184249, guid: 8f36aad1b3c82424ca6909878bf13a44,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.9998745
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8f36aad1b3c82424ca6909878bf13a44, type: 3}

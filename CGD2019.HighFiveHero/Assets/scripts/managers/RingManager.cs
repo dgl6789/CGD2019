@@ -23,6 +23,8 @@ public class RingManager : MonoBehaviour
     public List<Theme> bought;
     public void setThemes(bool[] b)
     {
+
+
         b[6] = true;
         for (int i = 0; i < b.Length; i++)
         {
