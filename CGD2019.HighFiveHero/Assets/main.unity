@@ -4381,7 +4381,7 @@ Material:
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: f65ea94c18747c145ac677ea49960912, type: 3}
         m_Scale: {x: 4, y: 4}
-        m_Offset: {x: 0.072000004, y: 0.072000004}
+        m_Offset: {x: 0.014, y: 0.014}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -4619,9 +4619,10 @@ GameObject:
   - component: {fileID: 1331530274}
   - component: {fileID: 1331530282}
   - component: {fileID: 1331530281}
+  - component: {fileID: 1331530284}
+  - component: {fileID: 1331530285}
   - component: {fileID: 1331530280}
   - component: {fileID: 1331530283}
-  - component: {fileID: 1331530284}
   m_Layer: 0
   m_Name: _Managers
   m_TagString: Untagged
@@ -4969,6 +4970,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 554e85aa19b726b46b10ef7058c3c1b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1331530285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331530273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcf66c03cd840794b90257fe97e1fb91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bought: 
 --- !u!1 &1362455035
 GameObject:
   m_ObjectHideFlags: 0

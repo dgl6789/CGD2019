@@ -31,7 +31,7 @@ namespace App {
         private void Awake() {
             if (Instance == null) Instance = this;
             else Destroy(this);
-
+            
             if (this) LoadedData = LoadData();
             ApplyLoadedData();
         }
@@ -83,7 +83,17 @@ namespace App {
             LoadedData.MusicVolume = musicVolume;
             LoadedData.SfxVolume = sfxVolume;
         }
-
+        /// <summary>
+        /// save unlocked themes
+        /// </summary>
+        public void SaveThemes()
+        {
+            LoadedData.Bought = new bool[7];
+            for (int i = 0; i < RingManager.Instance.bought.Count; i++)
+            {
+                LoadedData.Bought[(int)RingManager.Instance.bought[i]] = true;
+            }
+        }
         /// <summary>
         /// Save or load data when the app loses or gains focus, respectively.
         /// </summary>
@@ -148,7 +158,7 @@ namespace App {
             RunManager.Instance.HighScore = LoadedData.HighScore;
             RunManager.Instance.Currency = LoadedData.Currency;
 
-            RingManager.Instance.setThemes(LoadedData.Bought);
+            
 
             UIManager.Instance.SetBestScoreValue(LoadedData.HighScore);
 

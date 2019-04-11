@@ -23,7 +23,7 @@ public class RingManager : MonoBehaviour
     public List<Theme> bought;
     public void setThemes(bool[] b)
     {
-        
+        b[1] = true;
         for (int i = 0; i < b.Length; i++)
         {
             if (b[i])
@@ -35,22 +35,26 @@ public class RingManager : MonoBehaviour
     public bool unlockTheme(Theme T)
     {
         
-        if (bought.Contains(T))
+        if (App.SaveManager.Instance.LoadedData.Bought[(int)T])
         {
             return true;
         }
-        else if (Rings > 40)
+        else if (Rings >= 20)
         {
-            Rings -= 40;
-            App.SaveManager.Instance.LoadedData.Bought[(int)T] = true;
+            
+            bought.Add(T);//thx diana
+            Rings -= 20;
+            App.SaveManager.Instance.SaveThemes();
             return true;
         }
         return false;
     }
+    
     private void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(this);
+        setThemes(App.SaveManager.Instance.LoadedData.Bought);
     }
     // Start is called before the first frame update
     void Start()

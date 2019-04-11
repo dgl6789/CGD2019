@@ -40,6 +40,10 @@ namespace App {
         protected int currentAngle;
 
         protected float acceptableRange;
+        public float AcceptableRange
+        {
+            get { return acceptableRange; }
+        }
         protected float perfectRange;
 
         protected float targetStrength;
@@ -412,7 +416,7 @@ namespace App {
         /// </summary>
         public void OnFailedFive(bool toWeak) {
             // Spawn a failure indicator
-            HandManager.Instance.SpawnTimeIndicator(transform, HandManager.Instance.FailedFiveTimePenalty, false);
+            HandManager.Instance.SpawnTimeIndicator(transform, HandManager.Instance.FailedFiveTimePenalty, toWeak);
 
             // Subtract from the time.
             RunManager.Instance.AddTime(HandManager.Instance.FailedFiveTimePenalty);
