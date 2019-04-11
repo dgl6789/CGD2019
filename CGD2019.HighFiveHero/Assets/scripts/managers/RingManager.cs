@@ -39,9 +39,9 @@ public class RingManager : MonoBehaviour
         {
             return true;
         }
-        else if (Rings > 40)
+        else if (Rings > 20)
         {
-            Rings -= 40;
+            Rings -= 20;
             App.SaveManager.Instance.LoadedData.Bought[(int)T] = true;
             return true;
         }
