@@ -51,6 +51,7 @@ namespace App {
 
                 SaveManager.Instance.SaveCurrency(currency);
                 UIManager.Instance.SetCurrencyValue(currency);
+                
             }
         }
 

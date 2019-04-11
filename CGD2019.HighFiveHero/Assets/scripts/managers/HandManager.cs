@@ -155,7 +155,7 @@ namespace App {
                             if (five.Hand.StrengthIsAcceptable(five.MaxDelta) && five.Hand.isOpen)
                                 five.Hand.OnSuccessfulFive(five.Hand.StrengthIsPerfect(five.MaxDelta));
                             else
-                                five.Hand.OnFailedFive(five.Hand.TargetStrength>five.MaxDelta);
+                                five.Hand.OnFailedFive(five.MaxDelta <= five.Hand.TargetStrength - five.Hand.AcceptableRange);
                         }
 
                         resolvedFives.Add(five);
@@ -343,7 +343,7 @@ namespace App {
             string description = scoreIndicatorSuccessDescriptions[Random.Range(0, scoreIndicatorSuccessDescriptions.Length)];
 
             Indicator i = Instantiate(indicatorObjects[0], origin.position, Quaternion.identity, handParent.transform).GetComponent<Indicator>();
-            i.Initialize(count, description, perfect);
+            i.Initialize(count,Color.white, description, perfect);
         }
 
         /// <summary>
@@ -356,21 +356,21 @@ namespace App {
             string description = success ? "" : scoreIndicatorFailureDescriptions[Random.Range(0, scoreIndicatorFailureDescriptions.Length)];
             GameObject j = Instantiate(indicatorObjects[1], origin.position, Quaternion.identity, handParent.transform);
             Indicator i = j.GetComponent<Indicator>();
+            Color c = Color.white;
             if (!success)
             {
-                j.transform.GetChild(0).GetComponent<TMPro.TextMeshPro>().color = Color.red;
-                j.transform.GetChild(1).GetComponent<TMPro.TextMeshPro>().color = Color.red;
-                j.transform.GetChild(2).GetComponent<SpriteRenderer>().color = Color.red;
+                c = Color.red;
+                j.transform.GetChild(2).GetComponent<SpriteRenderer>().color = c;
             }
             if (toWeak)
             {
-                description = "To Weak!";
+                description = "Too Weak!";
             }
             else
             {
-                description = "To Strong!";
+                description = "Too Strong!";
             }
-            i.Initialize(count, description, false, success ? 0.15f : 0f);
+            i.Initialize(count,c, description, false, success ? 0.15f : 0f);
         }
 
         /// <summary>
@@ -379,7 +379,7 @@ namespace App {
         /// <param name="origin">Transform of the origin hand.</param>
         public void SpawnRingIndicator(Transform origin) {
             Indicator i = Instantiate(indicatorObjects[2], origin.position, Quaternion.identity, handParent.transform).GetComponent<Indicator>();
-            i.Initialize(1);
+            i.Initialize(1,Color.white);
         }
 
         /// <summary>
