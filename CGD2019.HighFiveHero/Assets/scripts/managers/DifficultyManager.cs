@@ -56,10 +56,15 @@ namespace App {
         {
             //hydra hands get more likely as difficulty increases, capped at specialty hand rate
             if (Random.Range(0f, 1f) > handSpawnMult && Random.Range(0f, 1f) <= specialtyHandRate)
-                return HandMovement.HYDRA;
+            {
+                if (Random.Range(0, 2) == 0)
+                    return HandMovement.HYDRA;
+                else
+                    return HandMovement.FIST;
+            }
 
             //oscillation gets less common as things get more difficult, jumping gets more common
-            if (Random.Range(0f, handSpawnMult) > 0.5f)
+            if (Random.Range(0f, Mathf.Clamp(handSpawnMult, 0.65f, 1f)) > 0.5f)
                 return HandMovement.OSCILLATE;
             else
                 return HandMovement.JUMP;

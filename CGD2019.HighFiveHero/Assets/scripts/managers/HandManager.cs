@@ -152,7 +152,7 @@ namespace App {
                             five.Hand.OnSuccessfulFive(false);
                         } else if (five.MaxDelta > 0) {
                             // This five is ready to be evaluated.
-                            if (five.Hand.StrengthIsAcceptable(five.MaxDelta))
+                            if (five.Hand.StrengthIsAcceptable(five.MaxDelta) && five.Hand.isOpen)
                                 five.Hand.OnSuccessfulFive(five.Hand.StrengthIsPerfect(five.MaxDelta));
                             else
                                 five.Hand.OnFailedFive();
@@ -185,10 +185,20 @@ namespace App {
         private void SpawnHand(HandMovement movementType = HandMovement.RANDOM) {
             // TODO: Have this method attach the spawned hand to the guy, put it at a reasonable starting position, etc.
             int handObj;
-            if (movementType == HandMovement.HYDRA)
-                handObj = 2;
-            else
-                handObj = Random.Range(0f, 1f) < ringHandSpawnRate ? 1 : 0;
+
+            switch (movementType)
+            {
+                case HandMovement.HYDRA:
+                    handObj = 2;
+                    break;
+                case HandMovement.FIST:
+                    handObj = 3;
+                    break;
+                default:
+                    handObj = Random.Range(0f, 1f) < ringHandSpawnRate ? 1 : 0;
+                    break;
+            }
+
             Hand h = Instantiate(HandObjects[handObj], handParent.transform).GetComponentInChildren<Hand>();
             Arm a = h.GetComponentInParent<Arm>();
 
