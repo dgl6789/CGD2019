@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class RingManager : MonoBehaviour
 {
+    int Rings
+    {
+        get { return App.RunManager.Instance.Currency; }
+        set { App.RunManager.Instance.Currency = value; }
+    }
     public static RingManager Instance;
     public enum Theme
     {
@@ -26,6 +31,21 @@ public class RingManager : MonoBehaviour
                 bought.Add((Theme)i);
             }
         }
+    }
+    public bool unlockTheme(Theme T)
+    {
+        
+        if (bought.Contains(T))
+        {
+            return true;
+        }
+        else if (Rings > 40)
+        {
+            Rings -= 40;
+            App.SaveManager.Instance.LoadedData.Bought[(int)T] = true;
+            return true;
+        }
+        return false;
     }
     private void Awake()
     {
