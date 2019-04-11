@@ -6,8 +6,10 @@ namespace App.UI {
     /// Functionality for a button that swaps the color theme of the app.
     /// </summary>
     public class ThemeChoice : MonoBehaviour {
-
+        float Vibrating = 0;
+        Vector3 startingPos;
         // Component references
+        [SerializeField] int Theme;
         [SerializeField] Image swatch;
         [SerializeField] GameObject checkmark;
 
@@ -22,14 +24,39 @@ namespace App.UI {
         /// Initialization.
         /// </summary>
         private void Start() {
+            startingPos = transform.position;
             checkmark.SetActive(chosen);
         }
-
+        private void Update()
+        {
+            if (Vibrating > 0)
+            {
+                float xOffset = Mathf.Lerp(-10f, 10f, Mathf.Sin((Time.realtimeSinceStartup * 100f)+1/2 ));
+                
+                Vibrating -= Time.deltaTime;
+                transform.position = startingPos + new Vector3(xOffset, 0, 0);
+                if (Vibrating <= 0)
+                {
+                    transform.position = startingPos;
+                }
+            }
+            else
+            {
+                startingPos = transform.position;
+            }
+        }
         /// <summary>
         /// Set the new theme and update relevant UI.
         /// </summary>
         public void OnTap() {
-            UIManager.Instance.SetThemeFromSwatch(Material);
+            if (RingManager.Instance.unlockTheme((RingManager.Theme)Theme))
+            {
+                UIManager.Instance.SetThemeFromSwatch(Material);
+            }
+            else
+            {
+                Vibrating = .5f;
+            }
         }
 
         /// <summary>

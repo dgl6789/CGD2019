@@ -50,7 +50,22 @@ namespace App {
         public void SetHighScore() {
             LoadedData.HighScore = RunManager.Instance.HighScore;
         }
-
+        /// <summary>
+        /// sets the themes we've purchased to a new bool[]
+        /// </summary>
+        /// <param name="b"></param>
+        public void SetThemes(bool[] b)
+        {
+            LoadedData.Bought = b;
+        }
+        /// <summary>
+        /// unlocks a theme
+        /// </summary>
+        /// <param name="T"></param>
+        public void UnlockTheme(RingManager.Theme T)
+        {
+            LoadedData.Bought[(int)T] = true;
+        }
         /// <summary>
         /// Save the currency value to the loaded data.
         /// </summary>
@@ -133,6 +148,8 @@ namespace App {
             RunManager.Instance.HighScore = LoadedData.HighScore;
             RunManager.Instance.Currency = LoadedData.Currency;
 
+            RingManager.Instance.setThemes(LoadedData.Bought);
+
             UIManager.Instance.SetBestScoreValue(LoadedData.HighScore);
 
             UIManager.Instance.ThemeMaterial = LoadedData.Material;
@@ -155,7 +172,12 @@ namespace App {
             get { return highScore; }
             set { highScore = value; }
         }
-
+        bool[] bought;
+        public bool[] Bought
+        {
+            get { return bought; }
+            set { bought = value; }
+        }
         // Game theme material. Serialized by index (see UIManager).
         int material;
         public Material Material {
@@ -177,7 +199,7 @@ namespace App {
             this.currency = currency;
             MusicVolume = musicVolume;
             SfxVolume = sfxVolume;
-
+            this.bought = new bool[] { false, true, false, false, false, false, false };
             Material = theme;
         }
     }
