@@ -416,7 +416,7 @@ namespace App {
         /// </summary>
         public void OnFailedFive(bool toWeak) {
             // Spawn a failure indicator
-            HandManager.Instance.SpawnTimeIndicator(transform, HandManager.Instance.FailedFiveTimePenalty, toWeak);
+            HandManager.Instance.SpawnTimeIndicator(transform, HandManager.Instance.FailedFiveTimePenalty, isOpen, toWeak);
 
             // Subtract from the time.
             RunManager.Instance.AddTime(HandManager.Instance.FailedFiveTimePenalty);

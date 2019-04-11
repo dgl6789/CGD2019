@@ -352,7 +352,7 @@ namespace App {
         /// <param name="origin">Transform of the origin hand.</param>
         /// <param name="count">Number of seconds to reflect.</param>
         /// <param name="success">Whether the time is being added or subtracted.</param>
-        public void SpawnTimeIndicator(Transform origin, int count, bool toWeak, bool success = false) {
+        public void SpawnTimeIndicator(Transform origin, int count, bool isOpen,bool toWeak, bool success = false) {
             string description = success ? "" : scoreIndicatorFailureDescriptions[Random.Range(0, scoreIndicatorFailureDescriptions.Length)];
             GameObject j = Instantiate(indicatorObjects[1], origin.position, Quaternion.identity, handParent.transform);
             Indicator i = j.GetComponent<Indicator>();
@@ -360,9 +360,12 @@ namespace App {
             if (!success)
             {
                 c = Color.red;
-                j.transform.GetChild(2).GetComponent<SpriteRenderer>().color = c;
             }
-            if (toWeak)
+            if (!isOpen)
+            {
+                description  = "CLOSED!";
+            }
+            else if (toWeak)
             {
                 description = "Too Weak!";
             }

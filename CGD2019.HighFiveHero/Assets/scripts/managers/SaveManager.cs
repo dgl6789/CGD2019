@@ -209,7 +209,7 @@ namespace App {
             this.currency = currency;
             MusicVolume = musicVolume;
             SfxVolume = sfxVolume;
-            this.bought = new bool[] { false, true, false, false, false, false, false };
+            this.bought = new bool[] { false, false, false, false, false, false, true };
             Material = theme;
         }
     }
