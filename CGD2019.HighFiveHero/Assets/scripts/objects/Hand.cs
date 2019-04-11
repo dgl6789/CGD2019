@@ -3,46 +3,54 @@ using UnityEngine;
 using App.Util;
 
 namespace App {
-    public enum HandMovement { RANDOM, GROW, SHRINK, OSCILLATE, JUMP, HYDRA };
+    public enum HandMovement { RANDOM, GROW, SHRINK, OSCILLATE, JUMP, HYDRA, FIST };
 
     public class Hand : MonoBehaviour {
 
         //movement type
-        private HandMovement targetMovement;
+        protected HandMovement targetMovement;
         private HandMovement movementType;
         public HandMovement MovementType { get { return movementType; } }
-        public bool IsActive() { return (movementType == HandMovement.OSCILLATE || movementType == HandMovement.JUMP || movementType == HandMovement.HYDRA); }
+        public bool IsActive() {
+            return (
+                movementType != HandMovement.RANDOM && 
+                movementType != HandMovement.GROW && 
+                movementType != HandMovement.SHRINK);
+        }
 
         //in/out variables
-        private float targetSize;
-        private float minSize = 0.1f;
+        protected float targetSize;
+        protected float minSize = 0.1f;
 
         //time tracking variables
-        private float moveInterval;
-        [SerializeField] private float TransitionInterval;
+        protected float moveInterval;
+        [SerializeField] protected float TransitionInterval;
 
-        private float timePassed;
-        private bool intervalPassed;
+        protected float timePassed;
+        protected bool intervalPassed;
 
         // Effects
         [SerializeField] float shakeAmount;
         [SerializeField] float shakeDuration;
 
         //movement variables
-        private float armRadius;
-        private int angleStart;
-        private int angleEnd;
-        private int currentAngle;
+        protected float armRadius;
+        protected int angleStart;
+        protected int angleEnd;
+        protected int currentAngle;
 
-        private float acceptableRange;
-        private float perfectRange;
+        protected float acceptableRange;
+        protected float perfectRange;
 
-        private float targetStrength;
+        protected float targetStrength;
         public float TargetStrength { get { return targetStrength; } }
 
         [SerializeField] float radius;
 
-        //initilized variables
+        //closed open state
+        public bool isOpen = true;
+
+        //initialized variables
         public bool left;
         protected float size;
         public int handObj;
@@ -58,6 +66,8 @@ namespace App {
             transform.localScale = new Vector2(size * (left ? -1 : 1), size);
             GetComponentInParent<Arm>().AdjustWidthForHand(size);
             targetSize = size;
+
+            //set copying reference variables
             this.size = size;
             this.left = left;
             this.handObj = handObj;
@@ -65,6 +75,15 @@ namespace App {
             // Strength parameter setup
             this.acceptableRange = acceptableRange;
             this.perfectRange = perfectRange;
+
+            //TODO: make specialty hands harder to hit?
+            //if (movementType == HandMovement.HYDRA || movementType == HandMovement.FIST)
+            //{
+            //    float specialtyStrModifier = 0.8f;
+
+            //    this.acceptableRange *= specialtyStrModifier;
+            //    this.perfectRange *= specialtyStrModifier;
+            //}
 
             targetStrength = HandManager.Instance.HandSizetoTargetStrength(size);
             
@@ -107,8 +126,9 @@ namespace App {
 
                     currentAngle = angleStart;
                     break;
+                case HandMovement.FIST:
                 case HandMovement.JUMP:
-                    moveInterval = Random.Range(0.0f, 1.0f) + 0.5f;
+                    moveInterval = Random.Range(0.0f, 1.0f) + 0.75f;
                     
                     currentAngle = angleEnd = angleStart = Random.Range(0, 360);
                     break;
@@ -206,14 +226,13 @@ namespace App {
 
             switch (movementType)
             {
+                case HandMovement.HYDRA:
                 case HandMovement.OSCILLATE:
                     Oscillate();
                     break;
+                case HandMovement.FIST:
                 case HandMovement.JUMP:
                     Jump();
-                    break;
-                case HandMovement.HYDRA:
-                    Oscillate();
                     break;
                 case HandMovement.GROW:
                     Grow();
@@ -234,7 +253,7 @@ namespace App {
         /// <summary>
         /// Jump the hand to a new spot on the arc
         /// </summary>
-        private void Jump()
+        protected virtual void Jump()
         {
             //generate a new jump angle when the interval is over
             if (intervalPassed)
@@ -290,11 +309,13 @@ namespace App {
 
             //start moving if growth is complete
             if (intervalPassed)
+            {
                 ChangeMovementType(targetMovement);
+            }
 
             //adjust scale
-            transform.localScale = new Vector2(Mathf.Sign(transform.localScale.x) * size, size);
             GetComponentInParent<Arm>().AdjustWidthForHand(size);
+            transform.localScale = new Vector2(Mathf.Sign(transform.localScale.x) * size, size);
 
             //move hand to new position
             MoveHand(currentAngle, radius);
@@ -330,7 +351,7 @@ namespace App {
         /// </summary>
         /// <param name="armAngle">angle to move the hand to</param>
         /// <param name="radius">distance from the shoulder to position the hand</param>
-        private void MoveHand(int armAngle, float radius = -1.0f)
+        protected void MoveHand(int armAngle, float radius = -1.0f)
         {
             //find hand position
             Vector3 handPos = new Vector3(HandManager.Instance.CosLookUp(armAngle), HandManager.Instance.SinLookUp(armAngle), 0.0f);

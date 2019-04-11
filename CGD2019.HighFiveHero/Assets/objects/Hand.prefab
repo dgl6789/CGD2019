@@ -127,5 +127,6 @@ MonoBehaviour:
   shakeAmount: 0
   shakeDuration: 0
   radius: 0.75
+  isOpen: 1
   left: 0
   handObj: 0
