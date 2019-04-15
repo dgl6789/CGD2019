@@ -51,6 +51,7 @@ namespace App {
                     if (RunManager.Instance.Running) {
                         RunManager.Instance.UpdateRun();
                         HandManager.Instance.UpdateHands();
+                        DifficultyManager.Instance.UpdateDifficulty();
                     }
                     break;
             }
