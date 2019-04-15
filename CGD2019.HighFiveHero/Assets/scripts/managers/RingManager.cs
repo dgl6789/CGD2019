@@ -33,6 +33,7 @@ public class RingManager : MonoBehaviour
                 bought.Add((Theme)i);
             }
         }
+        App.SaveManager.Instance.SaveThemes();
     }
     public bool unlockTheme(Theme T)
     {
@@ -56,6 +57,7 @@ public class RingManager : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         else Destroy(this);
+        App.SaveManager.Instance.LoadedData.Bought[6] = true;
         setThemes(App.SaveManager.Instance.LoadedData.Bought);
     }
     // Start is called before the first frame update
