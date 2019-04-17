@@ -4381,7 +4381,7 @@ Material:
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: f65ea94c18747c145ac677ea49960912, type: 3}
         m_Scale: {x: 4, y: 4}
-        m_Offset: {x: 0.012000001, y: 0.012000001}
+        m_Offset: {x: 0.34967414, y: 0.34967414}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -7305,7 +7305,7 @@ Transform:
   m_GameObject: {fileID: 1814630195}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.036, y: 0.035, z: 94.83}
-  m_LocalScale: {x: 5.8653502, y: 11, z: 1}
+  m_LocalScale: {x: 6.6179776, y: 11, z: 1}
   m_Children:
   - {fileID: 1865308969}
   m_Father: {fileID: 0}
@@ -8502,6 +8502,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SortingOrder
       value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 895616649638641650, guid: 3d4f2e699ff03f3408aef56ead9f0ab4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Mask
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d4f2e699ff03f3408aef56ead9f0ab4, type: 3}
