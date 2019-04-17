@@ -20,26 +20,54 @@ namespace App
 
         private float totalTimePassed;
         private float intervalTimePassed;
-        [Range(0f, 5f)]
-        [SerializeField] float diffInterval;
+        private float spawnTimePassed;
 
+        [Header("Overall Difficulty")]
+        [SerializeField] int difficultyLevel;
+        [Range(0f, 5f)]
+        public float diffInterval; //seconds between difficulty increase
+        public Vector2 diffIntervalBounds; //bounds of time between difficulty increases
+
+        [Header("Hand Speed")]
         [Range(0f, 2f)]
-        [SerializeField] float speedMod;
+        public float speedMod; //percentage adjustment to hand speed
+        private float speedModReset; //speed mod value to reset to
+        public Vector2 speedModBounds; //minimum and maximum of speed modifier
+        public float speedModDelta; //percentage by which to adjust speed modifier
 
-        [Range(0f, 5f)]
-        [SerializeField] float spawnRate;
-        [Range(0f, 5f)]
-        [SerializeField] float specialtySpawnRate;
+        [Header("Hand Spawning")]
+        [Range(0f, 3f)]
+        public float spawnInterval; //seconds between spawns
+        private float spawnIntervalReset; //spawn interval value to reset to
+        public Vector2 spawnIntervalBounds; //bounds of time between hand spawns
+        public float spawnIntervalDelta; //percentage by which to adjust spawn interval
+
+        private bool doSpawn; //bool to tell the handmanager to spawn a hand
+        public bool DoSpawn
+        {
+            get { return doSpawn; }
+        }
+
+        [Header("Specialty Hands")]
+        [Range(0f, 1f)]
+        public float specialtySpawnRate; //chance of a specialty hand being spawned
+        private float specialtyRateReset; //specialty spawn rate value to reset to
+        public Vector2 specialtyRateBounds; //bounds of chance of a specialty hand spawning
+        public float specialtyRateDelta; //percentage by which to adjust specialty hand spawn chance
 
         /// <summary>
         /// Singleton initialization.
         /// </summary>
         private void Awake()
         {
-            ResetDifficulty();//initialize difficulty vars
-
             if (Instance == null) Instance = this;
             else Destroy(this);
+
+            //initialize difficulty vars
+            ResetDifficulty();
+
+            //grab reset values
+            GetResetValues();
         }
 
         /// <summary>
@@ -47,18 +75,43 @@ namespace App
         /// </summary>
         public void UpdateDifficulty ()
         {
+            //reset spawning bool
+            doSpawn = false;
+
             float t = Time.deltaTime;
 
             totalTimePassed += t;
             intervalTimePassed += t;
+            spawnTimePassed += t;
 
             //interval has passed, ramp up difficulty
             if (intervalTimePassed >= diffInterval)
             {
                 intervalTimePassed = 0f;
 
+                difficultyLevel++;
 
+                speedMod = Mathf.Clamp(speedMod * speedModDelta, speedModBounds.x, speedModBounds.y);
+                spawnInterval = Mathf.Clamp(spawnInterval * spawnIntervalDelta, spawnIntervalBounds.x, spawnIntervalBounds.y);
+                specialtySpawnRate = Mathf.Clamp(specialtySpawnRate * specialtyRateDelta, specialtyRateBounds.x, specialtyRateBounds.y);
+
+                Debug.Log("Increasing difficulty to " + difficultyLevel);
+                Debug.Log("  SpeedMod is now " + speedMod);
+                Debug.Log("  Spawn interval is now " + spawnInterval + " seconds");
+                Debug.Log("  Specialty Spawn Rate is now " + specialtySpawnRate + "%");
             }
+
+            //interval for spawning has passed
+            if (spawnTimePassed >= spawnInterval)
+            {
+                spawnTimePassed = 0f;
+
+                doSpawn = true;
+            }
+
+            //spawn hands initially
+            if (totalTimePassed - t == 0)
+                doSpawn = true;
         }
 
         public void OnHighFive()
@@ -84,11 +137,29 @@ namespace App
 
             totalTimePassed = 0f;
             intervalTimePassed = 0f;
+            spawnTimePassed = 0f;
+
+            difficultyLevel = 0;
+
+            speedMod = speedModReset;
+            spawnInterval = spawnIntervalReset;
+            specialtySpawnRate = specialtyRateReset;
             //diffInterfal = 2f;
+
             //speedMod = 1.5f;
 
             //spawnRate = 2f;
             //specialtySpawnRate = 0f;
+        }
+
+        /// <summary>
+        /// sets initial reset values
+        /// </summary>
+        private void GetResetValues()
+        {
+            speedModReset = speedMod;
+            spawnIntervalReset = spawnInterval;
+            specialtyRateReset = specialtySpawnRate;
         }
 
         /// <summary>
@@ -112,7 +183,22 @@ namespace App
             //else
             //    return HandMovement.JUMP;
 
-            return HandMovement.RANDOM;
+            if (Random.Range(0f, 1f) <= specialtySpawnRate)
+            {
+                if (Random.Range(0, 2) == 0)
+                    return HandMovement.HYDRA;
+                else
+                    return HandMovement.FIST;
+            }
+            else
+            {
+                if (Random.Range(0, 2) == 0)
+                    return HandMovement.JUMP;
+                else
+                    return HandMovement.OSCILLATE;
+            }
+
+            //return HandMovement.RANDOM;
         }
     }
 }

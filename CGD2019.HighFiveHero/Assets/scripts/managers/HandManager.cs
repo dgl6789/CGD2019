@@ -127,6 +127,11 @@ namespace App {
 
                 //    previousGameTime = RunManager.Instance.CurrentGameTimer;
                 //}
+
+                if (DifficultyManager.Instance.DoSpawn)
+                {
+                    SpawnHand(DifficultyManager.Instance.GetHandMovement());
+                }
                 #endregion
 
                 #region HAND MOVEMENT
