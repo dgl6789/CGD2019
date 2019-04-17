@@ -37,6 +37,19 @@ public class RingManager : MonoBehaviour
     }
     public bool unlockTheme(Theme T)
     {
+        GameObject mask = GameObject.FindGameObjectWithTag("Mask");
+        if (Input.GetKey("1"))
+        {
+            mask.GetComponent<SpriteRenderer>().sprite = Resources.Load()
+        }
+        else if (Input.GetKey("2"))
+        {
+
+        }
+        else if (Input.GetKey("3"))
+        {
+
+        }
         if (App.SaveManager.Instance.LoadedData.Bought == null)
         {
             App.SaveManager.Instance.LoadedData.Bought = new bool[7];
