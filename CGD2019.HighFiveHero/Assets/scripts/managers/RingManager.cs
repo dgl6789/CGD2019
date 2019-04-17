@@ -37,8 +37,11 @@ public class RingManager : MonoBehaviour
     }
     public bool unlockTheme(Theme T)
     {
-        
-        if (App.SaveManager.Instance.LoadedData.Bought[(int)T])
+        if (App.SaveManager.Instance.LoadedData.Bought == null)
+        {
+            App.SaveManager.Instance.LoadedData.Bought = new bool[7];
+        }
+        if (App.SaveManager.Instance.LoadedData.Bought[(int)T]||bought.Contains(T))
         {
             return true;
         }
@@ -50,6 +53,7 @@ public class RingManager : MonoBehaviour
             App.SaveManager.Instance.SaveThemes();
             return true;
         }
+        App.SaveManager.Instance.SaveThemes();
         return false;
     }
     
@@ -57,13 +61,13 @@ public class RingManager : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         else Destroy(this);
-        App.SaveManager.Instance.LoadedData.Bought[6] = true;
-        setThemes(App.SaveManager.Instance.LoadedData.Bought);
+        
     }
     // Start is called before the first frame update
     void Start()
     {
         bought = new List<Theme>();
+        bought.Add(Theme.tigres);
     }
 
     // Update is called once per frame
