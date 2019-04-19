@@ -104,12 +104,22 @@ namespace App
                 //increase clear bonus rewards
                 currentScoreReward += scoreRewardDelta;
                 currentTimeReward += timeRewardDelta;
+
+                //Debug.Log("Time Passed: " + totalTimePassed);
+                //Debug.Log("Difficulty: " + difficultyLevel);
+                //Debug.Log("Speed Mod: " + currentSpeedMod);
+                //Debug.Log("Spawn Interval: " + currentSpawnInterval);
+                //Debug.Log("Specialty Spawn Rate: " + currentSpecialtySpawnRate);
+                //Debug.Log("Score Reward: " + currentScoreReward);
+                //Debug.Log("Time Reward: " + currentTimeReward);
             }
 
             //interval for spawning has passed
             if (spawnTimePassed >= currentSpawnInterval)
             {
                 spawnTimePassed = 0f;
+
+                Debug.Log("Spawning at " + totalTimePassed);
 
                 doSpawn = true;
             }
@@ -170,10 +180,10 @@ namespace App
         {
             if (Random.Range(0f, 1f) <= currentSpecialtySpawnRate)
             {
-                if (Random.Range(0, 2) == 0)
+                //if (Random.Range(0, 2) == 0)
                     return HandMovement.HYDRA;
-                else
-                    return HandMovement.FIST;
+                //else
+                //    return HandMovement.FIST;
             }
             else
             {
