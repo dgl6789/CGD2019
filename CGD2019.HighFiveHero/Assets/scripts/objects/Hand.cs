@@ -139,7 +139,7 @@ namespace App {
             }
 
             //modify speed based on difficulty
-            moveInterval *= DifficultyManager.Instance.speedMod;
+            moveInterval *= DifficultyManager.Instance.currentSpeedMod;
 
             //determine arm radius
             float vertExtent = Camera.main.orthographicSize * 2f;

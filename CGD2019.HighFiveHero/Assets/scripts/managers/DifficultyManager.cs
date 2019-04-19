@@ -31,14 +31,14 @@ namespace App
         [Header("Hand Speed")]
         [Range(0f, 2f)]
         public float speedMod; //percentage adjustment to hand speed
-        private float speedModReset; //speed mod value to reset to
+        public float currentSpeedMod; //current speed modifier
         public Vector2 speedModBounds; //minimum and maximum of speed modifier
         public float speedModDelta; //percentage by which to adjust speed modifier
 
         [Header("Hand Spawning")]
         [Range(0f, 3f)]
         public float spawnInterval; //seconds between spawns
-        private float spawnIntervalReset; //spawn interval value to reset to
+        public float currentSpawnInterval; //current spawn interval
         public Vector2 spawnIntervalBounds; //bounds of time between hand spawns
         public float spawnIntervalDelta; //percentage by which to adjust spawn interval
 
@@ -51,9 +51,17 @@ namespace App
         [Header("Specialty Hands")]
         [Range(0f, 1f)]
         public float specialtySpawnRate; //chance of a specialty hand being spawned
-        private float specialtyRateReset; //specialty spawn rate value to reset to
+        public float currentSpecialtySpawnRate; //current specialty spawn rate
         public Vector2 specialtyRateBounds; //bounds of chance of a specialty hand spawning
         public float specialtyRateDelta; //percentage by which to adjust specialty hand spawn chance
+
+        [Header("Clear Bonus")]
+        public float scoreReward;
+        private float currentScoreReward;
+        public float scoreRewardDelta;
+        public float timeReward;
+        private float currentTimeReward;
+        public float timeRewardDelta;
 
         /// <summary>
         /// Singleton initialization.
@@ -65,9 +73,6 @@ namespace App
 
             //initialize difficulty vars
             ResetDifficulty();
-
-            //grab reset values
-            GetResetValues();
         }
 
         /// <summary>
@@ -91,18 +96,18 @@ namespace App
 
                 difficultyLevel++;
 
-                speedMod = Mathf.Clamp(speedMod * speedModDelta, speedModBounds.x, speedModBounds.y);
-                spawnInterval = Mathf.Clamp(spawnInterval * spawnIntervalDelta, spawnIntervalBounds.x, spawnIntervalBounds.y);
-                specialtySpawnRate = Mathf.Clamp(specialtySpawnRate * specialtyRateDelta, specialtyRateBounds.x, specialtyRateBounds.y);
+                //increase hand values
+                currentSpeedMod = Mathf.Clamp(currentSpeedMod * speedModDelta, speedModBounds.x, speedModBounds.y);
+                currentSpawnInterval = Mathf.Clamp(currentSpawnInterval * spawnIntervalDelta, spawnIntervalBounds.x, spawnIntervalBounds.y);
+                currentSpecialtySpawnRate = Mathf.Clamp(currentSpecialtySpawnRate * specialtyRateDelta, specialtyRateBounds.x, specialtyRateBounds.y);
 
-                Debug.Log("Increasing difficulty to " + difficultyLevel);
-                Debug.Log("  SpeedMod is now " + speedMod);
-                Debug.Log("  Spawn interval is now " + spawnInterval + " seconds");
-                Debug.Log("  Specialty Spawn Rate is now " + specialtySpawnRate + "%");
+                //increase clear bonus rewards
+                currentScoreReward += scoreRewardDelta;
+                currentTimeReward += timeRewardDelta;
             }
 
             //interval for spawning has passed
-            if (spawnTimePassed >= spawnInterval)
+            if (spawnTimePassed >= currentSpawnInterval)
             {
                 spawnTimePassed = 0f;
 
@@ -116,9 +121,17 @@ namespace App
 
         public void OnHighFive()
         {
-            //maxHands = Mathf.Clamp(maxHands * 1.2f, 1, 3.9f / (((handSpawnInterval / 3f) + 2f) / 3f));
-            //handSpawnMult *=.95f;
-            //handSpawnInterval = Mathf.Clamp(3 * handSpawnMult, .24f, 3);
+            //check for clear bonus
+            if (HandManager.Instance.HandCount == 1) //cleaner way to check? hand still exists when called
+            {                
+                // Spawn a success indicator
+                HandManager.Instance.SpawnClearBonusIndicator(transform, Mathf.FloorToInt(scoreReward));
+                // HandManager.Instance.SpawnTimeIndicator(transform, timeReward, true);
+
+                // Add to the score and time.
+                RunManager.Instance.AddScore(Mathf.FloorToInt(scoreReward));
+                RunManager.Instance.AddTime(Mathf.FloorToInt(timeReward));
+            }
         }
 
         public void OnMiss()
@@ -131,35 +144,22 @@ namespace App
         /// </summary>
         public void ResetDifficulty()
         {
-            //maxHands = 1;
-            //handSpawnMult = 1;
-            //handSpawnInterval = 3;
-
+            //reset time values
             totalTimePassed = 0f;
             intervalTimePassed = 0f;
             spawnTimePassed = 0f;
 
+            //reset difficulty
             difficultyLevel = 0;
 
-            speedMod = speedModReset;
-            spawnInterval = spawnIntervalReset;
-            specialtySpawnRate = specialtyRateReset;
-            //diffInterfal = 2f;
+            //reset hand values
+            currentSpeedMod = speedMod;
+            currentSpawnInterval = spawnInterval;
+            currentSpecialtySpawnRate = specialtySpawnRate;
 
-            //speedMod = 1.5f;
-
-            //spawnRate = 2f;
-            //specialtySpawnRate = 0f;
-        }
-
-        /// <summary>
-        /// sets initial reset values
-        /// </summary>
-        private void GetResetValues()
-        {
-            speedModReset = speedMod;
-            spawnIntervalReset = spawnInterval;
-            specialtyRateReset = specialtySpawnRate;
+            //reset clear bonus rewards
+            currentScoreReward = scoreReward;
+            currentTimeReward = timeReward;
         }
 
         /// <summary>
@@ -168,22 +168,7 @@ namespace App
         /// <returns>a hand movement behavior based on difficulty</returns>
         public HandMovement GetHandMovement()
         {
-            ////hydra hands get more likely as difficulty increases, capped at specialty hand rate
-            //if (Random.Range(0f, 1f) > handSpawnMult && Random.Range(0f, 1f) <= specialtyHandRate)
-            //{
-            //    if (Random.Range(0, 2) == 0)
-            //        return HandMovement.HYDRA;
-            //    else
-            //        return HandMovement.FIST;
-            //}
-
-            ////oscillation gets less common as things get more difficult, jumping gets more common
-            //if (Random.Range(0f, Mathf.Clamp(handSpawnMult, 0.65f, 1f)) > 0.5f)
-            //    return HandMovement.OSCILLATE;
-            //else
-            //    return HandMovement.JUMP;
-
-            if (Random.Range(0f, 1f) <= specialtySpawnRate)
+            if (Random.Range(0f, 1f) <= currentSpecialtySpawnRate)
             {
                 if (Random.Range(0, 2) == 0)
                     return HandMovement.HYDRA;

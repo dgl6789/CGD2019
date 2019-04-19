@@ -4381,7 +4381,7 @@ Material:
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: f65ea94c18747c145ac677ea49960912, type: 3}
         m_Scale: {x: 4, y: 4}
-        m_Offset: {x: 0.022, y: 0.022}
+        m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -4724,6 +4724,7 @@ MonoBehaviour:
   SuccessfulFiveTimeReward: 1
   PerfectFiveScoreReward: 3
   PerfectFiveTimeReward: 2
+  ClearBonusTimeReward: 2
   FailedFiveTimePenalty: -1
   scoreIndicatorSuccessDescriptions:
   - NICE!
@@ -4765,15 +4766,22 @@ MonoBehaviour:
   difficultyLevel: 0
   diffInterval: 3
   diffIntervalBounds: {x: 0.5, y: 5}
-  speedMod: 1.25
-  speedModBounds: {x: 0.5, y: 1.5}
-  speedModDelta: 0.99
-  spawnInterval: 2
+  speedMod: 1.1
+  currentSpeedMod: 0
+  speedModBounds: {x: 0.75, y: 1.5}
+  speedModDelta: 0.95
+  spawnInterval: 1.5
+  currentSpawnInterval: 0
   spawnIntervalBounds: {x: 0.25, y: 3}
   spawnIntervalDelta: 0.95
-  specialtySpawnRate: 0
-  specialtySpawnBounds: {x: 0.01, y: 0.5}
+  specialtySpawnRate: 0.05
+  currentSpecialtySpawnRate: 0
+  specialtyRateBounds: {x: 0, y: 0.5}
   specialtyRateDelta: 1.1
+  scoreReward: 1
+  scoreRewardDelta: 1
+  timeReward: 1
+  timeRewardDelta: 0.25
 --- !u!114 &1331530277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7314,7 +7322,7 @@ Transform:
   m_GameObject: {fileID: 1814630195}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.036, y: 0.035, z: 94.83}
-  m_LocalScale: {x: 6.626072, y: 11, z: 1}
+  m_LocalScale: {x: 6.620053, y: 11, z: 1}
   m_Children:
   - {fileID: 1865308969}
   m_Father: {fileID: 0}
