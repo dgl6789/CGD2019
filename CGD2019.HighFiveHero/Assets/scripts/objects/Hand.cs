@@ -356,12 +356,13 @@ namespace App {
         protected void MoveHand(int armAngle, float radius = -1.0f)
         {
             //find hand position
-            Vector3 handPos = new Vector3(HandManager.Instance.CosLookUp(armAngle), HandManager.Instance.SinLookUp(armAngle), 0.0f);
+            //Vector3 handPos = new Vector3(HandManager.Instance.CosLookUp(armAngle), HandManager.Instance.SinLookUp(armAngle), 0.0f);
+            Vector3 handPos = new Vector3(HandManager.Instance.OvalPositions(armAngle).x, HandManager.Instance.OvalPositions(armAngle).y, 0.0f);
 
-            if (radius == -1.0f)
-                handPos *= armRadius;
-            else
-                handPos *= radius;
+            //if (radius == -1.0f)
+            //    handPos *= armRadius;
+            //else
+            //    handPos *= radius;
 
             //find elbow position
             Vector3 elbowPos = new Vector3(handPos.x, 0.6f * handPos.y, 0.0f);

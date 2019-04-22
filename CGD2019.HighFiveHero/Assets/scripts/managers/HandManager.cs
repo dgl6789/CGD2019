@@ -76,6 +76,16 @@ namespace App {
             
             return cosLookUp[i];
         }
+        private Vector2[] ovalPositions = new Vector2[360];
+        public Vector2 OvalPositions (int i)
+        {
+            i %= 360;
+
+            if (i < 0)
+                i = 360 + i;
+
+            return ovalPositions[i];
+        }
 
         [Header("Scoring")]
 
@@ -412,16 +422,34 @@ namespace App {
         }
 
         /// <summary>
-        /// Fills trig lookup tables
+        /// Fills trig lookup tables and maps out oval path
         /// </summary>
         private void FillTrigLookupTables ()
         {
+            float vertExtent = Camera.main.orthographicSize * 2f;
+            float horzExtent = vertExtent * (Screen.width / (float)Screen.height);
+            float padding = 1f;
+            float a = (horzExtent - padding) / 2f;
+            float b = (vertExtent - padding) / 2f;
+
             for (int i = 0; i < 360; i++)
             {
                 float r = i * Mathf.PI / 180;
 
                 cosLookUp[i] = Mathf.Cos(r);
                 sinLookUp[i] = Mathf.Sin(r);
+
+                //float x = (a * b) / Mathf.Sqrt(b * b + a * a * Mathf.Pow(Mathf.Tan(i), 2));
+                //float y = (a * b) / Mathf.Sqrt(a * a + b * b / Mathf.Pow(Mathf.Tan(i), 2));
+                //if (i > 270 || i < 90)
+                //{
+                //    x *= -1;
+                //    y *= -1;
+                //}
+                float x = a * cosLookUp[i];
+                float y = b * sinLookUp[i];
+
+                ovalPositions[i] = new Vector2(x, y);
             }
         }
     }
