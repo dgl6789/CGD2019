@@ -83,12 +83,16 @@ namespace App {
             LoadedData.MusicVolume = musicVolume;
             LoadedData.SfxVolume = sfxVolume;
         }
+
         /// <summary>
         /// save unlocked themes
         /// </summary>
         public void SaveThemes()
         {
-            LoadedData.Bought = new bool[7];
+            if (LoadedData.Bought == null)
+            {
+                LoadedData.Bought = new bool[7];
+            }
             for (int i = 0; i < RingManager.Instance.bought.Count; i++)
             {
                 LoadedData.Bought[(int)RingManager.Instance.bought[i]] = true;
@@ -181,6 +185,12 @@ namespace App {
         public int HighScore {
             get { return highScore; }
             set { highScore = value; }
+        }
+        bool[] masks;
+        public bool[] Masks
+        {
+            get { return masks; }
+            set { masks = value; }
         }
         bool[] bought;
         public bool[] Bought
