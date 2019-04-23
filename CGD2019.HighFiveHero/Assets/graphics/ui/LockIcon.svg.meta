@@ -2,17 +2,14 @@ fileFormatVersion: 2
 guid: a4b3fe8987752fd45b55c48601a53535
 ScriptedImporter:
   fileIDToRecycleName:
-    100002: gameObject/LockIcon
-    400002: gameObject/LockIcon/Transform
-    21200002: gameObject/LockIcon/SpriteRenderer
+    2800000: tex
     21300000: sprite
-    100100000: gameObject
   externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: a57477913897c46af95d590f580878bd, type: 3}
-  svgType: 0
+  svgType: 1
   texturedSpriteMeshType: 0
   svgPixelsPerUnit: 100
   gradientResolution: 128
