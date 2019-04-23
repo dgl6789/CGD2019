@@ -24,7 +24,7 @@ public class RingManager : MonoBehaviour
     public void setThemes(bool[] b)
     {
 
-
+        
         b[6] = true;
         for (int i = 0; i < b.Length; i++)
         {
@@ -35,32 +35,63 @@ public class RingManager : MonoBehaviour
         }
         App.SaveManager.Instance.SaveThemes();
     }
+    public bool unlockMask(int masknum)
+    {
+        if (App.SaveManager.Instance.LoadedData.Masks == null)
+        {
+            App.SaveManager.Instance.LoadedData.Masks = new bool[3];
+        }
+        GameObject mask = GameObject.FindGameObjectWithTag("Mask");
+        switch (masknum)
+        {
+            case 0:
+                App.SaveManager.Instance.LoadedData.Masks[0] = true;
+                mask.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("masks/Mascara0");
+                break;
+            case 1:
+                if (App.SaveManager.Instance.LoadedData.Masks[1])
+                {
+                    mask.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("masks/Mascara1");
+                }
+                else if (Rings >= 10)
+                {
+                    Rings -= 10;
+                    App.SaveManager.Instance.LoadedData.Masks[1] = true;
+                    mask.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("masks/Mascara1");
+                }
+                break;
+            case 2:
+                if (App.SaveManager.Instance.LoadedData.Masks[2])
+                {
+                    mask.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("masks/Mascara2");
+                }
+                else if (Rings >= 10)
+                {
+                    Rings -= 10;
+                    App.SaveManager.Instance.LoadedData.Masks[2] = true;
+                    mask.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("masks/Mascara2");
+                }
+                break;
+            default:
+                break;
+        }
+        return false;
+    }
     public bool unlockTheme(Theme T)
     {
-        GameObject mask = GameObject.FindGameObjectWithTag("Mask");
-        if (Input.GetKey("1"))
-        {
-            mask.GetComponent<SpriteRenderer>().sprite = Resources.Load()
-        }
-        else if (Input.GetKey("2"))
-        {
-
-        }
-        else if (Input.GetKey("3"))
-        {
-
-        }
+       
         if (App.SaveManager.Instance.LoadedData.Bought == null)
         {
             App.SaveManager.Instance.LoadedData.Bought = new bool[7];
         }
+        
         if (App.SaveManager.Instance.LoadedData.Bought[(int)T]||bought.Contains(T))
         {
             return true;
         }
         else if (Rings >= 20)
         {
-            
+            App.SaveManager.Instance.LoadedData.Bought[(int)T] = true;
             bought.Add(T);//thx diana
             Rings -= 20;
             App.SaveManager.Instance.SaveThemes();
