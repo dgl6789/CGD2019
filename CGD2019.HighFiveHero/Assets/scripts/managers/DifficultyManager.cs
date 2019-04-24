@@ -58,6 +58,7 @@ namespace App
         public float timeReward;
         private float currentTimeReward;
         public float timeRewardDelta;
+        public Transform clearBonusTransform;
 
         /// <summary>
         /// Singleton initialization.
