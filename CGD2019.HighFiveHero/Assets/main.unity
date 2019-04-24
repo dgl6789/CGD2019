@@ -5085,7 +5085,7 @@ Material:
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: f65ea94c18747c145ac677ea49960912, type: 3}
         m_Scale: {x: 4, y: 4}
-        m_Offset: {x: 0.526, y: 0.526}
+        m_Offset: {x: 0.014, y: 0.014}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -5686,6 +5686,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcf66c03cd840794b90257fe97e1fb91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mask: {fileID: 0}
   bought: 
 --- !u!1 &1362455035
 GameObject:
@@ -8009,7 +8010,7 @@ Transform:
   m_GameObject: {fileID: 1814630195}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.036, y: 0.035, z: 94.83}
-  m_LocalScale: {x: 6.629032, y: 11, z: 1}
+  m_LocalScale: {x: 6.623987, y: 11, z: 1}
   m_Children:
   - {fileID: 1865308969}
   m_Father: {fileID: 0}
