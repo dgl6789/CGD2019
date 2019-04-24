@@ -428,9 +428,10 @@ namespace App {
         {
             float vertExtent = Camera.main.orthographicSize * 2f;
             float horzExtent = vertExtent * (Screen.width / (float)Screen.height);
-            float padding = 1f;
-            float a = (horzExtent - padding) / 2f;
-            float b = (vertExtent - padding) / 2f;
+            float horzPadding = 1f;
+            float vertPadding = 1.5f;
+            float a = horzExtent / 2f - horzPadding;
+            float b = vertExtent / 2f - vertPadding;
 
             for (int i = 0; i < 360; i++)
             {
@@ -439,13 +440,6 @@ namespace App {
                 cosLookUp[i] = Mathf.Cos(r);
                 sinLookUp[i] = Mathf.Sin(r);
 
-                //float x = (a * b) / Mathf.Sqrt(b * b + a * a * Mathf.Pow(Mathf.Tan(i), 2));
-                //float y = (a * b) / Mathf.Sqrt(a * a + b * b / Mathf.Pow(Mathf.Tan(i), 2));
-                //if (i > 270 || i < 90)
-                //{
-                //    x *= -1;
-                //    y *= -1;
-                //}
                 float x = a * cosLookUp[i];
                 float y = b * sinLookUp[i];
 
