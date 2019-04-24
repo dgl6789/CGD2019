@@ -36,11 +36,12 @@ namespace App
         public float currentSpawnInterval; //current spawn interval
         public Vector2 spawnIntervalBounds; //bounds of time between hand spawns
         public float spawnIntervalDelta; //percentage by which to adjust spawn interval
+        public int maxHands; //maximum number of hands that can spawn
 
         private bool doSpawn; //bool to tell the handmanager to spawn a hand
         public bool DoSpawn
         {
-            get { return doSpawn; }
+            get { return (HandManager.Instance.HandCount < maxHands && doSpawn); }
         }
 
         [Header("Specialty Hands")]

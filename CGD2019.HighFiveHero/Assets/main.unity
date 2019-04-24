@@ -5327,7 +5327,7 @@ Material:
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: f65ea94c18747c145ac677ea49960912, type: 3}
         m_Scale: {x: 4, y: 4}
-        m_Offset: {x: 0.062000003, y: 0.062000003}
+        m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -5647,7 +5647,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HandObjects:
-  - {fileID: 86, guid: 4fd8557bb81cb0845a78ec1d694f5e77, type: 3}
+  - {fileID: 89, guid: 4fd8557bb81cb0845a78ec1d694f5e77, type: 3}
   - {fileID: 3341594852159768269, guid: 0559283bc7fd9be449a4b4e7b1af57a7, type: 3}
   - {fileID: 65, guid: f2b3adde4ad341547a2204e48063e7b1, type: 3}
   - {fileID: 65, guid: 69a843de221693e4dadec973cd3fd3a4, type: 3}
@@ -5714,12 +5714,13 @@ MonoBehaviour:
   diffIntervalBounds: {x: 0.5, y: 5}
   speedMod: 1
   currentSpeedMod: 0
-  speedModBounds: {x: 0.75, y: 1.5}
+  speedModBounds: {x: 0.85, y: 1.5}
   speedModDelta: 0.95
   spawnInterval: 1.5
   currentSpawnInterval: 0
   spawnIntervalBounds: {x: 0.75, y: 3}
   spawnIntervalDelta: 0.9
+  maxHands: 8
   specialtySpawnRate: 0.01
   currentSpecialtySpawnRate: 0
   specialtyRateBounds: {x: 0, y: 0.4}
@@ -8342,7 +8343,7 @@ Transform:
   m_GameObject: {fileID: 1814630195}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.036, y: 0.035, z: 94.83}
-  m_LocalScale: {x: 6.630081, y: 11, z: 1}
+  m_LocalScale: {x: 6.626072, y: 11, z: 1}
   m_Children:
   - {fileID: 1865308969}
   m_Father: {fileID: 0}
