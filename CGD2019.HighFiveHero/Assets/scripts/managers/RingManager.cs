@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RingManager : MonoBehaviour
 {
+    public GameObject mask;
     int Rings
     {
         get { return App.RunManager.Instance.Currency; }
@@ -41,7 +42,7 @@ public class RingManager : MonoBehaviour
         {
             App.SaveManager.Instance.LoadedData.Masks = new bool[3];
         }
-        GameObject mask = GameObject.FindGameObjectWithTag("Mask");
+        
         switch (masknum)
         {
             case 0:
@@ -117,6 +118,5 @@ public class RingManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
 }
