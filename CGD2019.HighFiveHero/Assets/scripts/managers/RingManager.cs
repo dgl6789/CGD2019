@@ -24,7 +24,7 @@ public class RingManager : MonoBehaviour
     public void setThemes(bool[] b)
     {
 
-
+        
         b[6] = true;
         for (int i = 0; i < b.Length; i++)
         {
@@ -33,22 +33,71 @@ public class RingManager : MonoBehaviour
                 bought.Add((Theme)i);
             }
         }
+        App.SaveManager.Instance.SaveThemes();
+    }
+    public bool unlockMask(int masknum)
+    {
+        if (App.SaveManager.Instance.LoadedData.Masks == null)
+        {
+            App.SaveManager.Instance.LoadedData.Masks = new bool[3];
+        }
+        GameObject mask = GameObject.FindGameObjectWithTag("Mask");
+        switch (masknum)
+        {
+            case 0:
+                App.SaveManager.Instance.LoadedData.Masks[0] = true;
+                mask.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("masks/Mascara0");
+                break;
+            case 1:
+                if (App.SaveManager.Instance.LoadedData.Masks[1])
+                {
+                    mask.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("masks/Mascara1");
+                }
+                else if (Rings >= 10)
+                {
+                    Rings -= 10;
+                    App.SaveManager.Instance.LoadedData.Masks[1] = true;
+                    mask.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("masks/Mascara1");
+                }
+                break;
+            case 2:
+                if (App.SaveManager.Instance.LoadedData.Masks[2])
+                {
+                    mask.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("masks/Mascara2");
+                }
+                else if (Rings >= 10)
+                {
+                    Rings -= 10;
+                    App.SaveManager.Instance.LoadedData.Masks[2] = true;
+                    mask.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("masks/Mascara2");
+                }
+                break;
+            default:
+                break;
+        }
+        return false;
     }
     public bool unlockTheme(Theme T)
     {
+       
+        if (App.SaveManager.Instance.LoadedData.Bought == null)
+        {
+            App.SaveManager.Instance.LoadedData.Bought = new bool[7];
+        }
         
-        if (App.SaveManager.Instance.LoadedData.Bought[(int)T])
+        if (App.SaveManager.Instance.LoadedData.Bought[(int)T]||bought.Contains(T))
         {
             return true;
         }
         else if (Rings >= 20)
         {
-            
+            App.SaveManager.Instance.LoadedData.Bought[(int)T] = true;
             bought.Add(T);//thx diana
             Rings -= 20;
             App.SaveManager.Instance.SaveThemes();
             return true;
         }
+        App.SaveManager.Instance.SaveThemes();
         return false;
     }
     
@@ -56,12 +105,13 @@ public class RingManager : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         else Destroy(this);
-        setThemes(App.SaveManager.Instance.LoadedData.Bought);
+        
     }
     // Start is called before the first frame update
     void Start()
     {
         bought = new List<Theme>();
+        bought.Add(Theme.tigres);
     }
 
     // Update is called once per frame
