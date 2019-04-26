@@ -23,16 +23,21 @@ public class GPManager : MonoBehaviour
         PlayGamesPlatform.InitializeInstance(config);
 
         PlayGamesPlatform.Activate();
+
+        PlayGamesPlatform.DebugLogEnabled = true;
+
+        SignIn();
     }
     
     void SignIn() {
-        Social.localUser.Authenticate(success => { });
+        Social.localUser.Authenticate(
+            success => { Debug.Log("Logged In to Google Play Services."); });
     }
 
     #region Achievements
 
     public void UnlockAchievement(string id, double progress = 100) {
-        Social.ReportProgress(id, progress, success => { });
+        Social.ReportProgress(id, progress, success => { Debug.Log("Achievement Unlocked! " + id); });
     }
 
     public void IncrementAchievement(string id, int stepsToIncrement) {
@@ -40,7 +45,6 @@ public class GPManager : MonoBehaviour
     }
 
     public void ShowAchievementsUI() {
-        Debug.Log("Showing Achievements UI");
         Social.ShowAchievementsUI();
     }
 
@@ -49,11 +53,10 @@ public class GPManager : MonoBehaviour
     #region Leaderboards
 
     public void AddScoreToLeaderboard(string leaderboardId, long score) {
-        Social.ReportScore(score, leaderboardId, success => { });
+        Social.ReportScore(score, leaderboardId, success => { Debug.Log("Score added to leaderboard: " + score); });
     }
 
     public void ShowLeaderboardUI() {
-        Debug.Log("Showing Leaderboard UI");
         Social.ShowLeaderboardUI();
     }
 
