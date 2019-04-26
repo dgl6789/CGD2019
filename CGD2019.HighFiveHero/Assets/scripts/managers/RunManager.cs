@@ -102,13 +102,21 @@ namespace App {
         /// </summary>
         public void UpdateRun() {
             if (gameStarted) {
-                currentGameTimer -= Time.deltaTime;
+                if (!HandManager.Instance.smothered)
+                {
+                    currentGameTimer -= Time.deltaTime;
 
-                UIManager.Instance.UpdateGameTimerText(currentGameTimer);
+                    UIManager.Instance.UpdateGameTimerText(currentGameTimer);
 
-                if (currentGameTimer <= 0) {
-                    currentGameTimer = 0;
+                    if (currentGameTimer <= 0)
+                    {
+                        currentGameTimer = 0;
 
+                        HandManager.Instance.StartSmothering();
+                    }
+                }
+                else
+                {
                     EndGame();
                 }
             }

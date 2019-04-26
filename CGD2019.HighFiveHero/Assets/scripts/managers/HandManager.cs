@@ -38,6 +38,9 @@ namespace App {
         [Range(0f, 1f)]
         [SerializeField] float ringHandSpawnRate;
 
+        //bool to allow the game to end
+        public bool smothered;
+
         // List of hands/fives that still need input checking.
         private List<Hand> ActiveHands;
         private List<HighFive> ActiveFives;
@@ -114,6 +117,8 @@ namespace App {
                 ActiveFives = new List<HighFive>();
                 DeadHands = new List<Hand>();
 
+                smothered = false;
+
                 FillTrigLookupTables();
             }
         }
@@ -125,24 +130,6 @@ namespace App {
             if (StateManager.Instance.State.Equals(GameState.Game)) {
 
                 #region HAND SPAWNING
-
-                //spawns a hand every second
-                //if (RunManager.Instance.TimePassed(previousGameTime, DifficultyManager.Instance.handSpawnInterval)) {
-                //    for (int i = 0; i < DifficultyManager.Instance.maxHands; i++) {
-                //        if (ActiveHands.Count <= DifficultyManager.Instance.maxHands)
-                //        {
-                //            //spawns handmovement based on difficulty
-                //            SpawnHand(DifficultyManager.Instance.GetHandMovement());
-                //        }
-                //    }
-
-                //    previousGameTime = RunManager.Instance.CurrentGameTimer;
-                //} else if (RunManager.Instance.CurrentGameTimer >= 9.7f && previousGameTime == 10f) {
-                //    if (ActiveHands.Count <= DifficultyManager.Instance.maxHands) SpawnHand(HandMovement.RANDOM);
-
-                //    previousGameTime = RunManager.Instance.CurrentGameTimer;
-                //}
-
                 if (DifficultyManager.Instance.DoSpawn)
                 {
                     SpawnHand(DifficultyManager.Instance.GetHandMovement());
@@ -154,6 +141,9 @@ namespace App {
                 foreach (Hand h in ActiveHands)
                 {
                     h.DoUpdateStep();
+
+                    if (h.isSmothered)
+                        smothered = true;
                 }
 
                 #endregion
@@ -282,6 +272,15 @@ namespace App {
             ActiveFives.Clear();
             ActiveHands.Clear();
             DeadHands.Clear();
+        }
+
+        /// <summary>
+        /// Start smothering behavior to end the game
+        /// </summary>
+        public void StartSmothering()
+        {
+            foreach(Hand h in ActiveHands)
+                h.ChangeMovementType(HandMovement.SMOTHER);
         }
 
         /// <summary>

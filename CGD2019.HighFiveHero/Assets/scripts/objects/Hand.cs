@@ -3,7 +3,7 @@ using UnityEngine;
 using App.Util;
 
 namespace App {
-    public enum HandMovement { RANDOM, GROW, SHRINK, OSCILLATE, JUMP, HYDRA, FIST };
+    public enum HandMovement { RANDOM, GROW, SHRINK, OSCILLATE, JUMP, HYDRA, FIST, SMOTHER };
 
     public class Hand : MonoBehaviour {
 
@@ -53,6 +53,9 @@ namespace App {
 
         //closed open state
         public bool isOpen = true;
+
+        //done smothering bool
+        public bool isSmothered = false;
 
         //initialized variables
         public bool left;
@@ -242,6 +245,9 @@ namespace App {
                 case HandMovement.SHRINK:
                     Shrink();
                     break;
+                case HandMovement.SMOTHER:
+                    Smother();
+                    break;
                 default:
                     // Debug.Log(movementType + " isn't an accepted movement type");
                     break;
@@ -324,6 +330,29 @@ namespace App {
         }
 
         /// <summary>
+        /// hand grows to cover screen
+        /// </summary>
+        private void Smother()
+        {
+            //start moving if growth is complete
+            if (intervalPassed)
+                isSmothered = true;
+            else
+            {
+                float smotherSize = 5.0f;
+                float radius = armRadius;
+                float t = timePassed / TransitionInterval;
+
+                //lerp scale and position
+                size = Mathf.Lerp(targetSize, smotherSize, t);
+
+                //adjust scale
+                GetComponentInParent<Arm>().AdjustWidthForHand(size);
+                transform.localScale = new Vector2(Mathf.Sign(transform.localScale.x) * size, size);
+            }
+        }
+
+        /// <summary>
         /// shrink hand out of existence
         /// </summary>
         private void Shrink ()
@@ -375,7 +404,7 @@ namespace App {
         /// changes movement type and resets timer
         /// </summary>
         /// <param name="newMovement"></param>
-        private void ChangeMovementType (HandMovement newMovement)
+        public void ChangeMovementType (HandMovement newMovement)
         {
             timePassed = 0.0f;
 
