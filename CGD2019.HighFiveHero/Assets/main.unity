@@ -2962,6 +2962,12 @@ RectTransform:
   m_AnchoredPosition: {x: -148, y: -182}
   m_SizeDelta: {x: 258.7, y: 77.30005}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!4 &709529774 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4388714155006266655, guid: 3d4f2e699ff03f3408aef56ead9f0ab4,
+    type: 3}
+  m_PrefabInstance: {fileID: 7879310754405012688}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &758236420
 GameObject:
   m_ObjectHideFlags: 0
@@ -5327,7 +5333,7 @@ Material:
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: f65ea94c18747c145ac677ea49960912, type: 3}
         m_Scale: {x: 4, y: 4}
-        m_Offset: {x: 0, y: 0}
+        m_Offset: {x: 0.012000001, y: 0.012000001}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -5729,6 +5735,7 @@ MonoBehaviour:
   scoreRewardDelta: 1
   timeReward: 1
   timeRewardDelta: 0.25
+  clearBonusTransform: {fileID: 709529774}
 --- !u!114 &1331530277
 MonoBehaviour:
   m_ObjectHideFlags: 0

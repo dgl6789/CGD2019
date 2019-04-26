@@ -122,8 +122,7 @@ namespace App
             if (HandManager.Instance.HandCount == 1) //cleaner way to check? hand still exists when called
             {                
                 // Spawn a success indicator
-                HandManager.Instance.SpawnClearBonusIndicator(transform, Mathf.FloorToInt(scoreReward));
-                // HandManager.Instance.SpawnTimeIndicator(transform, timeReward, true);
+                HandManager.Instance.SpawnClearBonusIndicator(clearBonusTransform, Mathf.FloorToInt(scoreReward));
 
                 // Add to the score and time.
                 RunManager.Instance.AddScore(Mathf.FloorToInt(scoreReward));
