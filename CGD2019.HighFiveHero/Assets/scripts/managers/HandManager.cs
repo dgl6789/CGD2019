@@ -144,6 +144,8 @@ namespace App {
 
                     if (h.isSmothered)
                         smothered = true;
+
+                    Debug.Log(smothered);
                 }
 
                 #endregion

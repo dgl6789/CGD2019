@@ -336,15 +336,18 @@ namespace App {
         {
             //start moving if growth is complete
             if (intervalPassed)
+            {
                 isSmothered = true;
+
+                Debug.Log("finished smothering");
+            }
             else
             {
-                float smotherSize = 5.0f;
-                float radius = armRadius;
-                float t = timePassed / TransitionInterval;
+                float smotherSize = 50.0f;
+                float t = timePassed / moveInterval;
 
                 //lerp scale and position
-                size = Mathf.Lerp(targetSize, smotherSize, t);
+                float size = Mathf.Lerp(targetSize, smotherSize, t);
 
                 //adjust scale
                 GetComponentInParent<Arm>().AdjustWidthForHand(size);
