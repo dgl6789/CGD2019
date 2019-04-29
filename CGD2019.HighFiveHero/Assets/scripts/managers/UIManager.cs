@@ -12,7 +12,9 @@ namespace App.UI {
     /// </summary>
     [ExecuteInEditMode]
     public class UIManager : MonoBehaviour {
-
+        int previousIndex;
+        public int maskIndex;
+        public GameObject Mask;
         /// Singleton instance.
         public static UIManager Instance;
 
@@ -94,12 +96,20 @@ namespace App.UI {
             SetThemeCheckmarkStates();
 
             debugText.gameObject.SetActive(showDebugText);
+
+            setMask();
+            previousIndex = maskIndex;
         }
 
         /// <summary>
         /// Update App UI.
         /// </summary>
         private void Update() {
+            if (previousIndex != maskIndex)
+            {
+                previousIndex = maskIndex;
+                setMask(maskIndex);
+            }
             if (lastThemeMaterial != ThemeMaterial) UpdateGameColors();
 
             zigzagObject.UpdateScrollOffset(zigzagScrollSpeed);
@@ -380,6 +390,36 @@ namespace App.UI {
             return themeMaterials[Mathf.Clamp(index, 0, themeMaterials.Length)];
         }
 
-        #endregion 
+        #endregion
+
+        #region MASK CONTROLS
+        /// <summary>
+        /// sets the mask to the value from the saved file
+        /// </summary>
+        void setMask()
+        {
+            try
+            {
+                maskIndex = SaveManager.Instance.LoadedData.currentMask;
+                Mask.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Mascara" + maskIndex);
+            }
+            catch (System.Exception)
+            {
+                print("exception");
+                maskIndex = 0;
+                Mask.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Mascara" + maskIndex);
+            }
+        }
+        /// <summary>
+        /// sets the mask from the value passed into the parameter
+        /// </summary>
+        /// <param name="_mask"></param>
+        void setMask(int _mask)
+        {
+            SaveManager.Instance.LoadedData.currentMask = _mask;
+            maskIndex = _mask;
+            Mask.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Mascara" + maskIndex);
+        }
+        #endregion
     }
 }

@@ -192,6 +192,12 @@ namespace App {
             get { return masks; }
             set { masks = value; }
         }
+        int currentmask;
+        public int currentMask
+        {
+            get { return currentmask; }
+            set { currentmask = value; }
+        }
         bool[] bought;
         public bool[] Bought
         {
@@ -220,6 +226,8 @@ namespace App {
             MusicVolume = musicVolume;
             SfxVolume = sfxVolume;
             this.bought = new bool[] { false, false, false, false, false, false, true };
+            this.Masks = new bool[] { true, false, false };
+            this.currentMask = 0;
             Material = theme;
         }
     }

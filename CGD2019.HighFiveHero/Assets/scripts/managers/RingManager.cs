@@ -47,30 +47,30 @@ public class RingManager : MonoBehaviour
         {
             case 0:
                 App.SaveManager.Instance.LoadedData.Masks[0] = true;
-                mask.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("masks/Mascara0");
+                App.UI.UIManager.Instance.maskIndex = 0;
                 break;
             case 1:
                 if (App.SaveManager.Instance.LoadedData.Masks[1])
                 {
-                    mask.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("masks/Mascara1");
+                    App.UI.UIManager.Instance.maskIndex = 1;
                 }
                 else if (Rings >= 10)
                 {
                     Rings -= 10;
                     App.SaveManager.Instance.LoadedData.Masks[1] = true;
-                    mask.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("masks/Mascara1");
+                    App.UI.UIManager.Instance.maskIndex = 1;
                 }
                 break;
             case 2:
                 if (App.SaveManager.Instance.LoadedData.Masks[2])
                 {
-                    mask.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("masks/Mascara2");
+                    App.UI.UIManager.Instance.maskIndex = 2;
                 }
                 else if (Rings >= 10)
                 {
                     Rings -= 10;
                     App.SaveManager.Instance.LoadedData.Masks[2] = true;
-                    mask.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("masks/Mascara2");
+                    App.UI.UIManager.Instance.maskIndex = 2;
                 }
                 break;
             default:
