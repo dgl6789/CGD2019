@@ -239,6 +239,13 @@ namespace App.UI {
             bestScoreValue.text = "BEST " + string.Format("{0:n0}", value) + "!";
         }
 
+        /// <summary>
+        /// Shows the leaderboard UI, swapping the game state as necessary.
+        /// </summary>
+        public void ShowLeaderboards() {
+            GPManager.Instance.ShowLeaderboardUI();
+        }
+
         #endregion
 
         #region GAME STATE UI
