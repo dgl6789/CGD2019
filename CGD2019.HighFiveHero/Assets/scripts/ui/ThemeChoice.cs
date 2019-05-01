@@ -29,6 +29,14 @@ namespace App.UI {
         }
         private void Update()
         {
+            if (RingManager.Instance.bought.Contains((RingManager.Theme)Theme) || SaveManager.Instance.LoadedData.Bought[Theme])
+            {
+                transform.GetChild(2).gameObject.SetActive(false);
+            }
+            else
+            {
+                transform.GetChild(2).gameObject.SetActive(true);
+            }
             if (Vibrating > 0)
             {
                 float xOffset = Mathf.Lerp(-10f, 10f, Mathf.Sin((Time.realtimeSinceStartup * 100f)+1/2 ));

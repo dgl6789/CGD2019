@@ -235,7 +235,8 @@ namespace App {
         /// <summary>
         /// creates a hand copying the given hand
         /// </summary>
-        /// <param name="hand">hand to copy</param>
+        /// <param name
+        /// ="hand">hand to copy</param>
         public void CopyHand(Hand hand, bool oppositeDir = false)
         {
             // TODO: Have this method attach the spawned hand to the guy, put it at a reasonable starting position, etc.

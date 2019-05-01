@@ -41,35 +41,40 @@ public class RingManager : MonoBehaviour
         {
             App.SaveManager.Instance.LoadedData.Masks = new bool[3];
         }
-        GameObject mask = GameObject.FindGameObjectWithTag("Mask");
+        
         switch (masknum)
         {
             case 0:
                 App.SaveManager.Instance.LoadedData.Masks[0] = true;
-                mask.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("masks/Mascara0");
+                App.UI.UIManager.Instance.maskIndex = 0;
+                return true;
                 break;
             case 1:
                 if (App.SaveManager.Instance.LoadedData.Masks[1])
                 {
-                    mask.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("masks/Mascara1");
+                    App.UI.UIManager.Instance.maskIndex = 1;
+                    return true;
                 }
                 else if (Rings >= 10)
                 {
                     Rings -= 10;
                     App.SaveManager.Instance.LoadedData.Masks[1] = true;
-                    mask.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("masks/Mascara1");
+                    App.UI.UIManager.Instance.maskIndex = 1;
+                    return true;
                 }
                 break;
             case 2:
                 if (App.SaveManager.Instance.LoadedData.Masks[2])
                 {
-                    mask.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("masks/Mascara2");
+                    App.UI.UIManager.Instance.maskIndex = 2;
+                    return true;
                 }
                 else if (Rings >= 10)
                 {
                     Rings -= 10;
                     App.SaveManager.Instance.LoadedData.Masks[2] = true;
-                    mask.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("masks/Mascara2");
+                    App.UI.UIManager.Instance.maskIndex = 2;
+                    return true;
                 }
                 break;
             default:
@@ -117,6 +122,5 @@ public class RingManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
 }

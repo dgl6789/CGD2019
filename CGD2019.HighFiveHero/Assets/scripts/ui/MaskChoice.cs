@@ -35,6 +35,14 @@ namespace App.UI
         }
         private void Update()
         {
+            if (App.SaveManager.Instance.LoadedData.Masks[Mask] || Mask == 0)
+            {
+                transform.GetChild(2).gameObject.SetActive(false);
+            }
+            else
+            {
+                transform.GetChild(2).gameObject.SetActive(true);
+            }
             if (Vibrating > 0)
             {
                 float xOffset = Mathf.Lerp(-10f, 10f, Mathf.Sin((Time.realtimeSinceStartup * 100f) + 1 / 2));
@@ -59,6 +67,10 @@ namespace App.UI
             if (!RingManager.Instance.unlockMask(Mask))
             {
                 Vibrating = .5f;
+            }
+            else
+            {
+                App.SaveManager.Instance.LoadedData.currentMask = Mask;
             }
         }
 
