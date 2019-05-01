@@ -12,6 +12,8 @@ namespace App.UI {
     /// </summary>
     [ExecuteInEditMode]
     public class UIManager : MonoBehaviour {
+
+        public GameObject[] Masks;
         int previousIndex;
         public int maskIndex;
         public GameObject Mask;
@@ -97,8 +99,9 @@ namespace App.UI {
 
             debugText.gameObject.SetActive(showDebugText);
 
-            setMask();
+            
             previousIndex = maskIndex;
+            Invoke("setMask", 1);
         }
 
         /// <summary>
@@ -400,14 +403,16 @@ namespace App.UI {
         {
             try
             {
-                maskIndex = SaveManager.Instance.LoadedData.currentMask;
-                Mask.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Mascara" + maskIndex);
+                maskIndex = App.SaveManager.Instance.LoadedData.currentMask;
+                Mask.GetComponent<SpriteRenderer>().sprite = Masks[maskIndex].GetComponent<SpriteRenderer>().sprite;
+                
             }
             catch (System.Exception)
             {
                 print("exception");
                 maskIndex = 0;
-                Mask.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Mascara" + maskIndex);
+                if (Mask != null)
+                    Mask.GetComponent<SpriteRenderer>().sprite = Masks[maskIndex].GetComponent<SpriteRenderer>().sprite;
             }
         }
         /// <summary>
@@ -418,7 +423,7 @@ namespace App.UI {
         {
             SaveManager.Instance.LoadedData.currentMask = _mask;
             maskIndex = _mask;
-            Mask.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Mascara" + maskIndex);
+            Mask.GetComponent<SpriteRenderer>().sprite = Masks[maskIndex].GetComponent<SpriteRenderer>().sprite;
         }
         #endregion
     }

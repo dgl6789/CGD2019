@@ -68,6 +68,10 @@ namespace App.UI
             {
                 Vibrating = .5f;
             }
+            else
+            {
+                App.SaveManager.Instance.LoadedData.currentMask = Mask;
+            }
         }
 
         /// <summary>

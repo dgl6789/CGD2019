@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class RingManager : MonoBehaviour
 {
-    public GameObject mask;
     int Rings
     {
         get { return App.RunManager.Instance.Currency; }
@@ -48,29 +47,34 @@ public class RingManager : MonoBehaviour
             case 0:
                 App.SaveManager.Instance.LoadedData.Masks[0] = true;
                 App.UI.UIManager.Instance.maskIndex = 0;
+                return true;
                 break;
             case 1:
                 if (App.SaveManager.Instance.LoadedData.Masks[1])
                 {
                     App.UI.UIManager.Instance.maskIndex = 1;
+                    return true;
                 }
                 else if (Rings >= 10)
                 {
                     Rings -= 10;
                     App.SaveManager.Instance.LoadedData.Masks[1] = true;
                     App.UI.UIManager.Instance.maskIndex = 1;
+                    return true;
                 }
                 break;
             case 2:
                 if (App.SaveManager.Instance.LoadedData.Masks[2])
                 {
                     App.UI.UIManager.Instance.maskIndex = 2;
+                    return true;
                 }
                 else if (Rings >= 10)
                 {
                     Rings -= 10;
                     App.SaveManager.Instance.LoadedData.Masks[2] = true;
                     App.UI.UIManager.Instance.maskIndex = 2;
+                    return true;
                 }
                 break;
             default:
