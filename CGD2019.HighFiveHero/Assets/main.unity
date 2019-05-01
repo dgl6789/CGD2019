@@ -5091,7 +5091,7 @@ Material:
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: f65ea94c18747c145ac677ea49960912, type: 3}
         m_Scale: {x: 4, y: 4}
-        m_Offset: {x: 0.074, y: 0.074}
+        m_Offset: {x: 0.2, y: 0.2}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -5485,21 +5485,21 @@ MonoBehaviour:
   speedMod: 1
   currentSpeedMod: 0
   speedModBounds: {x: 0.85, y: 1.5}
-  speedModDelta: 0
-  spawnInterval: 0
+  speedModDelta: 0.95
+  spawnInterval: 1.5
   currentSpawnInterval: 0
-  spawnIntervalBounds: {x: 0, y: 0}
-  spawnIntervalDelta: 0
-  maxHands: 0
-  specialtySpawnRate: 0
+  spawnIntervalBounds: {x: 0.75, y: 3}
+  spawnIntervalDelta: 0.9
+  maxHands: 8
+  specialtySpawnRate: 0.01
   currentSpecialtySpawnRate: 0
-  specialtyRateBounds: {x: 0, y: 0}
-  specialtyRateDelta: 0
-  scoreReward: 0
-  scoreRewardDelta: 0
-  timeReward: 0
-  timeRewardDelta: 0
-  clearBonusTransform: {fileID: 0}
+  specialtyRateBounds: {x: 0, y: 0.4}
+  specialtyRateDelta: 1.1
+  scoreReward: 1
+  scoreRewardDelta: 1
+  timeReward: 1
+  timeRewardDelta: 0.25
+  clearBonusTransform: {fileID: 7879310754405012689}
 --- !u!114 &1331530277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9450,3 +9450,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d4f2e699ff03f3408aef56ead9f0ab4, type: 3}
+--- !u!4 &7879310754405012689 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4388714155006266655, guid: 3d4f2e699ff03f3408aef56ead9f0ab4,
+    type: 3}
+  m_PrefabInstance: {fileID: 7879310754405012688}
+  m_PrefabAsset: {fileID: 0}
