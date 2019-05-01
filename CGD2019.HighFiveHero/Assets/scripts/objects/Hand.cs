@@ -80,15 +80,6 @@ namespace App {
             this.acceptableRange = acceptableRange;
             this.perfectRange = perfectRange;
 
-            //TODO: make specialty hands harder to hit?
-            //if (movementType == HandMovement.HYDRA || movementType == HandMovement.FIST)
-            //{
-            //    float specialtyStrModifier = 0.8f;
-
-            //    this.acceptableRange *= specialtyStrModifier;
-            //    this.perfectRange *= specialtyStrModifier;
-            //}
-
             targetStrength = HandManager.Instance.HandSizetoTargetStrength(size);
             
             if (movementType == HandMovement.RANDOM)
@@ -130,13 +121,20 @@ namespace App {
 
                     currentAngle = angleStart;
                     break;
-                case HandMovement.FIST:
                 case HandMovement.JUMP:
-                    moveInterval = Random.Range(0.0f, 1.0f) + 0.75f;
+                    moveInterval = Random.Range(0.25f, 1.0f) + 1f;
                     
                     currentAngle = angleEnd = angleStart = Random.Range(0, 360);
                     break;
+                case HandMovement.FIST:
+                    moveInterval = Random.Range(0.25f, 1.0f) + 2f;
+
+                    currentAngle = angleEnd = angleStart = Random.Range(0, 360);
+                    break;
             }
+
+            //modify speed based on difficulty
+            moveInterval *= DifficultyManager.Instance.currentSpeedMod;
 
             //determine arm radius
             float vertExtent = Camera.main.orthographicSize * 2f;
@@ -358,12 +356,13 @@ namespace App {
         protected void MoveHand(int armAngle, float radius = -1.0f)
         {
             //find hand position
-            Vector3 handPos = new Vector3(HandManager.Instance.CosLookUp(armAngle), HandManager.Instance.SinLookUp(armAngle), 0.0f);
+            //Vector3 handPos = new Vector3(HandManager.Instance.CosLookUp(armAngle), HandManager.Instance.SinLookUp(armAngle), 0.0f);
+            Vector3 handPos = new Vector3(HandManager.Instance.OvalPositions(armAngle).x, HandManager.Instance.OvalPositions(armAngle).y, 0.0f);
 
-            if (radius == -1.0f)
-                handPos *= armRadius;
-            else
-                handPos *= radius;
+            //if (radius == -1.0f)
+            //    handPos *= armRadius;
+            //else
+            //    handPos *= radius;
 
             //find elbow position
             Vector3 elbowPos = new Vector3(handPos.x, 0.6f * handPos.y, 0.0f);

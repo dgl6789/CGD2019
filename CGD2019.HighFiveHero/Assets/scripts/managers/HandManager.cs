@@ -42,6 +42,10 @@ namespace App {
         private List<Hand> ActiveHands;
         private List<HighFive> ActiveFives;
         private List<Hand> DeadHands;
+        public int HandCount
+        {
+            get { return ActiveHands.Count; }
+        }
 
         // Previous timestamp to regulate spawning
         private float previousGameTime = 0.0f;
@@ -72,6 +76,16 @@ namespace App {
             
             return cosLookUp[i];
         }
+        private Vector2[] ovalPositions = new Vector2[360];
+        public Vector2 OvalPositions (int i)
+        {
+            i %= 360;
+
+            if (i < 0)
+                i = 360 + i;
+
+            return ovalPositions[i];
+        }
 
         [Header("Scoring")]
 
@@ -79,6 +93,7 @@ namespace App {
         public int SuccessfulFiveTimeReward;
         public int PerfectFiveScoreReward;
         public int PerfectFiveTimeReward;
+        public int ClearBonusTimeReward;
 
         public int FailedFiveTimePenalty;
 
@@ -112,20 +127,25 @@ namespace App {
                 #region HAND SPAWNING
 
                 //spawns a hand every second
-                if (RunManager.Instance.TimePassed(previousGameTime, DifficultyManager.Instance.handSpawnInterval)) {
-                    for (int i = 0; i < DifficultyManager.Instance.maxHands; i++) {
-                        if (ActiveHands.Count <= DifficultyManager.Instance.maxHands)
-                        {
-                            //spawns handmovement based on difficulty
-                            SpawnHand(DifficultyManager.Instance.GetHandMovement());
-                        }
-                    }
-                    
-                    previousGameTime = RunManager.Instance.CurrentGameTimer;
-                } else if (RunManager.Instance.CurrentGameTimer >= 9.7f && previousGameTime == 10f) {
-                    if (ActiveHands.Count <= DifficultyManager.Instance.maxHands) SpawnHand(HandMovement.RANDOM);
+                //if (RunManager.Instance.TimePassed(previousGameTime, DifficultyManager.Instance.handSpawnInterval)) {
+                //    for (int i = 0; i < DifficultyManager.Instance.maxHands; i++) {
+                //        if (ActiveHands.Count <= DifficultyManager.Instance.maxHands)
+                //        {
+                //            //spawns handmovement based on difficulty
+                //            SpawnHand(DifficultyManager.Instance.GetHandMovement());
+                //        }
+                //    }
 
-                    previousGameTime = RunManager.Instance.CurrentGameTimer;
+                //    previousGameTime = RunManager.Instance.CurrentGameTimer;
+                //} else if (RunManager.Instance.CurrentGameTimer >= 9.7f && previousGameTime == 10f) {
+                //    if (ActiveHands.Count <= DifficultyManager.Instance.maxHands) SpawnHand(HandMovement.RANDOM);
+
+                //    previousGameTime = RunManager.Instance.CurrentGameTimer;
+                //}
+
+                if (DifficultyManager.Instance.DoSpawn)
+                {
+                    SpawnHand(DifficultyManager.Instance.GetHandMovement());
                 }
                 #endregion
 
@@ -353,7 +373,7 @@ namespace App {
         /// <param name="origin">Transform of the origin hand.</param>
         /// <param name="count">Number of seconds to reflect.</param>
         /// <param name="success">Whether the time is being added or subtracted.</param>
-        public void SpawnTimeIndicator(Transform origin, int count, bool isOpen,bool toWeak, bool success = false) {
+        public void SpawnTimeIndicator(Transform origin, int count, bool isOpen, bool tooWeak, bool success = false) {
             string description = success ? "" : scoreIndicatorFailureDescriptions[Random.Range(0, scoreIndicatorFailureDescriptions.Length)];
             GameObject j = Instantiate(indicatorObjects[1], origin.position, Quaternion.identity, handParent.transform);
             Indicator i = j.GetComponent<Indicator>();
@@ -366,7 +386,7 @@ namespace App {
             {
                 description  = "CLOSED!";
             }
-            else if (toWeak)
+            else if (tooWeak)
             {
                 description = "Too Weak!";
             }
@@ -375,6 +395,22 @@ namespace App {
                 description = "Too Strong!";
             }
             i.Initialize(count,c, description, false, success ? 0.15f : 0f);
+        }
+
+        /// <summary>
+        /// Spawns a clear bonus indicator
+        /// </summary>
+        /// <param name="origin">transform of the origin</param>
+        /// <param name="count">number of seconds to reflect</param>
+        public void SpawnClearBonusIndicator(Transform origin, int count)
+        {
+            GameObject j = Instantiate(indicatorObjects[1], origin.position, Quaternion.identity, handParent.transform);
+            Indicator i = j.GetComponent<Indicator>();
+
+            Color c = Color.yellow;
+            string description = "CLEAR";
+
+            i.Initialize(count, c, description, false, 0.15f);
         }
 
         /// <summary>
@@ -387,16 +423,28 @@ namespace App {
         }
 
         /// <summary>
-        /// Fills trig lookup tables
+        /// Fills trig lookup tables and maps out oval path
         /// </summary>
         private void FillTrigLookupTables ()
         {
+            float vertExtent = Camera.main.orthographicSize * 2f;
+            float horzExtent = vertExtent * (Screen.width / (float)Screen.height);
+            float horzPadding = 1f;
+            float vertPadding = 1.5f;
+            float a = horzExtent / 2f - horzPadding;
+            float b = vertExtent / 2f - vertPadding;
+
             for (int i = 0; i < 360; i++)
             {
                 float r = i * Mathf.PI / 180;
 
                 cosLookUp[i] = Mathf.Cos(r);
                 sinLookUp[i] = Mathf.Sin(r);
+
+                float x = a * cosLookUp[i];
+                float y = b * sinLookUp[i];
+
+                ovalPositions[i] = new Vector2(x, y);
             }
         }
     }

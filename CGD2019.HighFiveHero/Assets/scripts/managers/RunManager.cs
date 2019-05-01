@@ -123,6 +123,7 @@ namespace App {
             currentGameTimer = initialTimerValue;
             UIManager.Instance.UpdateGameTimerText(currentGameTimer);
             HandManager.Instance.PreviousGameTime = currentGameTimer;
+            DifficultyManager.Instance.ResetDifficulty();
 
             // Turn on the countdown, and count it down.
             UIManager.Instance.SetStartGameCountdownTextActive(true);
@@ -164,6 +165,7 @@ namespace App {
                 HighScore = value;
 
                 SaveManager.Instance.SetHighScore();
+                GPManager.Instance.AddScoreToLeaderboard(GPGSIds.leaderboard_best, value);
                 UIManager.Instance.SetBestScoreValue(HighScore);
             }
         }
